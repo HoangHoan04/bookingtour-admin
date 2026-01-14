@@ -1,9 +1,7 @@
-import MessengerDropdown from "@/components/layout/MessengerDropdown";
 import Notification from "@/components/layout/Notification";
 import { useAuth } from "@/context/AuthContext";
 import { useTheme } from "@/context/ThemeContext";
 import { useTranslation } from "@/context/TranslationContext";
-import { useUnreadMessageCount } from "@/hooks/layout/useChat";
 import { Avatar } from "primereact/avatar";
 import { Button } from "primereact/button";
 import { Menu } from "primereact/menu";
@@ -29,14 +27,12 @@ const AppNavbar: FC<AppNavbarProps> = ({
   onLogout,
   onOpenSettings,
   showNotification = true,
-  onChatOpen,
 }) => {
   const { theme } = useTheme();
   const { t } = useTranslation();
   const menuRef = useRef<Menu>(null);
   const isDark = theme === "dark";
   const { user } = useAuth();
-  const { count: unreadMessageCount } = useUnreadMessageCount();
 
   const menuItems: MenuItem[] = [
     {
@@ -116,13 +112,6 @@ const AppNavbar: FC<AppNavbarProps> = ({
 
         <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
           <FullScreen />
-          {showNotification && (
-            <MessengerDropdown
-              unreadCount={unreadMessageCount}
-              currentUserId={user?.id || ""}
-              onChatSelect={onChatOpen}
-            />
-          )}
           {showNotification && <Notification />}
 
           <Button

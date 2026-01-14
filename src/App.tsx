@@ -9,7 +9,6 @@ import { AuthProvider } from "./context/AuthContext";
 import { ConfigProvider } from "./context/ConfigContext";
 import { FloatingButtonProvider } from "./context/FloatingButtonContext";
 import { LoadingProvider } from "./context/LoadingContext";
-import { SocketProvider } from "./context/SocketContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import { ToastProvider } from "./context/ToastContext";
 import { TranslationProvider } from "./context/TranslationContext";
@@ -25,15 +24,13 @@ export default function App() {
           <ThemeProvider>
             <TranslationProvider>
               <AuthProvider>
-                <SocketProvider>
-                  <LoadingProvider>
-                    <ToastProvider>
-                      <ConfigProvider>
-                        <AppRoutes />
-                      </ConfigProvider>
-                    </ToastProvider>
-                  </LoadingProvider>
-                </SocketProvider>
+                <LoadingProvider>
+                  <ToastProvider>
+                    <ConfigProvider>
+                      <AppRoutes />
+                    </ConfigProvider>
+                  </ToastProvider>
+                </LoadingProvider>
               </AuthProvider>
             </TranslationProvider>
           </ThemeProvider>
