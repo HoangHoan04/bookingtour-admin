@@ -1,14 +1,20 @@
 import { useToast } from "@/context/ToastContext";
 import type { PageResponse, SuccessResponse } from "@/dto";
 import type {
+  NotificationCountResponse,
+  NotificationCreateDto,
   NotificationItem,
   NotificationPaginationDto,
+  NotificationSettingDto,
+  NotificationUpdateDto,
+  UpdateNotificationSettingDto,
 } from "@/dto/notification.dto";
 
 import rootApiService from "@/services/api.service";
 import { API_ENDPOINTS } from "@/services/endpoint";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
+// Hook lấy danh sách notification với phân trang
 export const usePaginationNotification = (
   params: NotificationPaginationDto
 ) => {
@@ -30,11 +36,12 @@ export const usePaginationNotification = (
   };
 };
 
+// Hook đếm số notification chưa đọc
 export const useUnreadCount = () => {
-  const { data, isLoading, refetch } = useQuery<{ countAll: number }>({
+  const { data, isLoading, refetch } = useQuery<NotificationCountResponse>({
     queryKey: [API_ENDPOINTS.NOTIFICATION.COUNT_UNREAD],
     queryFn: () => rootApiService.post(API_ENDPOINTS.NOTIFICATION.COUNT_UNREAD),
-    refetchInterval: 60000,
+    refetchInterval: 60000, // Tự động refresh mỗi 60 giây
   });
 
   return {
@@ -44,6 +51,7 @@ export const useUnreadCount = () => {
   };
 };
 
+// Hook đánh dấu danh sách notification đã đọc
 export const useMarkReadList = () => {
   const queryClient = useQueryClient();
   const { showToast } = useToast();
@@ -75,6 +83,7 @@ export const useMarkReadList = () => {
   return { onMarkReadList, isLoading: isPending };
 };
 
+// Hook đánh dấu tất cả đã đọc
 export const useMarkAllRead = () => {
   const queryClient = useQueryClient();
   const { showToast } = useToast();
@@ -111,4 +120,186 @@ export const useMarkAllRead = () => {
   });
 
   return { onMarkAllRead, isLoading: isPending };
+};
+
+// Hook tạo notification mới
+export const useCreateNotification = () => {
+  const queryClient = useQueryClient();
+  const { showToast } = useToast();
+
+  const { mutate: onCreate, isPending } = useMutation({
+    mutationFn: (data: NotificationCreateDto) =>
+      rootApiService.post(
+        API_ENDPOINTS.NOTIFICATION.CREATE,
+        data
+      ) as Promise<SuccessResponse>,
+
+    onSuccess: (res) => {
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.NOTIFICATION.PAGINATION],
+      });
+
+      showToast({
+        type: "success",
+        message: res.message || "Tạo thông báo thành công",
+        title: "Thành công",
+        timeout: 3000,
+      });
+    },
+    onError: (error: any) => {
+      showToast({
+        type: "error",
+        message: error?.message || "Có lỗi xảy ra khi tạo thông báo",
+        title: "Lỗi",
+        timeout: 3000,
+      });
+    },
+  });
+
+  return { onCreate, isLoading: isPending };
+};
+
+// Hook cập nhật notification
+export const useUpdateNotification = () => {
+  const queryClient = useQueryClient();
+  const { showToast } = useToast();
+
+  const { mutate: onUpdate, isPending } = useMutation({
+    mutationFn: ({ id, data }: { id: string; data: NotificationUpdateDto }) =>
+      rootApiService.post(
+        API_ENDPOINTS.NOTIFICATION.UPDATE.replace(":id", id),
+        data
+      ) as Promise<SuccessResponse>,
+
+    onSuccess: (res) => {
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.NOTIFICATION.PAGINATION],
+      });
+
+      showToast({
+        type: "success",
+        message: res.message || "Cập nhật thông báo thành công",
+        title: "Thành công",
+        timeout: 3000,
+      });
+    },
+    onError: (error: any) => {
+      showToast({
+        type: "error",
+        message: error?.message || "Có lỗi xảy ra khi cập nhật",
+        title: "Lỗi",
+        timeout: 3000,
+      });
+    },
+  });
+
+  return { onUpdate, isLoading: isPending };
+};
+
+// Hook xóa notification
+export const useDeleteNotification = () => {
+  const queryClient = useQueryClient();
+  const { showToast } = useToast();
+
+  const { mutate: onDelete, isPending } = useMutation({
+    mutationFn: (id: string) =>
+      rootApiService.delete(
+        API_ENDPOINTS.NOTIFICATION.DELETE.replace(":id", id)
+      ) as Promise<SuccessResponse>,
+
+    onSuccess: (res) => {
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.NOTIFICATION.PAGINATION],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.NOTIFICATION.COUNT_UNREAD],
+      });
+
+      showToast({
+        type: "success",
+        message: res.message || "Xóa thông báo thành công",
+        title: "Thành công",
+        timeout: 3000,
+      });
+    },
+    onError: (error: any) => {
+      showToast({
+        type: "error",
+        message: error?.message || "Có lỗi xảy ra khi xóa",
+        title: "Lỗi",
+        timeout: 3000,
+      });
+    },
+  });
+
+  return { onDelete, isLoading: isPending };
+};
+
+// Hook lấy chi tiết notification
+export const useNotificationDetail = (id: string) => {
+  const { data, isLoading, refetch } = useQuery<{ data: NotificationItem }>({
+    queryKey: [API_ENDPOINTS.NOTIFICATION.DETAIL, id],
+    queryFn: () =>
+      rootApiService.post(API_ENDPOINTS.NOTIFICATION.DETAIL.replace(":id", id)),
+    enabled: !!id,
+  });
+
+  return {
+    data: data?.data,
+    isLoading,
+    refetch,
+  };
+};
+
+// Hook lấy cài đặt notification
+export const useNotificationSettings = () => {
+  const { data, isLoading, refetch } = useQuery<{
+    data: NotificationSettingDto;
+  }>({
+    queryKey: [API_ENDPOINTS.NOTIFICATION.GET_SETTINGS],
+    queryFn: () => rootApiService.post(API_ENDPOINTS.NOTIFICATION.GET_SETTINGS),
+  });
+
+  return {
+    settings: data?.data,
+    isLoading,
+    refetch,
+  };
+};
+
+// Hook cập nhật cài đặt notification
+export const useUpdateNotificationSettings = () => {
+  const queryClient = useQueryClient();
+  const { showToast } = useToast();
+
+  const { mutate: onUpdateSettings, isPending } = useMutation({
+    mutationFn: (data: UpdateNotificationSettingDto) =>
+      rootApiService.post(
+        API_ENDPOINTS.NOTIFICATION.UPDATE_SETTINGS,
+        data
+      ) as Promise<SuccessResponse>,
+
+    onSuccess: (res) => {
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.NOTIFICATION.GET_SETTINGS],
+      });
+
+      showToast({
+        type: "success",
+        message: res.message || "Cập nhật cài đặt thành công",
+        title: "Thành công",
+        timeout: 3000,
+      });
+    },
+    onError: (error: any) => {
+      showToast({
+        type: "error",
+        message: error?.message || "Có lỗi xảy ra khi cập nhật cài đặt",
+        title: "Lỗi",
+        timeout: 3000,
+      });
+    },
+  });
+
+  return { onUpdateSettings, isLoading: isPending };
 };

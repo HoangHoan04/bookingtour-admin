@@ -3,7 +3,6 @@ import BackToTop from "@/components/layout/BackToTop";
 import ConfigSetting from "@/components/layout/ConfigSetting";
 import AppTabHeader from "@/components/layout/TabHeader";
 import { ChangePasswordModal } from "@/components/ui/change-password/ChangePassword";
-import HRMChatbot from "@/components/ui/chat-bot/ChatBotAI";
 import { useAuth } from "@/context/AuthContext";
 import { ConfigProvider, useConfig } from "@/context/ConfigContext";
 import { useToast } from "@/context/ToastContext";
@@ -91,7 +90,6 @@ function AppLayoutContent() {
         onHide={() => setSettingsVisible(false)}
       />
 
-      <HRMChatbot />
       <BackToTop />
     </div>
   );

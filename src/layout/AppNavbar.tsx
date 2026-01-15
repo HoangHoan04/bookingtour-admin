@@ -17,7 +17,6 @@ type AppNavbarProps = {
   onLogout: () => void;
   onOpenSettings: () => void;
   showNotification?: boolean;
-  onChatOpen?: (roomId: string) => void;
 };
 
 const AppNavbar: FC<AppNavbarProps> = ({

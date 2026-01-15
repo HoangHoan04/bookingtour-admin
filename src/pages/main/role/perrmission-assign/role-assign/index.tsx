@@ -1,11 +1,8 @@
 import FilterComponent, {
   type FilterField,
 } from "@/components/ui/FilterCustom";
-import { useToast } from "@/context/ToastContext";
 import type { EmployeeDto } from "@/dto/employee.dto";
-import { useFindAllPermissionGroups } from "@/hooks/permission";
 import {
-  useAssignPermissions,
   useEmployeesByRole,
   useRoleDetail,
   useRoleSelectBox,
@@ -26,7 +23,6 @@ interface CustomTreeNode extends TreeNode {
 }
 
 export default function RoleAssignmentPage() {
-  const { showToast } = useToast();
   const [filters, setFilters] = useState<any>({ roleId: null });
   const [selectionKeys, setSelectionKeys] = useState<any>({});
   const [expandedKeys, setExpandedKeys] = useState<any>({});
@@ -34,15 +30,10 @@ export default function RoleAssignmentPage() {
   const [employeeList, setEmployeeList] = useState<EmployeeDto[]>([]);
 
   const { data: roles, isLoading: loadingRoles } = useRoleSelectBox();
-  const { data: permissionGroups, isLoading: loadingGroups } =
-    useFindAllPermissionGroups();
-  const {
-    data: roleDetail,
-    isLoading: loadingRoleDetail,
-    refetch: refetchRoleDetail,
-  } = useRoleDetail(filters.roleId);
+  const { data: roleDetail, refetch: refetchRoleDetail } = useRoleDetail(
+    filters.roleId
+  );
 
-  const { onAssignPermissions, isPending: saving } = useAssignPermissions();
   const { getEmployees, isLoading: loadingEmps } = useEmployeesByRole();
 
   const filterFields: FilterField[] = useMemo(() => {
@@ -62,22 +53,6 @@ export default function RoleAssignmentPage() {
     ];
   }, [roles, loadingRoles]);
 
-  const treeNodes: CustomTreeNode[] = useMemo(() => {
-    if (!permissionGroups || permissionGroups.length === 0) return [];
-
-    return permissionGroups.map((group) => ({
-      key: group.module,
-      label: group.module,
-      data: "MODULE_GROUP",
-      children: group.items.map((perm) => ({
-        key: perm.id,
-        label: perm.name,
-        title: `${perm.code} - ${perm.name}`,
-        data: "PERMISSION_ITEM",
-      })),
-    }));
-  }, [permissionGroups]);
-
   useEffect(() => {
     if (!filters.roleId) {
       setSelectionKeys({});
@@ -86,68 +61,15 @@ export default function RoleAssignmentPage() {
 
     refetchRoleDetail();
 
-    if (!treeNodes.length || !roleDetail) return;
-
-    const currentPermissionIds = roleDetail.permissionIds || [];
     const newSelectionKeys: any = {};
     const newExpandedKeys: any = {};
 
-    treeNodes.forEach((groupNode) => {
-      const groupKey = groupNode.key as string;
-      const children = groupNode.children || [];
-      let checkedChildrenCount = 0;
-
-      children.forEach((childNode) => {
-        const childKey = childNode.key as string;
-        const isMatch = currentPermissionIds.some(
-          (id) =>
-            id.toString().toLowerCase() === childKey.toString().toLowerCase()
-        );
-
-        if (isMatch) {
-          newSelectionKeys[childKey] = { checked: true, partialChecked: false };
-          checkedChildrenCount++;
-        }
-      });
-
-      if (children.length > 0) {
-        if (checkedChildrenCount === children.length) {
-          newSelectionKeys[groupKey] = { checked: true, partialChecked: false };
-        } else if (checkedChildrenCount > 0) {
-          newSelectionKeys[groupKey] = { checked: false, partialChecked: true };
-        }
-      }
-      newExpandedKeys[groupKey] = true;
-    });
-
     setSelectionKeys(newSelectionKeys);
     setExpandedKeys(newExpandedKeys);
-  }, [filters.roleId, roleDetail, treeNodes, refetchRoleDetail]);
+  }, [filters.roleId, roleDetail, refetchRoleDetail]);
 
   const handleSave = () => {
     if (!filters.roleId) return;
-    const selectedPermissionIds = Object.keys(selectionKeys || {}).filter(
-      (key) => {
-        const nodeState = selectionKeys[key];
-        const isModuleKey = permissionGroups?.some((g) => g.module === key);
-        return nodeState.checked && !isModuleKey;
-      }
-    );
-
-    onAssignPermissions(
-      { roleId: filters.roleId, permissionIds: selectedPermissionIds },
-      {
-        onSuccess: () => {
-          showToast({
-            type: "success",
-            title: "Thành công",
-            message: "Đã cập nhật quyền hạn",
-            timeout: 3000,
-          });
-          refetchRoleDetail();
-        },
-      }
-    );
   };
 
   const handleViewEmployees = async () => {
@@ -199,7 +121,6 @@ export default function RoleAssignmentPage() {
       icon="pi pi-save"
       severity="secondary"
       size="small"
-      loading={saving}
       onClick={handleSave}
       disabled={!filters.roleId}
     />
@@ -279,26 +200,22 @@ export default function RoleAssignmentPage() {
             className="h-full border-none"
             pt={{ content: { className: "p-0" } }}
           >
-            {loadingGroups || loadingRoleDetail ? (
-              <div className="flex justify-center p-10">
-                <ProgressSpinner style={{ width: "50px" }} />
-              </div>
-            ) : (
-              <div className="h-[calc(100vh-420px)] overflow-y-auto  p-2">
-                <Tree
-                  value={treeNodes}
-                  selectionMode="checkbox"
-                  selectionKeys={selectionKeys}
-                  onSelectionChange={(e) => setSelectionKeys(e.value)}
-                  expandedKeys={expandedKeys}
-                  onToggle={(e) => setExpandedKeys(e.value)}
-                  className="w-full border-none bg-transparent permission-grid-tree"
-                  filter
-                  filterPlaceholder="Tìm kiếm nhanh quyền..."
-                  nodeTemplate={nodeTemplate}
-                />
-              </div>
-            )}
+            <div className="flex justify-center p-10">
+              <ProgressSpinner style={{ width: "50px" }} />
+            </div>
+            <div className="h-[calc(100vh-420px)] overflow-y-auto  p-2">
+              <Tree
+                selectionMode="checkbox"
+                selectionKeys={selectionKeys}
+                onSelectionChange={(e) => setSelectionKeys(e.value)}
+                expandedKeys={expandedKeys}
+                onToggle={(e) => setExpandedKeys(e.value)}
+                className="w-full border-none bg-transparent permission-grid-tree"
+                filter
+                filterPlaceholder="Tìm kiếm nhanh quyền..."
+                nodeTemplate={nodeTemplate}
+              />
+            </div>
           </Panel>
         )}
       </div>
