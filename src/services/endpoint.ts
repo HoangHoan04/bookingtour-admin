@@ -66,4 +66,12 @@ export const API_ENDPOINTS = {
     DELETE: "/api/admin/translations/delete",
     FIND_BY_KEY: "/api/admin/translations/find-by-key",
   },
+
+  BANNER: {
+    PAGINATION: "/api/admin/banner/pagination",
+    CREATE: "/api/admin/banner/create",
+    UPDATE: "/api/admin/banner/update",
+    DELETE: "/api/admin/banner/delete",
+    FIND_BY_ID: "/api/admin/banner/find-by-id",
+  },
 };
