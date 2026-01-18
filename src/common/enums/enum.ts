@@ -93,47 +93,31 @@ export const enumData = {
     },
   },
 
-  BRANCH_TYPE: {
-    HEAD_OFFICE: { code: "HEAD_OFFICE", name: "Trụ sở chính" },
-    BRANCH: { code: "BRANCH", name: "Chi nhánh" },
+  BANNER_TYPE: {
+    HOME: { code: "HOME", name: "Trang chủ" },
+    INTRODUCTION: { code: "INTRODUCTION", name: "Giới thiệu" },
+    BOOKING: { code: "BOOKING", name: "Đặt tour" },
+    TOUR: { code: "TOUR", name: "Tour" },
+    NEWS: { code: "NEWS", name: "Tin tức" },
+    FAQ: { code: "FAQ", name: "Câu hỏi thường gặp" },
   },
 
-  MARITAL_STATUS: {
-    SINGLE: { code: "SINGLE", name: "Độc thân" },
-    MARRIED: { code: "MARRIED", name: "Đã kết hôn" },
-    DIVORCED: { code: "DIVORCED", name: "Ly dị" },
-    WIDOWED: { code: "WIDOWED", name: "Góa" },
+  NEW_TYPE: {
+    NEWS: { code: "NEWS", name: "Tin tức" },
+    EVENT: { code: "EVENT", name: "Sự kiện" },
   },
 
-  EMPLOYEE_LEVEL: {
-    INTERN: { code: "INTERN", name: "Thực tập sinh" },
-    FRESHER: { code: "FRESHER", name: "Nhân viên mới" },
-    JUNIOR: { code: "JUNIOR", name: "Nhân viên cấp thấp" },
-    MIDDLE: { code: "MIDDLE", name: "Nhân viên cấp trung" },
-    SENIOR: { code: "SENIOR", name: "Nhân viên cấp cao" },
-    LEAD: { code: "LEAD", name: "Trưởng nhóm" },
-    MANAGER: { code: "MANAGER", name: "Quản lý" },
-    DIRECTOR: { code: "DIRECTOR", name: "Giám đốc" },
+  BLOG_STATUS: {
+    DRAFT: { code: "draft", name: "Bản nháp" },
+    PUBLISHED: { code: "published", name: "Đã xuất bản" },
+    SCHEDULED: { code: "scheduled", name: "Đã lên lịch" },
+    ARCHIVED: { code: "archived", name: "Đã lưu trữ" },
   },
 
-  WORKING_MODEL: {
-    FULLTIME: { code: "FULLTIME", name: "Toàn thời gian" },
-    PARTTIME: { code: "PARTTIME", name: "Bán thời gian" },
-    CONTRACT: { code: "CONTRACT", name: "Hợp đồng" },
-    FREELANCE: { code: "FREELANCE", name: "Tự do" },
-  },
-
-  CONTRACT_TYPE: {
-    PROBATION: { code: "PROBATION", name: "Thử việc" },
-    DEFINITE: { code: "DEFINITE", name: "Xác định thời hạn" },
-    INDEFINITE: { code: "INDEFINITE", name: "Không xác định thời hạn" },
-    SEASONAL: { code: "SEASONAL", name: "Theo mùa vụ" },
-  },
-
-  PROBATION_STATUS: {
-    PENDING: { code: "PENDING", name: "Chờ duyệt" },
-    PASSED: { code: "PASSED", name: "Đã hoàn thành" },
-    FAILED: { code: "FAILED", name: "Không đạt" },
+  BLOG_COMMENT_STATUS: {
+    PENDING: { code: "pending", name: "Chờ duyệt" },
+    APPROVED: { code: "approved", name: "Đã duyệt" },
+    REJECTED: { code: "rejected", name: "Từ chối" },
   },
 };
 

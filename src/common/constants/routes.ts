@@ -25,6 +25,9 @@ export const ROUTES = {
       icon: "pi pi-home",
     },
 
+    // Quản lý khách hàng
+
+    // Quản lý tour
     TOUR_MANAGER: {
       key: "TOUR_MANAGER",
       translationKey: "menu.tourManager",
@@ -75,6 +78,93 @@ export const ROUTES = {
       },
     },
 
+    // Quản lý tin tức
+    NEW_MANAGER: {
+      key: "NEW_MANAGER",
+      translationKey: "menu.newManager",
+      icon: "pi pi-images",
+      path: "/new-manager",
+      children: {
+        // Banner
+        BANNER_MANAGER: {
+          key: "BANNER_MANAGER",
+          translationKey: "menu.bannerManager",
+          path: "/banner-manager",
+          children: {
+            ADD_BANNER: {
+              key: "ADD_BANNER",
+              translationKey: "menu.addBanner",
+              path: "/banner/add",
+              isShow: false,
+            },
+            EDIT_BANNER: {
+              key: "EDIT_BANNER",
+              translationKey: "menu.editBanner",
+              path: "/banner/edit/:id",
+              isShow: false,
+            },
+            DETAIL_BANNER: {
+              key: "DETAIL_BANNER",
+              translationKey: "menu.detailBanner",
+              path: "/banner/detail/:id",
+              isShow: false,
+            },
+          },
+        },
+        NEW_LIST: {
+          key: "NEW_LIST",
+          translationKey: "menu.newManager",
+          path: "/new-list",
+          children: {
+            ADD_NEW: {
+              key: "ADD_NEW",
+              translationKey: "menu.addNew",
+              path: "/new/add",
+              isShow: false,
+            },
+            EDIT_NEW: {
+              key: "EDIT_NEW",
+              translationKey: "menu.editNew",
+              path: "/new/edit/:id",
+              isShow: false,
+            },
+            DETAIL_NEW: {
+              key: "DETAIL_NEW",
+              translationKey: "menu.detailNew",
+              path: "/new/detail/:id",
+              isShow: false,
+            },
+          },
+        },
+        BLOG_MANAGER: {
+          key: "BLOG_MANAGER",
+          translationKey: "menu.blogManager",
+          path: "/blog-manager",
+          children: {
+            ADD_BLOG: {
+              key: "ADD_BLOG",
+              translationKey: "menu.addBlog",
+              path: "/blog/add",
+              isShow: false,
+            },
+            EDIT_BLOG: {
+              key: "EDIT_BLOG",
+              translationKey: "menu.editBlog",
+              path: "/blog/edit/:id",
+              isShow: false,
+            },
+            DETAIL_BLOG: {
+              key: "DETAIL_BLOG",
+              translationKey: "menu.detailBlog",
+              path: "/blog/detail/:id",
+              isShow: false,
+            },
+          },
+        },
+      },
+    },
+
+    // Quản lý vai trò - quyền
     ROLE_MANAGER: {
       key: "ROLE_MANAGER",
       translationKey: "menu.roleManager",
