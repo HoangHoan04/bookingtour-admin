@@ -32,19 +32,19 @@ export const API_ENDPOINTS = {
   },
 
   CUSTOMER: {
-    PAGINATION: "/api/admin/employee/pagination",
-    CREATE: "/api/admin/employee/create",
-    UPDATE: "/api/admin/employee/update",
-    ACTIVATE: "/api/admin/employee/activate",
-    DEACTIVATE: "/api/admin/employee/deactivate",
-    FIND_BY_ID: "/api/admin/employee/find-by-id",
-    SELECT_BOX: "/api/admin/employee/select-box",
-    CHANGE_PASSWORD: "/api/admin/employee/change-password",
+    PAGINATION: "/api/admin/customer/pagination",
+    CREATE: "/api/admin/customer/create",
+    UPDATE: "/api/admin/customer/update",
+    ACTIVATE: "/api/admin/customer/activate",
+    DEACTIVATE: "/api/admin/customer/deactivate",
+    FIND_BY_ID: "/api/admin/customer/find-by-id",
+    SELECT_BOX: "/api/admin/customer/select-box",
+    CHANGE_PASSWORD: "/api/admin/customer/change-password",
   },
 
   UPLOAD_FILE: {
-    SINGLE: "/api/admin/upload-files/upload-single",
-    MULTI: "/api/admin/upload-files/upload-multi",
+    SINGLE: "/api/upload/uploadFiles/upload-single",
+    MULTI: "/api/upload/uploadFiles/upload-multi",
   },
 
   ROLE: {
@@ -78,7 +78,7 @@ export const API_ENDPOINTS = {
     DEACTIVATE: "/api/admin/banner/deactivate",
   },
 
-  NEW: {
+  NEWS: {
     PAGINATION: "/api/admin/news/pagination",
     CREATE: "/api/admin/news/create",
     UPDATE: "/api/admin/news/update",
@@ -102,5 +102,26 @@ export const API_ENDPOINTS = {
     FIND_BLOG_COMMENT_BY_ID: "/api/admin/blog/find-blog-comment-by-id",
     DELETE_BLOG_COMMENT: "/api/admin/blog/delete-blog-comment",
     RESTORE_BLOG_COMMENT: "/api/admin/blog/restore-blog-comment",
+  },
+
+  TRAVEL_HINT: {
+    PAGINATION: "/api/admin/travel-hint/pagination",
+    CREATE: "/api/admin/travel-hint/create",
+    UPDATE: "/api/admin/travel-hint/update",
+    DELETE: "/api/admin/travel-hint/delete",
+    FIND_BY_ID: "/api/admin/travel-hint/find-by-id",
+    ACTIVATE: "/api/admin/travel-hint/activate",
+    DEACTIVATE: "/api/admin/travel-hint/deactivate",
+  },
+
+  TOUR_GUIDE: {
+    PAGINATION: "/api/admin/tour-guide/pagination",
+    CREATE: "/api/admin/tour-guide/create",
+    UPDATE: "/api/admin/tour-guide/update",
+    ACTIVATE: "/api/admin/tour-guide/activate",
+    DEACTIVATE: "/api/admin/tour-guide/deactivate",
+    FIND_BY_ID: "/api/admin/tour-guide/find-by-id",
+    SELECT_BOX: "/api/admin/tour-guide/select-box",
+    CHANGE_PASSWORD: "/api/admin/tour-guide/change-password",
   },
 };

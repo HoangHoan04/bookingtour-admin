@@ -95,9 +95,11 @@ export const enumData = {
 
   BANNER_TYPE: {
     HOME: { code: "HOME", name: "Trang chủ" },
-    INTRODUCTION: { code: "INTRODUCTION", name: "Giới thiệu" },
-    BOOKING: { code: "BOOKING", name: "Đặt tour" },
+    ABOUT: { code: "ABOUT", name: "Giới thiệu" },
+    BLOG: { code: "BLOG", name: "Blog" },
+    SERVICES: { code: "SERVICES", name: "Dịch vụ" },
     TOUR: { code: "TOUR", name: "Tour" },
+    BOOKING: { code: "BOOKING", name: "Đặt tour" },
     NEWS: { code: "NEWS", name: "Tin tức" },
     FAQ: { code: "FAQ", name: "Câu hỏi thường gặp" },
   },
@@ -118,6 +120,50 @@ export const enumData = {
     PENDING: { code: "pending", name: "Chờ duyệt" },
     APPROVED: { code: "approved", name: "Đã duyệt" },
     REJECTED: { code: "rejected", name: "Từ chối" },
+  },
+
+  MONTH: {
+    JANUARY: { code: 1, name: "Tháng 1" },
+    FEBRUARY: { code: 2, name: "Tháng 2" },
+    MARCH: { code: 3, name: "Tháng 3" },
+    APRIL: { code: 4, name: "Tháng 4" },
+    MAY: { code: 5, name: "Tháng 5" },
+    JUNE: { code: 6, name: "Tháng 6" },
+    JULY: { code: 7, name: "Tháng 7" },
+    AUGUST: { code: 8, name: "Tháng 8" },
+    SEPTEMBER: { code: 9, name: "Tháng 9" },
+    OCTOBER: { code: 10, name: "Tháng 10" },
+    NOVEMBER: { code: 11, name: "Tháng 11" },
+    DECEMBER: { code: 12, name: "Tháng 12" },
+  },
+  TRAVEL_HINT_TYPE: {
+    DOMESTIC: { code: "DOMESTIC", name: "Trong nước" },
+    INTERNATIONAL: { code: "INTERNATIONAL", name: "Nước ngoài" },
+  },
+
+  TAG_TRAVEL_HINT: {
+    BEACH: { code: "BEACH", name: "Bãi biển" },
+    MOUNTAIN: { code: "MOUNTAIN", name: "Núi" },
+    CULTURE: { code: "CULTURE", name: "Văn hóa" },
+    ADVENTURE: { code: "ADVENTURE", name: "Phiêu lưu" },
+    RELAXATION: { code: "RELAXATION", name: "Nghỉ dưỡng" },
+    NATURE: { code: "NATURE", name: "Thiên nhiên" },
+    CITY: { code: "CITY", name: "Thành phố" },
+  },
+
+  LANGUAGES: {
+    EN: { code: "EN", name: "English" },
+    VI: { code: "VI", name: "Tiếng Việt" },
+  },
+
+  SPECIALTIES: {
+    HISTORY: { code: "HISTORY", name: "Lịch sử" },
+    ADVENTURE: { code: "ADVENTURE", name: "Phiêu lưu" },
+    CULTURE: { code: "CULTURE", name: "Văn hóa" },
+    NATURE: { code: "NATURE", name: "Thiên nhiên" },
+    FOOD: { code: "FOOD", name: "Ẩm thực" },
+    SHOPPING: { code: "SHOPPING", name: "Mua sắm" },
+    RELAXATION: { code: "RELAXATION", name: "Nghỉ dưỡng" },
   },
 };
 

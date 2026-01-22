@@ -35,7 +35,7 @@ function RichText({
           form.setFieldsValue({ [field.name]: e.htmlValue || "" });
         }}
         style={{
-          height: "350px",
+          height: "500px",
           borderRadius: "10px",
           padding: "2px",
         }}

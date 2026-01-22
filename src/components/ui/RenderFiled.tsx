@@ -6,12 +6,14 @@ import { Button } from "primereact/button";
 import { Calendar } from "primereact/calendar";
 import { Checkbox } from "primereact/checkbox";
 import { Dropdown } from "primereact/dropdown";
+import { Editor } from "primereact/editor";
 import { InputNumber } from "primereact/inputnumber";
 import { InputSwitch } from "primereact/inputswitch";
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { MultiSelect } from "primereact/multiselect";
 import { RadioButton } from "primereact/radiobutton";
+import { TabPanel, TabView } from "primereact/tabview";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
@@ -33,7 +35,7 @@ const RequiredLabel = memo(
       {label}
       {required && <span style={{ color: "red", marginLeft: "4px" }}>*</span>}
     </label>
-  )
+  ),
 );
 
 interface FieldItemProps {
@@ -42,10 +44,18 @@ interface FieldItemProps {
   onChange: (key: string, value: any) => void;
   setRef: (name: string, el: any) => void;
   getValues: () => any;
+  allValues?: Record<string, any>;
 }
 
 const FieldItem = memo(
-  ({ field, value, onChange, setRef, getValues }: FieldItemProps) => {
+  ({
+    field,
+    value,
+    onChange,
+    setRef,
+    getValues,
+    allValues,
+  }: FieldItemProps) => {
     const { theme } = useTheme();
     const { t } = useTranslation();
 
@@ -129,6 +139,18 @@ const FieldItem = memo(
             />
           </div>
         );
+      case "richtext":
+        return (
+          <div ref={handleSetRef}>
+            <RequiredLabel label={field.label} required={field.required} />
+            <Editor
+              value={value || ""}
+              onTextChange={(e) => onChange(field.name, e.htmlValue || "")}
+              style={{ height: "350px" }}
+              placeholder={field.placeholder}
+            />
+          </div>
+        );
       case "number":
         return (
           <div ref={handleSetRef}>
@@ -197,7 +219,7 @@ const FieldItem = memo(
         );
       case "switch":
         return (
-          <div className="flex align-items-center" ref={handleSetRef}>
+          <div className="flex items-center" ref={handleSetRef}>
             <RequiredLabel label={field.label} required={field.required} />
             <div className="ml-2">
               <InputSwitch
@@ -210,10 +232,7 @@ const FieldItem = memo(
         );
       case "checkbox":
         return (
-          <div
-            className="flex align-items-center h-full pt-14"
-            ref={handleSetRef}
-          >
+          <div className="flex items-center h-full pt-8" ref={handleSetRef}>
             <Checkbox
               inputId={field.name}
               checked={value || false}
@@ -234,7 +253,7 @@ const FieldItem = memo(
             <RequiredLabel label={field.label} required={field.required} />
             <div className="flex flex-wrap gap-3">
               {field.options?.map((opt) => (
-                <div key={opt.value} className="flex align-items-center">
+                <div key={opt.value} className="flex items-center">
                   <RadioButton
                     inputId={`${field.name}_${opt.value}`}
                     name={field.name}
@@ -282,6 +301,58 @@ const FieldItem = memo(
             />
           </div>
         );
+      case "tab":
+        return (
+          <div ref={handleSetRef} style={{ gridColumn: "span 24" }}>
+            <TabView
+              pt={{
+                panelContainer: {
+                  style: {
+                    padding: "12px 0",
+                  },
+                },
+                nav: {
+                  style: {
+                    padding: "0",
+                  },
+                },
+              }}
+            >
+              {field.tabFields?.map((tabFields, index) => (
+                <TabPanel
+                  key={index}
+                  header={index === 0 ? "Tiếng Việt" : "Tiếng Anh"}
+                >
+                  <div
+                    className="grid gap-4"
+                    style={{
+                      gridTemplateColumns: "repeat(24, minmax(0, 1fr))",
+                    }}
+                  >
+                    {tabFields.map((subField) => (
+                      <div
+                        key={subField.name}
+                        style={{
+                          gridColumn:
+                            subField.gridColumn || `span ${subField.col || 24}`,
+                        }}
+                      >
+                        <FieldItem
+                          field={subField}
+                          value={allValues?.[subField.name]}
+                          onChange={onChange}
+                          setRef={setRef}
+                          getValues={getValues}
+                          allValues={allValues}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </TabPanel>
+              ))}
+            </TabView>
+          </div>
+        );
       case "custom":
         return field.render ? (
           <div>
@@ -297,19 +368,17 @@ const FieldItem = memo(
     }
   },
   (prev, next) => {
-    return (
-      isDeepEqual(prev.value, next.value) &&
-      prev.field === next.field &&
-      prev.field.disabled === next.field.disabled &&
-      prev.field.options === next.field.options
-    );
-  }
+    const valueChanged = prev.value !== next.value;
+    const disabledChanged = prev.field.disabled !== next.field.disabled;
+    const allValuesChanged = !isDeepEqual(prev.allValues, next.allValues);
+    return !valueChanged && !disabledChanged && !allValuesChanged;
+  },
 );
 
 function useRenderFormCustom(
   fields: FormField[],
   initialValues: Record<string, any> = {},
-  onChangeValue?: (allValues: any) => void
+  onChangeValue?: (allValues: any) => void,
 ) {
   const { t } = useTranslation();
   const [values, setValues] = useState<Record<string, any>>(initialValues);
@@ -336,11 +405,6 @@ function useRenderFormCustom(
   const handleChange = useCallback(
     (key: string, value: any) => {
       setValues((prev) => {
-        if (prev[key] === value) return prev;
-        if (isDeepEqual(prev[key], value)) {
-          return prev;
-        }
-
         const newValues = { ...prev, [key]: value };
         if (onChangeValue) {
           onChangeValue(newValues);
@@ -348,7 +412,7 @@ function useRenderFormCustom(
         return newValues;
       });
     },
-    [onChangeValue]
+    [onChangeValue],
   );
 
   const handleSetRef = useCallback((name: string, el: any) => {
@@ -359,24 +423,35 @@ function useRenderFormCustom(
 
   const setValuesExternal = useCallback(
     (newValues: any) => setValues(newValues),
-    []
+    [],
   );
 
   const resetFields = useCallback(
     () => setValues(initialValues),
-    [initialValues]
+    [initialValues],
   );
 
   const validateEmail = (email: string) => {
     return String(email)
       .toLowerCase()
       .match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
       );
   };
 
   const validateFields = useCallback(async () => {
+    const allFields: FormField[] = [];
     for (const field of fields) {
+      if (field.type === "tab" && field.tabFields) {
+        field.tabFields.forEach((tabFieldArray) => {
+          allFields.push(...tabFieldArray);
+        });
+      } else {
+        allFields.push(field);
+      }
+    }
+
+    for (const field of allFields) {
       const val = values[field.name];
 
       if (
@@ -432,10 +507,11 @@ function useRenderFormCustom(
           onChange={handleChange}
           setRef={handleSetRef}
           getValues={getValues}
+          allValues={values}
         />
       );
     },
-    [values, handleChange, handleSetRef, getValues]
+    [values, handleChange, handleSetRef, getValues],
   );
 
   return {

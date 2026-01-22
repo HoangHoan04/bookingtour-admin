@@ -14,8 +14,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const usePaginationNew = (params: PaginationDto<NewFilterDto>) => {
   const { data, isLoading, refetch, error } = useQuery<PageResponse<NewDto>>({
-    queryKey: [API_ENDPOINTS.NEW.PAGINATION, params],
-    queryFn: () => rootApiService.post(API_ENDPOINTS.NEW.PAGINATION, params),
+    queryKey: [API_ENDPOINTS.NEWS.PAGINATION, params],
+    queryFn: () => rootApiService.post(API_ENDPOINTS.NEWS.PAGINATION, params),
   });
 
   return {
@@ -30,9 +30,9 @@ export const usePaginationNew = (params: PaginationDto<NewFilterDto>) => {
 export const useNewDetail = (id: string | undefined | null) => {
   const { data, isLoading, refetch, error } = useQuery<SuccessResponse<NewDto>>(
     {
-      queryKey: [API_ENDPOINTS.NEW.FIND_BY_ID, id],
+      queryKey: [API_ENDPOINTS.NEWS.FIND_BY_ID, id],
       queryFn: async () => {
-        const res = await rootApiService.post(API_ENDPOINTS.NEW.FIND_BY_ID, {
+        const res = await rootApiService.post(API_ENDPOINTS.NEWS.FIND_BY_ID, {
           id,
         });
         return res as SuccessResponse<NewDto>;
@@ -57,16 +57,16 @@ export const useCreateNew = () => {
   const { mutate: createNew, isPending } = useMutation({
     mutationFn: (body: CreateNewDto) =>
       rootApiService.post(
-        API_ENDPOINTS.NEW.CREATE,
+        API_ENDPOINTS.NEWS.CREATE,
         body,
       ) as Promise<SuccessResponse>,
 
     onSuccess: (res: SuccessResponse) => {
       queryClient.invalidateQueries({
-        queryKey: [API_ENDPOINTS.NEW.PAGINATION],
+        queryKey: [API_ENDPOINTS.NEWS.PAGINATION],
       });
       queryClient.invalidateQueries({
-        queryKey: [API_ENDPOINTS.NEW.SELECT_BOX],
+        queryKey: [API_ENDPOINTS.NEWS.SELECT_BOX],
       });
       showToast({
         type: "success",
@@ -88,7 +88,7 @@ export const useCreateNew = () => {
 
   const refetch = () => {
     queryClient.invalidateQueries({
-      queryKey: [API_ENDPOINTS.NEW.PAGINATION],
+      queryKey: [API_ENDPOINTS.NEWS.PAGINATION],
     });
   };
 
@@ -102,19 +102,19 @@ export const useUpdateNew = () => {
   const { mutate: updateNew, isPending } = useMutation({
     mutationFn: (data: UpdateNewDto) => {
       return rootApiService.post(
-        API_ENDPOINTS.NEW.UPDATE,
+        API_ENDPOINTS.NEWS.UPDATE,
         data,
       ) as Promise<SuccessResponse>;
     },
     onSuccess: (res: SuccessResponse, variables) => {
       queryClient.invalidateQueries({
-        queryKey: [API_ENDPOINTS.NEW.PAGINATION],
+        queryKey: [API_ENDPOINTS.NEWS.PAGINATION],
       });
       queryClient.invalidateQueries({
-        queryKey: [API_ENDPOINTS.NEW.FIND_BY_ID, variables.id],
+        queryKey: [API_ENDPOINTS.NEWS.FIND_BY_ID, variables.id],
       });
       queryClient.invalidateQueries({
-        queryKey: [API_ENDPOINTS.NEW.SELECT_BOX],
+        queryKey: [API_ENDPOINTS.NEWS.SELECT_BOX],
       });
       showToast({
         type: "success",
@@ -142,15 +142,15 @@ export const useActivateNew = () => {
 
   const { mutateAsync: onActivateNew, isPending: isLoading } = useMutation({
     mutationFn: (id: string) =>
-      rootApiService.post(API_ENDPOINTS.NEW.ACTIVATE, {
+      rootApiService.post(API_ENDPOINTS.NEWS.ACTIVATE, {
         id,
       }) as Promise<SuccessResponse>,
     onSuccess: (res: SuccessResponse) => {
       queryClient.invalidateQueries({
-        queryKey: [API_ENDPOINTS.NEW.PAGINATION],
+        queryKey: [API_ENDPOINTS.NEWS.PAGINATION],
       });
       queryClient.invalidateQueries({
-        queryKey: [API_ENDPOINTS.NEW.SELECT_BOX],
+        queryKey: [API_ENDPOINTS.NEWS.SELECT_BOX],
       });
       showToast({
         type: "success",
@@ -180,15 +180,15 @@ export const useDeactivateNew = () => {
 
   const { mutateAsync: onDeactivateNew, isPending: isLoading } = useMutation({
     mutationFn: (id: string) =>
-      rootApiService.post(API_ENDPOINTS.NEW.DEACTIVATE, {
+      rootApiService.post(API_ENDPOINTS.NEWS.DEACTIVATE, {
         id,
       }) as Promise<SuccessResponse>,
     onSuccess: (res: SuccessResponse) => {
       queryClient.invalidateQueries({
-        queryKey: [API_ENDPOINTS.NEW.PAGINATION],
+        queryKey: [API_ENDPOINTS.NEWS.PAGINATION],
       });
       queryClient.invalidateQueries({
-        queryKey: [API_ENDPOINTS.NEW.SELECT_BOX],
+        queryKey: [API_ENDPOINTS.NEWS.SELECT_BOX],
       });
       showToast({
         type: "success",
@@ -214,9 +214,9 @@ export const useDeactivateNew = () => {
 };
 export const useNewSelectBox = () => {
   const { data, isLoading, error } = useQuery<NewDto[]>({
-    queryKey: [API_ENDPOINTS.NEW.SELECT_BOX],
+    queryKey: [API_ENDPOINTS.NEWS.SELECT_BOX],
     queryFn: () =>
-      rootApiService.post(API_ENDPOINTS.NEW.SELECT_BOX) as Promise<NewDto[]>,
+      rootApiService.post(API_ENDPOINTS.NEWS.SELECT_BOX) as Promise<NewDto[]>,
   });
 
   return {

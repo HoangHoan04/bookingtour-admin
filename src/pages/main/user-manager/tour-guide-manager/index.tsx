@@ -15,41 +15,46 @@ import TableCustom, {
   type TableColumn,
 } from "@/components/ui/TableCustom";
 import type { PaginationDto } from "@/dto";
-import type { NewDto, NewFilterDto } from "@/dto/new.dto";
+import type { TourGuideDto, TourGuideFilterDto } from "@/dto/tour-guide.dto";
 import {
-  useActivateNew,
-  useDeactivateNew,
-  usePaginationNew,
-} from "@/hooks/new";
+  useActivateTourGuide,
+  useDeactivateTourGuide,
+  usePaginationTourGuide,
+} from "@/hooks/tour-guide";
 
 import { useRouter } from "@/routers/hooks";
 import { PrimeIcons } from "primereact/api";
 import { useRef, useState } from "react";
 
-export const initFilter: NewFilterDto = {
-  titleVI: "",
-  titleEN: "",
-  status: "",
-  type: "",
+export const initFilter: TourGuideFilterDto = {
+  code: "",
+  name: "",
+  email: "",
+  isDeleted: undefined,
 };
 
-export default function NewManager() {
+export default function TourGuideManager() {
   const router = useRouter();
-  const [filter, setFilter] = useState<NewFilterDto>(initFilter);
-  const [pagination, setPagination] = useState<PaginationDto<NewFilterDto>>({
+  const [filter, setFilter] = useState<TourGuideFilterDto>(initFilter);
+  const [pagination, setPagination] = useState<
+    PaginationDto<TourGuideFilterDto>
+  >({
     skip: 0,
     take: 10,
     where: initFilter,
   });
-  const [selectedRows, setSelectedRows] = useState<NewDto[]>([]);
-  const [selectedNew, setSelectedNew] = useState<NewDto | null>(null);
+  const [selectedRows, setSelectedRows] = useState<TourGuideDto[]>([]);
+  const [selectedTourGuide, setSelectedTourGuide] =
+    useState<TourGuideDto | null>(null);
   const activateConfirmRef = useRef<ActionConfirmRef>(null);
   const deactivateConfirmRef = useRef<ActionConfirmRef>(null);
 
-  const { data, isLoading, refetch, total } = usePaginationNew(pagination);
-  const { onDeactivateNew, isLoading: isLoadingDeactivate } =
-    useDeactivateNew();
-  const { onActivateNew, isLoading: isLoadingActivate } = useActivateNew();
+  const { data, isLoading, refetch, total } =
+    usePaginationTourGuide(pagination);
+  const { onDeactivateTourGuide, isLoading: isLoadingDeactivate } =
+    useDeactivateTourGuide();
+  const { onActivateTourGuide, isLoading: isLoadingActivate } =
+    useActivateTourGuide();
 
   const handleSearch = (isReset?: boolean) => {
     setPagination((prev) => ({
@@ -61,7 +66,7 @@ export default function NewManager() {
   };
 
   const handleFiltersChange = (newFilters: Record<string, any>) => {
-    setFilter(newFilters as NewFilterDto);
+    setFilter(newFilters as TourGuideFilterDto);
   };
 
   const handlePageChange = (page: number, pageSize: number) => {
@@ -73,56 +78,46 @@ export default function NewManager() {
   };
 
   const handleActivate = async () => {
-    if (!selectedNew) return;
-    await onActivateNew(selectedNew.id);
+    if (!selectedTourGuide) return;
+    await onActivateTourGuide(selectedTourGuide.id);
     await refetch();
-    setSelectedNew(null);
+    setSelectedTourGuide(null);
   };
 
   const handleDeactivate = async () => {
-    if (!selectedNew) return;
-    await onDeactivateNew(selectedNew.id);
+    if (!selectedTourGuide) return;
+    await onDeactivateTourGuide(selectedTourGuide.id);
     await refetch();
-    setSelectedNew(null);
+    setSelectedTourGuide(null);
   };
 
   const handleCreate = () => {
     router.push(
-      ROUTES.MAIN.NEW_MANAGER.children.NEW_LIST.children.ADD_NEW.path,
+      ROUTES.MAIN.USER_MANAGER.children.TOUR_GUIDE_MANAGER.children
+        .ADD_TOUR_GUIDE.path,
     );
   };
 
   const filterFields: FilterField[] = [
     {
-      key: "titleVI",
-      label: "Tiêu đề tin tức",
+      key: "code",
+      label: "Mã hướng dẫn viên",
       type: "input",
-      placeholder: "Nhập tiêu đề tin tức",
+      placeholder: "Nhập mã hướng dẫn viên",
       col: 6,
     },
     {
-      key: "titleEn",
-      label: "Tiêu đề tin tức (English)",
+      key: "name",
+      label: "Tên hướng dẫn viên",
       type: "input",
-      placeholder: "Nhập tiêu đề tin tức (English)",
+      placeholder: "Nhập tên hướng dẫn viên",
       col: 6,
     },
     {
-      key: "status",
-      label: "Trạng thái",
+      key: "email",
+      label: "Email",
       type: "input",
-      placeholder: "Nhập trạng thái",
-      col: 6,
-    },
-    {
-      key: "type",
-      label: "Loại tin tức",
-      type: "select",
-      placeholder: "Nhập loại tin tức",
-      options: Object.values(enumData.NEW_TYPE || {}).map((item: any) => ({
-        label: item.name,
-        value: item.code,
-      })),
+      placeholder: "Nhập email",
       col: 6,
     },
     {
@@ -137,41 +132,38 @@ export default function NewManager() {
     },
   ];
 
-  const columns: TableColumn<NewDto>[] = [
+  const columns: TableColumn<TourGuideDto>[] = [
     {
-      field: "url",
-      header: "Đường dẫn tin tức",
+      field: "code",
+      header: "Mã hướng dẫn viên",
       width: 120,
       sortable: true,
       frozen: true,
     },
     {
-      field: "title",
-      header: "Tiêu đề tin tức",
+      field: "name",
+      header: "Tên hướng dẫn viên",
       width: 200,
       sortable: true,
     },
     {
-      field: "titleEn",
-      header: "Tiêu đề tin tức (English)",
+      field: "email",
+      header: "Email",
       width: 200,
       sortable: true,
     },
     {
-      field: "type",
-      header: "Loại tin tức",
+      field: "gender",
+      header: "Giới tính",
       width: 220,
       sortable: true,
-      body: (rowData: NewDto) =>
-        enumData.NEW_TYPE[rowData.type as keyof typeof enumData.NEW_TYPE]
-          ?.name || "",
     },
     {
       field: "isDeleted",
       header: "Hoạt động",
       width: 150,
       align: "center",
-      body: (rowData: NewDto) => (
+      body: (rowData: TourGuideDto) => (
         <StatusTag
           severity={rowData.isDeleted ? "danger" : "success"}
           value={
@@ -184,7 +176,7 @@ export default function NewManager() {
     },
   ];
 
-  const rowActions: RowAction<NewDto>[] = [
+  const rowActions: RowAction<TourGuideDto>[] = [
     {
       key: "view",
       icon: PrimeIcons.EYE,
@@ -192,7 +184,7 @@ export default function NewManager() {
       severity: "info",
       onClick: (record) =>
         router.push(
-          ROUTES.MAIN.NEW_MANAGER.children.NEW_LIST.children.DETAIL_NEW.path.replace(
+          ROUTES.MAIN.USER_MANAGER.children.TOUR_GUIDE_MANAGER.children.DETAIL_TOUR_GUIDE.path.replace(
             ":id",
             record.id,
           ),
@@ -206,7 +198,7 @@ export default function NewManager() {
       visible: (record) => !record.isDeleted,
       onClick: (record) => {
         router.push(
-          ROUTES.MAIN.NEW_MANAGER.children.NEW_LIST.children.EDIT_NEW.path.replace(
+          ROUTES.MAIN.USER_MANAGER.children.TOUR_GUIDE_MANAGER.children.EDIT_TOUR_GUIDE.path.replace(
             ":id",
             record.id,
           ),
@@ -220,7 +212,7 @@ export default function NewManager() {
       severity: "warning",
       visible: (record) => !record.isDeleted,
       onClick: (record) => {
-        setSelectedNew(record);
+        setSelectedTourGuide(record);
         deactivateConfirmRef.current?.show();
       },
     },
@@ -231,7 +223,7 @@ export default function NewManager() {
       severity: "success",
       visible: (record) => record.isDeleted,
       onClick: (record) => {
-        setSelectedNew(record);
+        setSelectedTourGuide(record);
         activateConfirmRef.current?.show();
       },
     },
@@ -247,7 +239,7 @@ export default function NewManager() {
         onClear={() => handleSearch(true)}
       />
 
-      <TableCustom<NewDto>
+      <TableCustom<TourGuideDto>
         data={data || []}
         columns={columns}
         loading={isLoading || isLoadingActivate || isLoadingDeactivate}
@@ -258,7 +250,7 @@ export default function NewManager() {
         stripedRows={true}
         showGridlines={true}
         scrollable={true}
-        emptyText="Không tìm thấy tin tức nào"
+        emptyText="Không tìm thấy hướng dẫn viên nào"
         pagination={{
           current: Math.floor(pagination.skip / pagination.take) + 1,
           pageSize: pagination.take,
@@ -287,7 +279,7 @@ export default function NewManager() {
 
       <ActionConfirm
         ref={activateConfirmRef}
-        title="Xác nhận kích hoạt tin tức"
+        title="Xác nhận kích hoạt hướng dẫn viên"
         confirmText="Kích hoạt"
         cancelText="Hủy"
         onConfirm={handleActivate}
@@ -295,7 +287,7 @@ export default function NewManager() {
 
       <ActionConfirm
         ref={deactivateConfirmRef}
-        title="Xác nhận ngừng hoạt động tin tức"
+        title="Xác nhận ngừng hoạt động hướng dẫn viên"
         confirmText="Ngừng hoạt động"
         cancelText="Hủy"
         withReason={true}

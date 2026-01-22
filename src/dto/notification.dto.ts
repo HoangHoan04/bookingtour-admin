@@ -1,6 +1,5 @@
 import type { PaginationDto } from "./common/base.dto";
 
-// Enums
 export type NotificationType =
   | "system"
   | "booking"
@@ -10,7 +9,6 @@ export type NotificationType =
 export type NotificationPriority = "low" | "normal" | "high" | "urgent";
 export type RelatedEntityType = "booking" | "payment" | "tour" | "user";
 
-// Interface cho notification item
 export interface NotificationItem {
   id: string;
   customerId: string;
@@ -37,7 +35,6 @@ export interface NotificationItem {
   };
 }
 
-// DTO để tạo notification
 export interface NotificationCreateDto {
   lstUserId?: string[];
   title: string;
@@ -52,7 +49,6 @@ export interface NotificationCreateDto {
   color?: string;
 }
 
-// DTO để cập nhật notification
 export interface NotificationUpdateDto {
   title?: string;
   content?: string;
@@ -63,7 +59,6 @@ export interface NotificationUpdateDto {
   color?: string;
 }
 
-// DTO để filter notification
 export interface NotificationFilterDto {
   notificationType?: NotificationType;
   priority?: NotificationPriority;
@@ -71,20 +66,16 @@ export interface NotificationFilterDto {
   relatedEntity?: RelatedEntityType;
 }
 
-// DTO pagination cho notification
 export type NotificationPaginationDto = PaginationDto<NotificationFilterDto>;
 
-// DTO để đánh dấu đã đọc
 export interface MarkReadListDto {
   lstId: string[];
 }
 
-// Response count
 export interface NotificationCountResponse {
   countAll: number;
 }
 
-// DTO cài đặt notification
 export interface NotificationSettingDto {
   id: string;
   customerId: string;
@@ -98,7 +89,6 @@ export interface NotificationSettingDto {
   updatedAt?: string;
 }
 
-// DTO cập nhật cài đặt
 export interface UpdateNotificationSettingDto {
   emailNotifications?: boolean;
   pushNotifications?: boolean;

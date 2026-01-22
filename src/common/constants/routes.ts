@@ -25,7 +25,71 @@ export const ROUTES = {
       icon: "pi pi-home",
     },
 
-    // Quản lý khách hàng
+    // Quản lý người dùng
+    USER_MANAGER: {
+      key: "USER_MANAGER",
+      translationKey: "menu.userManager",
+      icon: "pi pi-user",
+      path: "/user-manager",
+      children: {
+        CUSTOMER_MANAGER: {
+          key: "CUSTOMER_MANAGER",
+          translationKey: "menu.customerManager",
+          path: "/customer-manager",
+          children: {
+            ADD_CUSTOMER: {
+              key: "ADD_CUSTOMER",
+              translationKey: "customer.add",
+              path: "/customer/add",
+              icon: "pi pi-plus-circle",
+              isShow: false,
+            },
+            EDIT_CUSTOMER: {
+              key: "EDIT_CUSTOMER",
+              translationKey: "customer.edit",
+              path: "/customer/edit/:id",
+              icon: "pi pi-pencil-circle",
+              isShow: false,
+            },
+            DETAIL_CUSTOMER: {
+              key: "DETAIL_CUSTOMER",
+              translationKey: "customer.detail",
+              path: "/customer/detail/:id",
+              icon: "pi pi-info-circle",
+              isShow: false,
+            },
+          },
+        },
+        TOUR_GUIDE_MANAGER: {
+          key: "TOUR_GUIDE_MANAGER",
+          translationKey: "menu.tourguideManager",
+          path: "/tourguide-manager",
+          children: {
+            ADD_TOUR_GUIDE: {
+              key: "ADD_TOUR_GUIDE",
+              translationKey: "tourguide.add",
+              path: "/tourguide/add",
+              icon: "pi pi-plus-circle",
+              isShow: false,
+            },
+            EDIT_TOUR_GUIDE: {
+              key: "EDIT_TOUR_GUIDE",
+              translationKey: "tourguide.edit",
+              path: "/tourguide/edit/:id",
+              icon: "pi pi-pencil-circle",
+              isShow: false,
+            },
+            DETAIL_TOUR_GUIDE: {
+              key: "DETAIL_TOUR_GUIDE",
+              translationKey: "tourguide.detail",
+              path: "/tourguide/detail/:id",
+              icon: "pi pi-info-circle",
+              isShow: false,
+            },
+          },
+        },
+      },
+    },
 
     // Quản lý tour
     TOUR_MANAGER: {
@@ -157,6 +221,31 @@ export const ROUTES = {
               key: "DETAIL_BLOG",
               translationKey: "menu.detailBlog",
               path: "/blog/detail/:id",
+              isShow: false,
+            },
+          },
+        },
+        TRAVEL_HINT_MANAGER: {
+          key: "TRAVEL_HINT_MANAGER",
+          translationKey: "menu.travelHintManager",
+          path: "/travel-hint-manager",
+          children: {
+            ADD_TRAVEL_HINT: {
+              key: "ADD_TRAVEL_HINT",
+              translationKey: "menu.addTravelHint",
+              path: "/travel-hint/add",
+              isShow: false,
+            },
+            EDIT_TRAVEL_HINT: {
+              key: "EDIT_TRAVEL_HINT",
+              translationKey: "menu.editTravelHint",
+              path: "/travel-hint/edit/:id",
+              isShow: false,
+            },
+            DETAIL_TRAVEL_HINT: {
+              key: "DETAIL_TRAVEL_HINT",
+              translationKey: "menu.detailTravelHint",
+              path: "/travel-hint/detail/:id",
               isShow: false,
             },
           },

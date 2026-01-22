@@ -15,41 +15,46 @@ import TableCustom, {
   type TableColumn,
 } from "@/components/ui/TableCustom";
 import type { PaginationDto } from "@/dto";
-import type { NewDto, NewFilterDto } from "@/dto/new.dto";
+import type { CustomerDto, CustomerFilterDto } from "@/dto/customer.dto";
 import {
-  useActivateNew,
-  useDeactivateNew,
-  usePaginationNew,
-} from "@/hooks/new";
+  useActivateCustomer,
+  useDeactivateCustomer,
+  usePaginationCustomer,
+} from "@/hooks/customer";
 
 import { useRouter } from "@/routers/hooks";
 import { PrimeIcons } from "primereact/api";
 import { useRef, useState } from "react";
 
-export const initFilter: NewFilterDto = {
-  titleVI: "",
-  titleEN: "",
-  status: "",
-  type: "",
+export const initFilter: CustomerFilterDto = {
+  code: "",
+  name: "",
+  phone: "",
+  isDeleted: undefined,
 };
 
-export default function NewManager() {
+export default function CustomerManager() {
   const router = useRouter();
-  const [filter, setFilter] = useState<NewFilterDto>(initFilter);
-  const [pagination, setPagination] = useState<PaginationDto<NewFilterDto>>({
+  const [filter, setFilter] = useState<CustomerFilterDto>(initFilter);
+  const [pagination, setPagination] = useState<
+    PaginationDto<CustomerFilterDto>
+  >({
     skip: 0,
     take: 10,
     where: initFilter,
   });
-  const [selectedRows, setSelectedRows] = useState<NewDto[]>([]);
-  const [selectedNew, setSelectedNew] = useState<NewDto | null>(null);
+  const [selectedRows, setSelectedRows] = useState<CustomerDto[]>([]);
+  const [selectedCustomer, setSelectedCustomer] = useState<CustomerDto | null>(
+    null,
+  );
   const activateConfirmRef = useRef<ActionConfirmRef>(null);
   const deactivateConfirmRef = useRef<ActionConfirmRef>(null);
 
-  const { data, isLoading, refetch, total } = usePaginationNew(pagination);
-  const { onDeactivateNew, isLoading: isLoadingDeactivate } =
-    useDeactivateNew();
-  const { onActivateNew, isLoading: isLoadingActivate } = useActivateNew();
+  const { data, isLoading, refetch, total } = usePaginationCustomer(pagination);
+  const { onDeactivateCustomer, isLoading: isLoadingDeactivate } =
+    useDeactivateCustomer();
+  const { onActivateCustomer, isLoading: isLoadingActivate } =
+    useActivateCustomer();
 
   const handleSearch = (isReset?: boolean) => {
     setPagination((prev) => ({
@@ -61,7 +66,7 @@ export default function NewManager() {
   };
 
   const handleFiltersChange = (newFilters: Record<string, any>) => {
-    setFilter(newFilters as NewFilterDto);
+    setFilter(newFilters as CustomerFilterDto);
   };
 
   const handlePageChange = (page: number, pageSize: number) => {
@@ -73,56 +78,46 @@ export default function NewManager() {
   };
 
   const handleActivate = async () => {
-    if (!selectedNew) return;
-    await onActivateNew(selectedNew.id);
+    if (!selectedCustomer) return;
+    await onActivateCustomer(selectedCustomer.id);
     await refetch();
-    setSelectedNew(null);
+    setSelectedCustomer(null);
   };
 
   const handleDeactivate = async () => {
-    if (!selectedNew) return;
-    await onDeactivateNew(selectedNew.id);
+    if (!selectedCustomer) return;
+    await onDeactivateCustomer(selectedCustomer.id);
     await refetch();
-    setSelectedNew(null);
+    setSelectedCustomer(null);
   };
 
   const handleCreate = () => {
     router.push(
-      ROUTES.MAIN.NEW_MANAGER.children.NEW_LIST.children.ADD_NEW.path,
+      ROUTES.MAIN.USER_MANAGER.children.CUSTOMER_MANAGER.children.ADD_CUSTOMER
+        .path,
     );
   };
 
   const filterFields: FilterField[] = [
     {
-      key: "titleVI",
-      label: "Tiêu đề tin tức",
+      key: "code",
+      label: "Mã khách hàng",
       type: "input",
-      placeholder: "Nhập tiêu đề tin tức",
+      placeholder: "Nhập mã khách hàng",
       col: 6,
     },
     {
-      key: "titleEn",
-      label: "Tiêu đề tin tức (English)",
+      key: "name",
+      label: "Tên khách hàng",
       type: "input",
-      placeholder: "Nhập tiêu đề tin tức (English)",
+      placeholder: "Nhập tên khách hàng",
       col: 6,
     },
     {
-      key: "status",
-      label: "Trạng thái",
+      key: "phone",
+      label: "Số điện thoại",
       type: "input",
-      placeholder: "Nhập trạng thái",
-      col: 6,
-    },
-    {
-      key: "type",
-      label: "Loại tin tức",
-      type: "select",
-      placeholder: "Nhập loại tin tức",
-      options: Object.values(enumData.NEW_TYPE || {}).map((item: any) => ({
-        label: item.name,
-        value: item.code,
-      })),
+      placeholder: "Nhập số điện thoại",
       col: 6,
     },
     {
@@ -137,41 +132,44 @@ export default function NewManager() {
     },
   ];
 
-  const columns: TableColumn<NewDto>[] = [
+  const columns: TableColumn<CustomerDto>[] = [
     {
-      field: "url",
-      header: "Đường dẫn tin tức",
+      field: "code",
+      header: "Mã khách hàng",
       width: 120,
       sortable: true,
       frozen: true,
     },
     {
-      field: "title",
-      header: "Tiêu đề tin tức",
+      field: "name",
+      header: "Tên khách hàng",
       width: 200,
       sortable: true,
     },
     {
-      field: "titleEn",
-      header: "Tiêu đề tin tức (English)",
+      field: "phone",
+      header: "Số điện thoại",
       width: 200,
       sortable: true,
     },
     {
-      field: "type",
-      header: "Loại tin tức",
+      field: "gender",
+      header: "Giới tính",
       width: 220,
       sortable: true,
-      body: (rowData: NewDto) =>
-        enumData.NEW_TYPE[rowData.type as keyof typeof enumData.NEW_TYPE]
-          ?.name || "",
+    },
+    {
+      field: "status",
+      header: "Trạng thái",
+      width: 220,
+      sortable: true,
     },
     {
       field: "isDeleted",
       header: "Hoạt động",
       width: 150,
       align: "center",
-      body: (rowData: NewDto) => (
+      body: (rowData: CustomerDto) => (
         <StatusTag
           severity={rowData.isDeleted ? "danger" : "success"}
           value={
@@ -184,7 +182,7 @@ export default function NewManager() {
     },
   ];
 
-  const rowActions: RowAction<NewDto>[] = [
+  const rowActions: RowAction<CustomerDto>[] = [
     {
       key: "view",
       icon: PrimeIcons.EYE,
@@ -192,7 +190,7 @@ export default function NewManager() {
       severity: "info",
       onClick: (record) =>
         router.push(
-          ROUTES.MAIN.NEW_MANAGER.children.NEW_LIST.children.DETAIL_NEW.path.replace(
+          ROUTES.MAIN.USER_MANAGER.children.CUSTOMER_MANAGER.children.DETAIL_CUSTOMER.path.replace(
             ":id",
             record.id,
           ),
@@ -206,7 +204,7 @@ export default function NewManager() {
       visible: (record) => !record.isDeleted,
       onClick: (record) => {
         router.push(
-          ROUTES.MAIN.NEW_MANAGER.children.NEW_LIST.children.EDIT_NEW.path.replace(
+          ROUTES.MAIN.USER_MANAGER.children.CUSTOMER_MANAGER.children.EDIT_CUSTOMER.path.replace(
             ":id",
             record.id,
           ),
@@ -220,7 +218,7 @@ export default function NewManager() {
       severity: "warning",
       visible: (record) => !record.isDeleted,
       onClick: (record) => {
-        setSelectedNew(record);
+        setSelectedCustomer(record);
         deactivateConfirmRef.current?.show();
       },
     },
@@ -231,7 +229,7 @@ export default function NewManager() {
       severity: "success",
       visible: (record) => record.isDeleted,
       onClick: (record) => {
-        setSelectedNew(record);
+        setSelectedCustomer(record);
         activateConfirmRef.current?.show();
       },
     },
@@ -247,7 +245,7 @@ export default function NewManager() {
         onClear={() => handleSearch(true)}
       />
 
-      <TableCustom<NewDto>
+      <TableCustom<CustomerDto>
         data={data || []}
         columns={columns}
         loading={isLoading || isLoadingActivate || isLoadingDeactivate}
@@ -258,7 +256,7 @@ export default function NewManager() {
         stripedRows={true}
         showGridlines={true}
         scrollable={true}
-        emptyText="Không tìm thấy tin tức nào"
+        emptyText="Không tìm thấy khách hàng nào"
         pagination={{
           current: Math.floor(pagination.skip / pagination.take) + 1,
           pageSize: pagination.take,
@@ -287,7 +285,7 @@ export default function NewManager() {
 
       <ActionConfirm
         ref={activateConfirmRef}
-        title="Xác nhận kích hoạt tin tức"
+        title="Xác nhận kích hoạt khách hàng"
         confirmText="Kích hoạt"
         cancelText="Hủy"
         onConfirm={handleActivate}
@@ -295,7 +293,7 @@ export default function NewManager() {
 
       <ActionConfirm
         ref={deactivateConfirmRef}
-        title="Xác nhận ngừng hoạt động tin tức"
+        title="Xác nhận ngừng hoạt động khách hàng"
         confirmText="Ngừng hoạt động"
         cancelText="Hủy"
         withReason={true}

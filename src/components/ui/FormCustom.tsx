@@ -24,6 +24,7 @@ export interface FormField {
     | "multiselect"
     | "textarea"
     | "richtext"
+    | "tab"
     | "file"
     | "switch"
     | "datepicker"
@@ -46,6 +47,7 @@ export interface FormField {
   options?: { id: string; name: string; value?: any; node?: any }[];
   col?: 6 | 8 | 12 | 24;
   gridColumn?: string;
+  tabFields?: FormField[][];
   fileType?: "image" | "document";
   optionLabel?: string;
   optionValue?: string;
@@ -121,7 +123,7 @@ const FormCustom = forwardRef<FormRef, FormCustomProps>(function FormCustom(
     gridColumns = 24,
     gap = "16px",
   },
-  ref
+  ref,
 ) {
   const { t } = useTranslation();
   const { renderField, getValues, setValues, resetFields, validateFields } =

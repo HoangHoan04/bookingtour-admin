@@ -227,8 +227,6 @@ export const useBlogSelectBox = () => {
   };
 };
 
-// ============ BLOG COMMENT HOOKS ============
-
 export const usePaginationBlogComment = (
   params: PaginationDto<BlogCommentFilterDto>,
 ) => {

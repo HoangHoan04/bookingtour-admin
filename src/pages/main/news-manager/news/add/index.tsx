@@ -25,34 +25,46 @@ function AddNewPage({
   const router = useRouter();
 
   const formFields = useMemo((): FormField[] => {
-    return [
+    const formFieldsVi: FormField[] = [
       {
         name: "titleVI",
-        label: "Tiêu đề tin tức (Tiếng Việt)",
+        label: "Tiêu đề tin tức (VI)",
         type: "input",
         required: true,
-        placeholder: "Nhập tiêu đề tin tức (Tiếng Việt)",
-      },
-      {
-        name: "titleEn",
-        label: "Tiêu đề tin tức (Tiếng Anh)",
-        type: "input",
-        placeholder: "Nhập tiêu đề tin tức (Tiếng Anh)",
+        placeholder: "Nhập tiêu đề tin tức (VI)",
+        maxLength: 255,
       },
       {
         name: "contentVI",
-        label: "Nội dung tin tức (Tiếng Việt)",
-        type: "textarea",
+        label: "Nội dung tin tức (VI)",
+        type: "richtext",
         required: true,
-        placeholder: "Nhập nội dung tin tức (Tiếng Việt)",
+        placeholder:
+          "Nhập nội dung tin tức (VI). Bạn có thể nhúng hình ảnh trực tiếp bằng cách nhấn vào nút hình ảnh trên thanh công cụ.",
       },
+    ];
+
+    const formFieldsEn: FormField[] = [
+      {
+        name: "titleEN",
+        label: "Tiêu đề tin tức (EN)",
+        type: "input",
+        required: true,
+        placeholder: "Nhập tiêu đề tin tức (EN)",
+        maxLength: 255,
+      },
+
       {
         name: "contentEN",
-        label: "Nội dung tin tức (Tiếng Anh)",
-        type: "textarea",
-        required: false,
-        placeholder: "Nhập nội dung tin tức (Tiếng Anh)",
+        label: "Nội dung tin tức (EN)",
+        type: "richtext",
+        required: true,
+        placeholder:
+          "Nhập nội dung tin tức (EN). Bạn có thể nhúng hình ảnh trực tiếp bằng cách nhấn vào nút hình ảnh trên thanh công cụ.",
       },
+    ];
+
+    return [
       {
         name: "url",
         label: "URL tin tức",
@@ -92,11 +104,19 @@ function AddNewPage({
         placeholder: "Nhập thứ tự tin tức",
       },
       {
-        name: "image",
+        name: "images",
         label: "Hình ảnh tin tức",
         type: "image",
         isSingle: true,
         required: false,
+        gridColumn: "span 3",
+      },
+      {
+        name: "tab_content",
+        label: "",
+        type: "tab",
+        placeholder: "",
+        tabFields: [formFieldsVi, formFieldsEn],
         gridColumn: "span 3",
       },
     ];

@@ -73,7 +73,7 @@ export const useCreateBanner = () => {
       });
       showToast({
         type: "success",
-        message: res.message || "Tạo khách hàng thành công",
+        message: res.message || "Tạo banner thành công",
         title: "Thành công",
         timeout: 3000,
       });
@@ -82,7 +82,7 @@ export const useCreateBanner = () => {
     onError: (error: any) => {
       showToast({
         type: "error",
-        message: error?.message || "Có lỗi xảy ra khi tạo khách hàng",
+        message: error?.message || "Có lỗi xảy ra khi tạo banner",
         title: "Lỗi",
         timeout: 3000,
       });
@@ -121,7 +121,7 @@ export const useUpdateBanner = () => {
       });
       showToast({
         type: "success",
-        message: res.message || "Cập nhật khách hàng thành công",
+        message: res.message || "Cập nhật banner thành công",
         title: "Thành công",
         timeout: 3000,
       });
@@ -130,7 +130,7 @@ export const useUpdateBanner = () => {
     onError: (error: any) => {
       showToast({
         type: "error",
-        message: error?.message || "Có lỗi xảy ra khi cập nhật khách hàng",
+        message: error?.message || "Có lỗi xảy ra khi cập nhật banner",
         title: "Lỗi",
         timeout: 3000,
       });
@@ -157,7 +157,7 @@ export const useActivateBanner = () => {
       });
       showToast({
         type: "success",
-        message: res.message || "Kích hoạt khách hàng thành công",
+        message: res.message || "Kích hoạt banner thành công",
         title: "Thành công",
         timeout: 3000,
       });
@@ -165,7 +165,7 @@ export const useActivateBanner = () => {
     onError: (error: any) => {
       showToast({
         type: "error",
-        message: error?.message || "Có lỗi xảy ra khi kích hoạt khách hàng",
+        message: error?.message || "Có lỗi xảy ra khi kích hoạt banner",
         title: "Lỗi",
         timeout: 3000,
       });
@@ -196,7 +196,7 @@ export const useDeactivateBanner = () => {
         });
         showToast({
           type: "success",
-          message: res.message || "Ngừng hoạt động khách hàng thành công",
+          message: res.message || "Ngừng hoạt động banner thành công",
           title: "Thành công",
           timeout: 3000,
         });
@@ -204,8 +204,7 @@ export const useDeactivateBanner = () => {
       onError: (error: any) => {
         showToast({
           type: "error",
-          message:
-            error?.message || "Có lỗi xảy ra khi ngừng hoạt động khách hàng",
+          message: error?.message || "Có lỗi xảy ra khi ngừng hoạt động banner",
           title: "Lỗi",
           timeout: 3000,
         });

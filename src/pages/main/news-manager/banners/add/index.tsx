@@ -25,7 +25,36 @@ function AddBannerPage({
   const router = useRouter();
 
   const formFields = useMemo((): FormField[] => {
+    const formFieldsVi: FormField[] = [
+      {
+        name: "title",
+        label: "Tiêu đề banner",
+        type: "input",
+        required: true,
+        placeholder: "Nhập tiêu đề banner",
+        maxLength: 255,
+      },
+    ];
+
+    const formFieldsEn: FormField[] = [
+      {
+        name: "titleEn",
+        label: "Tiêu đề banner (Tiếng anh)",
+        type: "input",
+        required: true,
+        placeholder: "Nhập tiêu đề banner (Tiếng anh)",
+        maxLength: 255,
+      },
+    ];
     return [
+      {
+        name: "tab_content",
+        label: "",
+        type: "tab",
+        placeholder: "",
+        tabFields: [formFieldsVi, formFieldsEn],
+        gridColumn: "span 3",
+      },
       {
         name: "url",
         label: "Đường dẫn banner",
@@ -33,19 +62,6 @@ function AddBannerPage({
         required: true,
         placeholder: "Nhập đường dẫn banner",
         disabled: isEdit,
-      },
-      {
-        name: "title",
-        label: "Tiêu đề banner",
-        type: "input",
-        required: true,
-        placeholder: "Nhập tiêu đề banner",
-      },
-      {
-        name: "titleEn",
-        label: "Tiêu đề banner (Tiếng Anh)",
-        type: "input",
-        placeholder: "Nhập tiêu đề banner (Tiếng Anh)",
       },
       {
         name: "displayOrder",
@@ -65,12 +81,7 @@ function AddBannerPage({
         })),
         placeholder: "Chọn loại banner",
       },
-      {
-        name: "isVisible",
-        label: "Hiển thị",
-        type: "checkbox",
-        placeholder: "Hiển thị banner",
-      },
+
       {
         name: "effectiveStartDate",
         label: "Ngày bắt đầu hiệu lực",
@@ -83,7 +94,11 @@ function AddBannerPage({
         type: "datepicker",
         placeholder: "Nhập ngày kết thúc hiệu lực",
       },
-
+      {
+        name: "isVisible",
+        label: "Hiển thị/Ẩn",
+        type: "checkbox",
+      },
       {
         name: "image",
         label: "Hình ảnh banner",

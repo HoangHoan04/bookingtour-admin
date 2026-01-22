@@ -14,8 +14,21 @@ import EditBannerPage from "@/pages/main/news-manager/banners/edit";
 import NewManager from "@/pages/main/news-manager/news";
 import AddNewPage from "@/pages/main/news-manager/news/add";
 import DetailNewPage from "@/pages/main/news-manager/news/detail";
+import EditNewPage from "@/pages/main/news-manager/news/edit";
+import TravelHintManager from "@/pages/main/news-manager/travel-hint";
+import AddTravelHintPage from "@/pages/main/news-manager/travel-hint/add";
+import DetailTravelHintPage from "@/pages/main/news-manager/travel-hint/detail";
+import EditTravelHintPage from "@/pages/main/news-manager/travel-hint/edit";
 import PermissionAssignmentPage from "@/pages/main/role-manager/perrmission-assign";
 import RoleManagerPage from "@/pages/main/role-manager/role";
+import CustomerManager from "@/pages/main/user-manager/customer-manager";
+import AddCustomerPage from "@/pages/main/user-manager/customer-manager/add";
+import DetailCustomerPage from "@/pages/main/user-manager/customer-manager/detail";
+import EditCustomerPage from "@/pages/main/user-manager/customer-manager/edit";
+import TourGuideManager from "@/pages/main/user-manager/tour-guide-manager";
+import AddTourGuidePage from "@/pages/main/user-manager/tour-guide-manager/add";
+import DetailTourGuidePage from "@/pages/main/user-manager/tour-guide-manager/detail";
+import EditTourGuidePage from "@/pages/main/user-manager/tour-guide-manager/edit";
 import NotFound from "@/pages/NotFound";
 import NotificationListPage from "@/pages/other/NotificationList";
 import { Route, Routes } from "react-router-dom";
@@ -108,7 +121,7 @@ export default function AppRoutes() {
             }
             element={
               <AuthGuard>
-                <EditBannerPage />
+                <EditNewPage />
               </AuthGuard>
             }
           />
@@ -120,6 +133,141 @@ export default function AppRoutes() {
             element={
               <AuthGuard>
                 <DetailNewPage />
+              </AuthGuard>
+            }
+          />
+
+          {/* Quản lý địa điểm gợi ý*/}
+          <Route
+            path={ROUTES.MAIN.NEW_MANAGER.children.TRAVEL_HINT_MANAGER.path}
+            element={
+              <AuthGuard>
+                <TravelHintManager />
+              </AuthGuard>
+            }
+          />
+          <Route
+            path={
+              ROUTES.MAIN.NEW_MANAGER.children.TRAVEL_HINT_MANAGER.children
+                .ADD_TRAVEL_HINT.path
+            }
+            element={
+              <AuthGuard>
+                <AddTravelHintPage />
+              </AuthGuard>
+            }
+          />
+
+          <Route
+            path={
+              ROUTES.MAIN.NEW_MANAGER.children.TRAVEL_HINT_MANAGER.children
+                .EDIT_TRAVEL_HINT.path
+            }
+            element={
+              <AuthGuard>
+                <EditTravelHintPage />
+              </AuthGuard>
+            }
+          />
+
+          <Route
+            path={
+              ROUTES.MAIN.NEW_MANAGER.children.TRAVEL_HINT_MANAGER.children
+                .DETAIL_TRAVEL_HINT.path
+            }
+            element={
+              <AuthGuard>
+                <DetailTravelHintPage />
+              </AuthGuard>
+            }
+          />
+
+          {/* Quản lý khách hàng */}
+          <Route
+            path={ROUTES.MAIN.USER_MANAGER.children.CUSTOMER_MANAGER.path}
+            element={
+              <AuthGuard>
+                <CustomerManager />
+              </AuthGuard>
+            }
+          />
+          <Route
+            path={
+              ROUTES.MAIN.USER_MANAGER.children.CUSTOMER_MANAGER.children
+                .ADD_CUSTOMER.path
+            }
+            element={
+              <AuthGuard>
+                <AddCustomerPage />
+              </AuthGuard>
+            }
+          />
+
+          <Route
+            path={
+              ROUTES.MAIN.USER_MANAGER.children.CUSTOMER_MANAGER.children
+                .EDIT_CUSTOMER.path
+            }
+            element={
+              <AuthGuard>
+                <EditCustomerPage />
+              </AuthGuard>
+            }
+          />
+
+          <Route
+            path={
+              ROUTES.MAIN.USER_MANAGER.children.CUSTOMER_MANAGER.children
+                .DETAIL_CUSTOMER.path
+            }
+            element={
+              <AuthGuard>
+                <DetailCustomerPage />
+              </AuthGuard>
+            }
+          />
+
+          {/* Quản lý hướng dẫn viên */}
+          <Route
+            path={ROUTES.MAIN.USER_MANAGER.children.TOUR_GUIDE_MANAGER.path}
+            element={
+              <AuthGuard>
+                <TourGuideManager />
+              </AuthGuard>
+            }
+          />
+          <Route
+            path={
+              ROUTES.MAIN.USER_MANAGER.children.TOUR_GUIDE_MANAGER.children
+                .ADD_TOUR_GUIDE.path
+            }
+            element={
+              <AuthGuard>
+                <AddTourGuidePage />
+              </AuthGuard>
+            }
+          />
+
+          <Route
+            path={
+              ROUTES.MAIN.USER_MANAGER.children.TOUR_GUIDE_MANAGER.children
+                .EDIT_TOUR_GUIDE.path
+            }
+            element={
+              <AuthGuard>
+                <EditTourGuidePage />
+              </AuthGuard>
+            }
+          />
+
+          <Route
+            path={
+              ROUTES.MAIN.USER_MANAGER.children.TOUR_GUIDE_MANAGER.children
+                .DETAIL_TOUR_GUIDE.path
+            }
+            element={
+              <AuthGuard>
+                <DetailTourGuidePage />
               </AuthGuard>
             }
           />

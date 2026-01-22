@@ -64,8 +64,9 @@ function AddBlogPage({
       {
         name: "tags",
         label: "Tags (phân cách bằng dấu phẩy)",
-        type: "input",
+        type: "multiselect",
         placeholder: "VD: du lịch, tour, nghỉ dưỡng",
+        options: [],
       },
       {
         name: "status",
@@ -109,12 +110,8 @@ function AddBlogPage({
   }, [isEdit]);
 
   const handleSubmit = (values: any) => {
-    // Convert tags string to array
     const submitData = {
       ...values,
-      tags: values.tags
-        ? values.tags.split(",").map((tag: string) => tag.trim())
-        : [],
     };
 
     if (isEdit && handleUpdate) {
@@ -128,21 +125,13 @@ function AddBlogPage({
     router.back();
   };
 
-  // Prepare init data for form
-  const preparedInitData = initData
-    ? {
-        ...initData,
-        tags: Array.isArray(initData.tags) ? initData.tags.join(", ") : "",
-      }
-    : undefined;
-
   return (
     <BaseView>
       <FormCustom
         title={title}
         showDivider={true}
         fields={formFields}
-        initialValues={preparedInitData}
+        initialValues={initData}
         loading={isLoading || isLoadingUpdate}
         onSubmit={handleSubmit}
         onCancel={goBack || onCancel}

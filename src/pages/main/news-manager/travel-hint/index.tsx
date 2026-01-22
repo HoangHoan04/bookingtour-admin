@@ -15,41 +15,46 @@ import TableCustom, {
   type TableColumn,
 } from "@/components/ui/TableCustom";
 import type { PaginationDto } from "@/dto";
-import type { NewDto, NewFilterDto } from "@/dto/new.dto";
+import type { TravelHintDto, TravelHintFilterDto } from "@/dto/travel-hint.dto";
 import {
-  useActivateNew,
-  useDeactivateNew,
-  usePaginationNew,
-} from "@/hooks/new";
+  useActivateTravelHint,
+  useDeactivateTravelHint,
+  usePaginationTravelHint,
+} from "@/hooks/travel-hint";
 
 import { useRouter } from "@/routers/hooks";
 import { PrimeIcons } from "primereact/api";
 import { useRef, useState } from "react";
 
-export const initFilter: NewFilterDto = {
-  titleVI: "",
-  titleEN: "",
-  status: "",
+export const initFilter: TravelHintFilterDto = {
+  locationName: "",
   type: "",
+  tags: [],
+  isDeleted: undefined,
 };
 
-export default function NewManager() {
+export default function TravelHintManager() {
   const router = useRouter();
-  const [filter, setFilter] = useState<NewFilterDto>(initFilter);
-  const [pagination, setPagination] = useState<PaginationDto<NewFilterDto>>({
+  const [filter, setFilter] = useState<TravelHintFilterDto>(initFilter);
+  const [pagination, setPagination] = useState<
+    PaginationDto<TravelHintFilterDto>
+  >({
     skip: 0,
     take: 10,
     where: initFilter,
   });
-  const [selectedRows, setSelectedRows] = useState<NewDto[]>([]);
-  const [selectedNew, setSelectedNew] = useState<NewDto | null>(null);
+  const [selectedRows, setSelectedRows] = useState<TravelHintDto[]>([]);
+  const [selectedTravelHint, setSelectedTravelHint] =
+    useState<TravelHintDto | null>(null);
   const activateConfirmRef = useRef<ActionConfirmRef>(null);
   const deactivateConfirmRef = useRef<ActionConfirmRef>(null);
 
-  const { data, isLoading, refetch, total } = usePaginationNew(pagination);
-  const { onDeactivateNew, isLoading: isLoadingDeactivate } =
-    useDeactivateNew();
-  const { onActivateNew, isLoading: isLoadingActivate } = useActivateNew();
+  const { data, isLoading, refetch, total } =
+    usePaginationTravelHint(pagination);
+  const { onDeactivateTravelHint, isLoading: isLoadingDeactivate } =
+    useDeactivateTravelHint();
+  const { onActivateTravelHint, isLoading: isLoadingActivate } =
+    useActivateTravelHint();
 
   const handleSearch = (isReset?: boolean) => {
     setPagination((prev) => ({
@@ -61,7 +66,7 @@ export default function NewManager() {
   };
 
   const handleFiltersChange = (newFilters: Record<string, any>) => {
-    setFilter(newFilters as NewFilterDto);
+    setFilter(newFilters as TravelHintFilterDto);
   };
 
   const handlePageChange = (page: number, pageSize: number) => {
@@ -73,56 +78,52 @@ export default function NewManager() {
   };
 
   const handleActivate = async () => {
-    if (!selectedNew) return;
-    await onActivateNew(selectedNew.id);
+    if (!selectedTravelHint) return;
+    await onActivateTravelHint(selectedTravelHint.id);
     await refetch();
-    setSelectedNew(null);
+    setSelectedTravelHint(null);
   };
 
   const handleDeactivate = async () => {
-    if (!selectedNew) return;
-    await onDeactivateNew(selectedNew.id);
+    if (!selectedTravelHint) return;
+    await onDeactivateTravelHint(selectedTravelHint.id);
     await refetch();
-    setSelectedNew(null);
+    setSelectedTravelHint(null);
   };
 
   const handleCreate = () => {
     router.push(
-      ROUTES.MAIN.NEW_MANAGER.children.NEW_LIST.children.ADD_NEW.path,
+      ROUTES.MAIN.NEW_MANAGER.children.TRAVEL_HINT_MANAGER.children
+        .ADD_TRAVEL_HINT.path,
     );
   };
 
   const filterFields: FilterField[] = [
     {
-      key: "titleVI",
-      label: "Tiêu đề tin tức",
+      key: "locationName",
+      label: "Tên địa điểm",
       type: "input",
-      placeholder: "Nhập tiêu đề tin tức",
+      placeholder: "Nhập tên địa điểm",
       col: 6,
     },
     {
-      key: "titleEn",
-      label: "Tiêu đề tin tức (English)",
-      type: "input",
-      placeholder: "Nhập tiêu đề tin tức (English)",
-      col: 6,
-    },
-    {
-      key: "status",
-      label: "Trạng thái",
-      type: "input",
-      placeholder: "Nhập trạng thái",
+      key: "tags",
+      label: "Thẻ",
+      type: "multiSelect",
+      placeholder: "Nhập thẻ",
       col: 6,
     },
     {
       key: "type",
-      label: "Loại tin tức",
+      label: "Loại banner",
       type: "select",
-      placeholder: "Nhập loại tin tức",
-      options: Object.values(enumData.NEW_TYPE || {}).map((item: any) => ({
-        label: item.name,
-        value: item.code,
-      })),
+      placeholder: "Nhập loại banner",
+      options: Object.values(enumData.TRAVEL_HINT_TYPE || {}).map(
+        (item: any) => ({
+          label: item.name,
+          value: item.code,
+        }),
+      ),
       col: 6,
     },
     {
@@ -137,41 +138,42 @@ export default function NewManager() {
     },
   ];
 
-  const columns: TableColumn<NewDto>[] = [
+  const columns: TableColumn<TravelHintDto>[] = [
     {
-      field: "url",
-      header: "Đường dẫn tin tức",
+      field: "month",
+      header: "Tháng đề xuất",
       width: 120,
       sortable: true,
       frozen: true,
     },
     {
-      field: "title",
-      header: "Tiêu đề tin tức",
-      width: 200,
-      sortable: true,
-    },
-    {
-      field: "titleEn",
-      header: "Tiêu đề tin tức (English)",
+      field: "locationName",
+      header: "Tên địa điểm",
       width: 200,
       sortable: true,
     },
     {
       field: "type",
-      header: "Loại tin tức",
+      header: "Loại địa điểm",
+      width: 200,
+      sortable: true,
+    },
+    {
+      field: "tags",
+      header: "Thẻ",
       width: 220,
       sortable: true,
-      body: (rowData: NewDto) =>
-        enumData.NEW_TYPE[rowData.type as keyof typeof enumData.NEW_TYPE]
-          ?.name || "",
+      body: (rowData: TravelHintDto) =>
+        enumData.TRAVEL_HINT_TYPE[
+          rowData.type as keyof typeof enumData.TRAVEL_HINT_TYPE
+        ]?.name || "",
     },
     {
       field: "isDeleted",
       header: "Hoạt động",
       width: 150,
       align: "center",
-      body: (rowData: NewDto) => (
+      body: (rowData: TravelHintDto) => (
         <StatusTag
           severity={rowData.isDeleted ? "danger" : "success"}
           value={
@@ -184,7 +186,7 @@ export default function NewManager() {
     },
   ];
 
-  const rowActions: RowAction<NewDto>[] = [
+  const rowActions: RowAction<TravelHintDto>[] = [
     {
       key: "view",
       icon: PrimeIcons.EYE,
@@ -192,7 +194,7 @@ export default function NewManager() {
       severity: "info",
       onClick: (record) =>
         router.push(
-          ROUTES.MAIN.NEW_MANAGER.children.NEW_LIST.children.DETAIL_NEW.path.replace(
+          ROUTES.MAIN.NEW_MANAGER.children.TRAVEL_HINT_MANAGER.children.DETAIL_TRAVEL_HINT.path.replace(
             ":id",
             record.id,
           ),
@@ -206,7 +208,7 @@ export default function NewManager() {
       visible: (record) => !record.isDeleted,
       onClick: (record) => {
         router.push(
-          ROUTES.MAIN.NEW_MANAGER.children.NEW_LIST.children.EDIT_NEW.path.replace(
+          ROUTES.MAIN.NEW_MANAGER.children.TRAVEL_HINT_MANAGER.children.EDIT_TRAVEL_HINT.path.replace(
             ":id",
             record.id,
           ),
@@ -220,7 +222,7 @@ export default function NewManager() {
       severity: "warning",
       visible: (record) => !record.isDeleted,
       onClick: (record) => {
-        setSelectedNew(record);
+        setSelectedTravelHint(record);
         deactivateConfirmRef.current?.show();
       },
     },
@@ -231,7 +233,7 @@ export default function NewManager() {
       severity: "success",
       visible: (record) => record.isDeleted,
       onClick: (record) => {
-        setSelectedNew(record);
+        setSelectedTravelHint(record);
         activateConfirmRef.current?.show();
       },
     },
@@ -247,7 +249,7 @@ export default function NewManager() {
         onClear={() => handleSearch(true)}
       />
 
-      <TableCustom<NewDto>
+      <TableCustom<TravelHintDto>
         data={data || []}
         columns={columns}
         loading={isLoading || isLoadingActivate || isLoadingDeactivate}
@@ -258,7 +260,7 @@ export default function NewManager() {
         stripedRows={true}
         showGridlines={true}
         scrollable={true}
-        emptyText="Không tìm thấy tin tức nào"
+        emptyText="Không tìm thấy địa điểm gợi ý nào"
         pagination={{
           current: Math.floor(pagination.skip / pagination.take) + 1,
           pageSize: pagination.take,
@@ -287,7 +289,7 @@ export default function NewManager() {
 
       <ActionConfirm
         ref={activateConfirmRef}
-        title="Xác nhận kích hoạt tin tức"
+        title="Xác nhận kích hoạt địa điểm gợi ý"
         confirmText="Kích hoạt"
         cancelText="Hủy"
         onConfirm={handleActivate}
@@ -295,7 +297,7 @@ export default function NewManager() {
 
       <ActionConfirm
         ref={deactivateConfirmRef}
-        title="Xác nhận ngừng hoạt động tin tức"
+        title="Xác nhận ngừng hoạt động địa điểm gợi ý"
         confirmText="Ngừng hoạt động"
         cancelText="Hủy"
         withReason={true}
