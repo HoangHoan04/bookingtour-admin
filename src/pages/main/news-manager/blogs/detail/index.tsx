@@ -70,7 +70,7 @@ export default function DetailBlogPage() {
 
   const handleArchive = async () => {
     if (!blog?.id) return;
-    
+
     await onArchiveBlog(blog.id);
     await refetch();
   };

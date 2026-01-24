@@ -109,7 +109,6 @@ export const enumData = {
     EVENT: { code: "EVENT", name: "Sự kiện" },
   },
 
-  // Trạng thái blog
   BLOG_STATUS: {
     NEW: { code: "NEW", name: "Mới tạo", color: "blue" },
     DRAFT: { code: "DRAFT", name: "Bản nháp", color: "orange" },

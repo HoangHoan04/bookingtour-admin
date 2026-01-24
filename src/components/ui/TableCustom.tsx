@@ -265,9 +265,9 @@ function TableCustom<T extends Record<string, any>>({
     if (!visibleActions.length) return null;
 
     const getGridCols = (count: number) => {
-      if (count <= 3) return count; // 1-3 actions: hiển thị trên 1 hàng
-      if (count <= 6) return 3; // 4-6 actions: 3 cột
-      return 4; // 7+ actions: 4 cột
+      if (count <= 3) return count;
+      if (count <= 6) return 3;
+      return 4;
     };
 
     const gridCols = getGridCols(visibleActions.length);
