@@ -126,16 +126,53 @@ export const ROUTES = {
             },
           },
         },
+        DESTINATION_MANAGER: {
+          key: "DESTINATION_MANAGER",
+          translationKey: "menu.destinationManager",
+          path: "/destination-manager",
+          children: {
+            ADD_DESTINATION: {
+              key: "ADD_DESTINATION",
+              translationKey: "menu.addDestination",
+              path: "/destination-manager/add",
+              isShow: false,
+            },
+            EDIT_DESTINATION: {
+              key: "EDIT_DESTINATION",
+              translationKey: "menu.editDestination",
+              path: "/destination-manager/edit/:id",
+              isShow: false,
+            },
+            DETAIL_DESTINATION: {
+              key: "DETAIL_DESTINATION",
+              translationKey: "menu.detailDestination",
+              path: "/destination-manager/detail/:id",
+              isShow: false,
+            },
+          },
+        },
         BOOKING_MANAGER: {
           key: "BOOKING_MANAGER",
           translationKey: "menu.bookingManager",
           path: "/booking-manager",
           children: {
-            BOOKING_LIST: {
-              key: "BOOKING_LIST",
-              translationKey: "menu.bookingList",
-              path: "/booking-manager/booking-list",
-              isShow: true,
+            ADD_BOOKING: {
+              key: "ADD_BOOKING",
+              translationKey: "menu.addBooking",
+              path: "/booking-manager/add",
+              isShow: false,
+            },
+            EDIT_BOOKING: {
+              key: "EDIT_BOOKING",
+              translationKey: "menu.editBooking",
+              path: "/booking-manager/edit/:id",
+              isShow: false,
+            },
+            DETAIL_BOOKING: {
+              key: "DETAIL_BOOKING",
+              translationKey: "menu.detailBooking",
+              path: "/booking-manager/detail/:id",
+              isShow: false,
             },
           },
         },

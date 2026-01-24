@@ -6,6 +6,7 @@ import { forwardRef, useImperativeHandle, useState } from "react";
 
 type ActionConfirmProps = {
   title: string;
+  message?: string;
   confirmText?: string;
   cancelText?: string;
   withReason?: boolean;
@@ -23,6 +24,7 @@ const ActionConfirm = forwardRef<ActionConfirmRef, ActionConfirmProps>(
   (
     {
       title,
+      message,
       confirmText,
       cancelText,
       withReason = false,
@@ -30,7 +32,7 @@ const ActionConfirm = forwardRef<ActionConfirmRef, ActionConfirmProps>(
       onConfirm,
       children,
     },
-    ref
+    ref,
   ) => {
     const { t } = useTranslation();
     const [visible, setVisible] = useState(false);
@@ -99,7 +101,9 @@ const ActionConfirm = forwardRef<ActionConfirmRef, ActionConfirmProps>(
           pt={{
             footer: { className: "p-3" },
           }}
+          blockScroll
         >
+          <div>{message}</div>
           {withReason && (
             <InputTextarea
               value={reason}
@@ -112,7 +116,7 @@ const ActionConfirm = forwardRef<ActionConfirmRef, ActionConfirmProps>(
         </Dialog>
       </>
     );
-  }
+  },
 );
 
 ActionConfirm.displayName = "ActionConfirm";

@@ -11,6 +11,10 @@ import BannerManager from "@/pages/main/news-manager/banners";
 import AddBannerPage from "@/pages/main/news-manager/banners/add";
 import DetailBannerPage from "@/pages/main/news-manager/banners/detail";
 import EditBannerPage from "@/pages/main/news-manager/banners/edit";
+import BlogManager from "@/pages/main/news-manager/blogs";
+import AddBlogPage from "@/pages/main/news-manager/blogs/add";
+import DetailBlogPage from "@/pages/main/news-manager/blogs/detail";
+import EditBlogPage from "@/pages/main/news-manager/blogs/edit";
 import NewManager from "@/pages/main/news-manager/news";
 import AddNewPage from "@/pages/main/news-manager/news/add";
 import DetailNewPage from "@/pages/main/news-manager/news/detail";
@@ -21,6 +25,10 @@ import DetailTravelHintPage from "@/pages/main/news-manager/travel-hint/detail";
 import EditTravelHintPage from "@/pages/main/news-manager/travel-hint/edit";
 import PermissionAssignmentPage from "@/pages/main/role-manager/perrmission-assign";
 import RoleManagerPage from "@/pages/main/role-manager/role";
+import DestinationManager from "@/pages/main/tour-manager/destinations";
+import AddDestinationPage from "@/pages/main/tour-manager/destinations/add";
+import DetailDestinationPage from "@/pages/main/tour-manager/destinations/detail";
+import EditDestinationPage from "@/pages/main/tour-manager/destinations/edit";
 import CustomerManager from "@/pages/main/user-manager/customer-manager";
 import AddCustomerPage from "@/pages/main/user-manager/customer-manager/add";
 import DetailCustomerPage from "@/pages/main/user-manager/customer-manager/detail";
@@ -137,6 +145,51 @@ export default function AppRoutes() {
             }
           />
 
+          {/* Quản lý bài viết*/}
+          <Route
+            path={ROUTES.MAIN.NEW_MANAGER.children.BLOG_MANAGER.path}
+            element={
+              <AuthGuard>
+                <BlogManager />
+              </AuthGuard>
+            }
+          />
+          <Route
+            path={
+              ROUTES.MAIN.NEW_MANAGER.children.BLOG_MANAGER.children.ADD_BLOG
+                .path
+            }
+            element={
+              <AuthGuard>
+                <AddBlogPage />
+              </AuthGuard>
+            }
+          />
+
+          <Route
+            path={
+              ROUTES.MAIN.NEW_MANAGER.children.BLOG_MANAGER.children.EDIT_BLOG
+                .path
+            }
+            element={
+              <AuthGuard>
+                <EditBlogPage />
+              </AuthGuard>
+            }
+          />
+
+          <Route
+            path={
+              ROUTES.MAIN.NEW_MANAGER.children.BLOG_MANAGER.children.DETAIL_BLOG
+                .path
+            }
+            element={
+              <AuthGuard>
+                <DetailBlogPage />
+              </AuthGuard>
+            }
+          />
+
           {/* Quản lý địa điểm gợi ý*/}
           <Route
             path={ROUTES.MAIN.NEW_MANAGER.children.TRAVEL_HINT_MANAGER.path}
@@ -178,6 +231,51 @@ export default function AppRoutes() {
             element={
               <AuthGuard>
                 <DetailTravelHintPage />
+              </AuthGuard>
+            }
+          />
+
+          {/* Quản lý điểm đến*/}
+          <Route
+            path={ROUTES.MAIN.TOUR_MANAGER.children.DESTINATION_MANAGER.path}
+            element={
+              <AuthGuard>
+                <DestinationManager />
+              </AuthGuard>
+            }
+          />
+          <Route
+            path={
+              ROUTES.MAIN.TOUR_MANAGER.children.DESTINATION_MANAGER.children
+                .ADD_DESTINATION.path
+            }
+            element={
+              <AuthGuard>
+                <AddDestinationPage />
+              </AuthGuard>
+            }
+          />
+
+          <Route
+            path={
+              ROUTES.MAIN.TOUR_MANAGER.children.DESTINATION_MANAGER.children
+                .EDIT_DESTINATION.path
+            }
+            element={
+              <AuthGuard>
+                <EditDestinationPage />
+              </AuthGuard>
+            }
+          />
+
+          <Route
+            path={
+              ROUTES.MAIN.TOUR_MANAGER.children.DESTINATION_MANAGER.children
+                .DETAIL_DESTINATION.path
+            }
+            element={
+              <AuthGuard>
+                <DetailDestinationPage />
               </AuthGuard>
             }
           />

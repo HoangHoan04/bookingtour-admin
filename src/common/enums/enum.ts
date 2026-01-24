@@ -109,11 +109,13 @@ export const enumData = {
     EVENT: { code: "EVENT", name: "Sự kiện" },
   },
 
+  // Trạng thái blog
   BLOG_STATUS: {
-    DRAFT: { code: "draft", name: "Bản nháp" },
-    PUBLISHED: { code: "published", name: "Đã xuất bản" },
-    SCHEDULED: { code: "scheduled", name: "Đã lên lịch" },
-    ARCHIVED: { code: "archived", name: "Đã lưu trữ" },
+    NEW: { code: "NEW", name: "Mới tạo", color: "blue" },
+    DRAFT: { code: "DRAFT", name: "Bản nháp", color: "orange" },
+    PUBLISHED: { code: "PUBLISHED", name: "Đã xuất bản", color: "green" },
+    ARCHIVED: { code: "ARCHIVED", name: "Lưu trữ", color: "gray" },
+    REJECT: { code: "REJECT", name: "Từ chối xuất bản", color: "red" },
   },
 
   BLOG_COMMENT_STATUS: {

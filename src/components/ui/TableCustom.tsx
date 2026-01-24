@@ -47,10 +47,10 @@ export interface TableColumn<T = any> {
   currencySymbol?: string;
   numberFormat?: Intl.NumberFormatOptions;
   badgeSeverity?: (
-    value: any
+    value: any,
   ) => "success" | "info" | "warning" | "danger" | "secondary";
   tagSeverity?: (
-    value: any
+    value: any,
   ) => "success" | "info" | "warning" | "danger" | "secondary";
   renderBoolean?: (value: boolean) => ReactNode;
   renderEmpty?: () => ReactNode;
@@ -60,7 +60,7 @@ export interface TableColumn<T = any> {
 export interface RowAction<T = any> {
   key: string;
   label?: string;
-  icon?: string;
+  icon?: ReactNode;
   tooltip?: string;
   severity?: "secondary" | "success" | "info" | "warning" | "danger" | "help";
   outlined?: boolean;
@@ -138,7 +138,6 @@ function TableCustom<T extends Record<string, any>>({
   onSelectionChange,
   selectionMode = "multiple",
   rowActions = [],
-  rowActionsWidth = "140px",
   rowActionsStyle,
   rowActionsFrozen = true,
   toolbar,
@@ -160,7 +159,7 @@ function TableCustom<T extends Record<string, any>>({
   const { t } = useTranslation();
 
   const [first, setFirst] = useState(
-    pagination ? (pagination.current - 1) * pagination.pageSize : 0
+    pagination ? (pagination.current - 1) * pagination.pageSize : 0,
   );
   const [rows, setRows] = useState(pagination?.pageSize || 10);
 
@@ -181,22 +180,22 @@ function TableCustom<T extends Record<string, any>>({
     action.visible === undefined
       ? true
       : typeof action.visible === "function"
-      ? action.visible(rowData)
-      : action.visible;
+        ? action.visible(rowData)
+        : action.visible;
 
   const isActionDisabled = (action: RowAction<T>, rowData: T) =>
     action.disabled === undefined
       ? false
       : typeof action.disabled === "function"
-      ? action.disabled(rowData)
-      : action.disabled;
+        ? action.disabled(rowData)
+        : action.disabled;
 
   const isActionLoading = (action: RowAction<T>, rowData: T) =>
     action.loading === undefined
       ? false
       : typeof action.loading === "function"
-      ? action.loading(rowData)
-      : action.loading;
+        ? action.loading(rowData)
+        : action.loading;
 
   const formatters = {
     date: (value: any, format?: string) => {
@@ -223,8 +222,8 @@ function TableCustom<T extends Record<string, any>>({
     badge: (
       value: any,
       getSeverity?: (
-        value: any
-      ) => "success" | "info" | "warning" | "danger" | "secondary"
+        value: any,
+      ) => "success" | "info" | "warning" | "danger" | "secondary",
     ) => {
       if (!value) return "-";
       const severity = getSeverity ? getSeverity(value) : "info";
@@ -261,12 +260,26 @@ function TableCustom<T extends Record<string, any>>({
 
   const actionBodyTemplate = (rowData: T, options: ColumnBodyOptions) => {
     const visibleActions = rowActions.filter((action) =>
-      isActionVisible(action, rowData)
+      isActionVisible(action, rowData),
     );
     if (!visibleActions.length) return null;
 
+    const getGridCols = (count: number) => {
+      if (count <= 3) return count; // 1-3 actions: hiển thị trên 1 hàng
+      if (count <= 6) return 3; // 4-6 actions: 3 cột
+      return 4; // 7+ actions: 4 cột
+    };
+
+    const gridCols = getGridCols(visibleActions.length);
+
     return (
-      <div className="flex gap-1.5 justify-center items-center">
+      <div
+        className="inline-grid gap-1"
+        style={{
+          gridTemplateColumns: `repeat(${gridCols}, 30px)`,
+          justifyContent: "center",
+        }}
+      >
         {visibleActions.map((action, index) => {
           const disabled = isActionDisabled(action, rowData);
           const loadingState = isActionLoading(action, rowData);
@@ -309,7 +322,7 @@ function TableCustom<T extends Record<string, any>>({
                 width: 30,
                 height: 30,
                 minWidth: 30,
-                padding: "2px 6px",
+                padding: "2px",
                 fontSize: 16,
                 cursor: disabled ? "not-allowed" : "pointer",
                 border: `2px solid ${mainColor}`,
@@ -327,16 +340,15 @@ function TableCustom<T extends Record<string, any>>({
       </div>
     );
   };
-
   const getToolbarStyle = () => {
     const justifyClass =
       toolbar?.align === "left"
         ? "justify-start"
         : toolbar?.align === "center"
-        ? "justify-center"
-        : toolbar?.align === "right"
-        ? "justify-end"
-        : "justify-between";
+          ? "justify-center"
+          : toolbar?.align === "right"
+            ? "justify-end"
+            : "justify-between";
     return justifyClass;
   };
 
@@ -502,17 +514,37 @@ function TableCustom<T extends Record<string, any>>({
                 header={t("common.table.actions")}
                 body={actionBodyTemplate}
                 style={{
-                  width: rowActionsWidth,
+                  width: (() => {
+                    const maxActions = Math.max(
+                      ...data.map(
+                        (row) =>
+                          rowActions.filter((action) =>
+                            isActionVisible(action, row),
+                          ).length,
+                      ),
+                      1,
+                    );
+                    if (maxActions <= 3) {
+                      const cols = maxActions;
+                      return `${cols * 30 + (cols - 1) * 4 + 32}px`;
+                    }
+                    if (maxActions <= 6) {
+                      const cols = 3;
+                      return `${cols * 30 + (cols - 1) * 4 + 32}px`;
+                    }
+                    const cols = 4;
+                    return `${cols * 30 + (cols - 1) * 4 + 32}px`;
+                  })(),
                   fontSize: 14,
-                  padding: 8,
                   textAlign: "center",
+                  padding: "8px 16px",
                   ...rowActionsStyle,
                 }}
                 headerStyle={{
                   fontSize: 14,
                   fontWeight: 600,
-                  padding: "12px 16px",
                   textAlign: "center",
+                  padding: "12px 16px",
                 }}
                 frozen={rowActionsFrozen}
                 alignFrozen="right"

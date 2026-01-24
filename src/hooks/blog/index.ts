@@ -95,6 +95,7 @@ export const useCreateBlog = () => {
 
   return { onCreateBlog: createBlog, isLoading: isPending, refetch };
 };
+
 export const useUpdateBlog = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -137,6 +138,7 @@ export const useUpdateBlog = () => {
 
   return { onUpdateBlog: updateBlog, isLoading: isPending };
 };
+
 export const useActivateBlog = () => {
   const queryClient = useQueryClient();
   const { showToast } = useToast();
@@ -175,6 +177,7 @@ export const useActivateBlog = () => {
     isLoading,
   };
 };
+
 export const useDeactivateBlog = () => {
   const queryClient = useQueryClient();
   const { showToast } = useToast();
@@ -213,6 +216,7 @@ export const useDeactivateBlog = () => {
     onDeactivateBlog,
   };
 };
+
 export const useBlogSelectBox = () => {
   const { data, isLoading, error } = useQuery<BlogDto[]>({
     queryKey: [API_ENDPOINTS.BLOG.SELECT_BOX],
@@ -342,6 +346,318 @@ export const useRestoreBlogComment = () => {
 
   return {
     onRestoreBlogComment,
+    isLoading,
+  };
+};
+
+export const usePublishBlog = () => {
+  const queryClient = useQueryClient();
+  const { showToast } = useToast();
+
+  const { mutateAsync: onPublishBlog, isPending: isLoading } = useMutation({
+    mutationFn: (id: string) =>
+      rootApiService.post(API_ENDPOINTS.BLOG.PUBLISH_BLOG, {
+        id,
+      }) as Promise<SuccessResponse>,
+    onSuccess: (res: SuccessResponse) => {
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.BLOG.PAGINATION],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.BLOG.SELECT_BOX],
+      });
+      showToast({
+        type: "success",
+        message: res.message || "Xuất bản bài viết thành công",
+        title: "Thành công",
+        timeout: 3000,
+      });
+    },
+    onError: (error: any) => {
+      showToast({
+        type: "error",
+        message: error?.message || "Có lỗi xảy ra khi xuất bản bài viết",
+        title: "Lỗi",
+        timeout: 3000,
+      });
+    },
+  });
+
+  return {
+    onPublishBlog,
+    isLoading,
+  };
+};
+
+export const useDraftBlog = () => {
+  const queryClient = useQueryClient();
+  const { showToast } = useToast();
+
+  const { mutateAsync: onDraftBlog, isPending: isLoading } = useMutation({
+    mutationFn: (id: string) =>
+      rootApiService.post(API_ENDPOINTS.BLOG.DRAFT_BLOG, {
+        id,
+      }) as Promise<SuccessResponse>,
+    onSuccess: (res: SuccessResponse) => {
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.BLOG.PAGINATION],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.BLOG.SELECT_BOX],
+      });
+      showToast({
+        type: "success",
+        message: res.message || "Chuyển bài viết sang bản nháp thành công",
+        title: "Thành công",
+        timeout: 3000,
+      });
+    },
+    onError: (error: any) => {
+      showToast({
+        type: "error",
+        message: error?.message || "Có lỗi xảy ra khi chuyển sang bản nháp",
+        title: "Lỗi",
+        timeout: 3000,
+      });
+    },
+  });
+
+  return {
+    onDraftBlog,
+    isLoading,
+  };
+};
+
+export const useRejectBlog = () => {
+  const queryClient = useQueryClient();
+  const { showToast } = useToast();
+
+  const { mutateAsync: onRejectBlog, isPending: isLoading } = useMutation({
+    mutationFn: (data: { id: string; reason?: string }) =>
+      rootApiService.post(
+        API_ENDPOINTS.BLOG.REJECT_BLOG,
+        data,
+      ) as Promise<SuccessResponse>,
+    onSuccess: (res: SuccessResponse) => {
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.BLOG.PAGINATION],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.BLOG.SELECT_BOX],
+      });
+      showToast({
+        type: "success",
+        message: res.message || "Từ chối xuất bản bài viết thành công",
+        title: "Thành công",
+        timeout: 3000,
+      });
+    },
+    onError: (error: any) => {
+      showToast({
+        type: "error",
+        message: error?.message || "Có lỗi xảy ra khi từ chối bài viết",
+        title: "Lỗi",
+        timeout: 3000,
+      });
+    },
+  });
+
+  return {
+    onRejectBlog,
+    isLoading,
+  };
+};
+
+export const useArchiveBlog = () => {
+  const queryClient = useQueryClient();
+  const { showToast } = useToast();
+
+  const { mutateAsync: onArchiveBlog, isPending: isLoading } = useMutation({
+    mutationFn: (id: string) =>
+      rootApiService.post(API_ENDPOINTS.BLOG.ARCHIVE_BLOG, {
+        id,
+      }) as Promise<SuccessResponse>,
+    onSuccess: (res: SuccessResponse) => {
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.BLOG.PAGINATION],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.BLOG.SELECT_BOX],
+      });
+      showToast({
+        type: "success",
+        message: res.message || "Lưu trữ bài viết thành công",
+        title: "Thành công",
+        timeout: 3000,
+      });
+    },
+    onError: (error: any) => {
+      showToast({
+        type: "error",
+        message: error?.message || "Có lỗi xảy ra khi lưu trữ bài viết",
+        title: "Lỗi",
+        timeout: 3000,
+      });
+    },
+  });
+
+  return {
+    onArchiveBlog,
+    isLoading,
+  };
+};
+
+export const useUnarchiveBlog = () => {
+  const queryClient = useQueryClient();
+  const { showToast } = useToast();
+
+  const { mutateAsync: onUnarchiveBlog, isPending: isLoading } = useMutation({
+    mutationFn: (id: string) =>
+      rootApiService.post(API_ENDPOINTS.BLOG.UNARCHIVE_BLOG, {
+        id,
+      }) as Promise<SuccessResponse>,
+    onSuccess: (res: SuccessResponse) => {
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.BLOG.PAGINATION],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.BLOG.SELECT_BOX],
+      });
+      showToast({
+        type: "success",
+        message: res.message || "Khôi phục bài viết từ lưu trữ thành công",
+        title: "Thành công",
+        timeout: 3000,
+      });
+    },
+    onError: (error: any) => {
+      showToast({
+        type: "error",
+        message: error?.message || "Có lỗi xảy ra khi khôi phục bài viết",
+        title: "Lỗi",
+        timeout: 3000,
+      });
+    },
+  });
+
+  return {
+    onUnarchiveBlog,
+    isLoading,
+  };
+};
+
+export const useChangeBlogStatus = () => {
+  const queryClient = useQueryClient();
+  const { showToast } = useToast();
+
+  const { mutateAsync: onChangeBlogStatus, isPending: isLoading } = useMutation(
+    {
+      mutationFn: (data: { id: string; status: string; reason?: string }) =>
+        rootApiService.post(
+          API_ENDPOINTS.BLOG.CHANGE_STATUS_BLOG,
+          data,
+        ) as Promise<SuccessResponse>,
+      onSuccess: (res: SuccessResponse) => {
+        queryClient.invalidateQueries({
+          queryKey: [API_ENDPOINTS.BLOG.PAGINATION],
+        });
+        queryClient.invalidateQueries({
+          queryKey: [API_ENDPOINTS.BLOG.SELECT_BOX],
+        });
+        showToast({
+          type: "success",
+          message: res.message || "Thay đổi trạng thái bài viết thành công",
+          title: "Thành công",
+          timeout: 3000,
+        });
+      },
+      onError: (error: any) => {
+        showToast({
+          type: "error",
+          message: error?.message || "Có lỗi xảy ra khi thay đổi trạng thái",
+          title: "Lỗi",
+          timeout: 3000,
+        });
+      },
+    },
+  );
+
+  return {
+    onChangeBlogStatus,
+    isLoading,
+  };
+};
+
+export const useApproveBlogComment = () => {
+  const queryClient = useQueryClient();
+  const { showToast } = useToast();
+
+  const { mutateAsync: onApproveBlogComment, isPending: isLoading } =
+    useMutation({
+      mutationFn: (id: string) =>
+        rootApiService.post(API_ENDPOINTS.BLOG.APPROVE_BLOG_COMMENT, {
+          id,
+        }) as Promise<SuccessResponse>,
+      onSuccess: (res: SuccessResponse) => {
+        queryClient.invalidateQueries({
+          queryKey: [API_ENDPOINTS.BLOG.PAGINATION_BLOG_COMMENT],
+        });
+        showToast({
+          type: "success",
+          message: res.message || "Duyệt bình luận thành công",
+          title: "Thành công",
+          timeout: 3000,
+        });
+      },
+      onError: (error: any) => {
+        showToast({
+          type: "error",
+          message: error?.message || "Có lỗi xảy ra khi duyệt bình luận",
+          title: "Lỗi",
+          timeout: 3000,
+        });
+      },
+    });
+
+  return {
+    onApproveBlogComment,
+    isLoading,
+  };
+};
+
+export const useRejectBlogComment = () => {
+  const queryClient = useQueryClient();
+  const { showToast } = useToast();
+
+  const { mutateAsync: onRejectBlogComment, isPending: isLoading } =
+    useMutation({
+      mutationFn: (id: string) =>
+        rootApiService.post(API_ENDPOINTS.BLOG.REJECT_BLOG_COMMENT, {
+          id,
+        }) as Promise<SuccessResponse>,
+      onSuccess: (res: SuccessResponse) => {
+        queryClient.invalidateQueries({
+          queryKey: [API_ENDPOINTS.BLOG.PAGINATION_BLOG_COMMENT],
+        });
+        showToast({
+          type: "success",
+          message: res.message || "Từ chối bình luận thành công",
+          title: "Thành công",
+          timeout: 3000,
+        });
+      },
+      onError: (error: any) => {
+        showToast({
+          type: "error",
+          message: error?.message || "Có lỗi xảy ra khi từ chối bình luận",
+          title: "Lỗi",
+          timeout: 3000,
+        });
+      },
+    });
+
+  return {
+    onRejectBlogComment,
     isLoading,
   };
 };
