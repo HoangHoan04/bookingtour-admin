@@ -2,21 +2,9 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 import { defineConfig } from "vite";
-import { nodePolyfills } from "vite-plugin-node-polyfills";
 
 export default defineConfig({
-  plugins: [
-    nodePolyfills({
-      globals: {
-        Buffer: true,
-        global: true,
-        process: true,
-      },
-      protocolImports: true,
-    }),
-    react(),
-    tailwindcss(),
-  ],
+  plugins: [react(), tailwindcss()],
   server: {
     port: 3005,
     strictPort: true,
@@ -27,6 +15,6 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    include: ["simple-peer", "buffer", "process"],
+    include: ["simple-peer"],
   },
 });
