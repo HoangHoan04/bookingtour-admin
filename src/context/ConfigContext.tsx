@@ -116,8 +116,8 @@ export const ConfigProvider: React.FC<{
   useEffect(() => {
     if (!settings.autoLogout || !onAutoLogout) return;
 
-    let timeout: NodeJS.Timeout;
-    let warningTimeout: NodeJS.Timeout;
+    let timeout: ReturnType<typeof setTimeout>;
+    let warningTimeout: ReturnType<typeof setTimeout>;
 
     const resetTimer = () => {
       clearTimeout(timeout);

@@ -23,9 +23,10 @@ import { Tag } from "primereact/tag";
 import { useState } from "react";
 
 const initFilter: NotificationFilterDto = {
-  type: "",
-  priority: "",
-  status: "",
+  priority: "normal",
+  notificationType: "system",
+  isRead: false,
+  relatedEntity: "booking",
 };
 
 const NotificationListPage = () => {
@@ -160,10 +161,10 @@ const NotificationListPage = () => {
           rowData.priority === "urgent"
             ? "danger"
             : rowData.priority === "high"
-            ? "warning"
-            : rowData.priority === "low"
-            ? "secondary"
-            : "info";
+              ? "warning"
+              : rowData.priority === "low"
+                ? "secondary"
+                : "info";
         return <Tag value={rowData.priority} severity={severity as any} />;
       },
     },

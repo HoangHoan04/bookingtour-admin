@@ -10,16 +10,16 @@ export const usePermission = () => {
       if (!user?.permissions?.length) return false;
       return user.permissions.includes(requiredPermission);
     },
-    [user]
+    [user],
   );
 
   const hasAnyPermission = useCallback(
     (requiredPermissions: string[]) => {
       if (user?.isAdmin) return true;
       if (!user?.permissions?.length) return false;
-      return requiredPermissions.some((p) => user.permissions.includes(p));
+      return requiredPermissions.some((p) => user.permissions!.includes(p));
     },
-    [user]
+    [user],
   );
 
   return { hasPermission, hasAnyPermission };

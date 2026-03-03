@@ -26,6 +26,7 @@ export default defineConfig([
       "@typescript-eslint/no-unused-vars": "off",
       "react-refresh/only-export-components": "off",
       "react-hooks/rules-of-hooks": "off",
+      "@typescript-eslint/ban-ts-comment": "off",
     },
   },
 ]);

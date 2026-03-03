@@ -1,3 +1,3 @@
 export default function EmployeeAssignmentPage() {
-  return;
+  return <div></div>;
 }

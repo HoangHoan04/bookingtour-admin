@@ -1,6 +1,10 @@
 import { useToast } from "@/context/ToastContext";
-import type { PageResponse, PaginationDto, SuccessResponse } from "@/dto";
-import type { EmployeeDto } from "@/dto/employee.dto";
+import type {
+  EmployeeDto,
+  PageResponse,
+  PaginationDto,
+  SuccessResponse,
+} from "@/dto";
 import type {
   CreateRoleDto,
   RoleDto,
@@ -69,7 +73,7 @@ export const useCreateRole = () => {
     mutationFn: (body: CreateRoleDto) =>
       rootApiService.post(
         API_ENDPOINTS.ROLE.CREATE,
-        body
+        body,
       ) as Promise<SuccessResponse>,
     onSuccess: (res) => {
       queryClient.invalidateQueries({
@@ -95,7 +99,7 @@ export const useUpdateRole = () => {
     mutationFn: (body: UpdateRoleDto) =>
       rootApiService.post(
         API_ENDPOINTS.ROLE.UPDATE,
-        body
+        body,
       ) as Promise<SuccessResponse>,
     onSuccess: (res) => {
       queryClient.invalidateQueries({
@@ -157,7 +161,7 @@ export const useAssignPermissions = () => {
     mutationFn: (body: { roleId: string; permissionIds: string[] }) =>
       rootApiService.post(
         API_ENDPOINTS.ROLE.ASSIGN_PERMISSIONS,
-        body
+        body,
       ) as Promise<SuccessResponse>,
     onSuccess: (res) => {
       queryClient.invalidateQueries({

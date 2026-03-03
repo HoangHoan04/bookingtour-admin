@@ -1,3 +1,4 @@
+import Notification from "@/components/layout/Notification";
 import { useAuth } from "@/context/AuthContext";
 import { useTheme } from "@/context/ThemeContext";
 import { useTranslation } from "@/context/TranslationContext";
@@ -110,7 +111,7 @@ const AppNavbar: FC<AppNavbarProps> = ({
 
         <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
           <FullScreen />
-          {/* {showNotification && <Notification />} */}
+          {showNotification && <Notification />}
 
           <Button
             icon="pi pi-cog"

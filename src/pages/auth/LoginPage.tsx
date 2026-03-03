@@ -34,12 +34,12 @@ export default function LoginPage() {
       />
 
       <div className="hero-section flex-1 flex flex-col justify-center items-center p-8">
-        <div className="max-w-[600px] w-full text-center">
+        <div className="max-w-150 w-full text-center">
           <div className="logo-icon mb-4">
             <i className="pi pi-building"></i>
           </div>
 
-          <div className="max-w-[400px] mx-auto">
+          <div className="max-w-100 mx-auto">
             <Lottie animationData={login} loop />
           </div>
 
@@ -47,7 +47,7 @@ export default function LoginPage() {
             <h1 className="hero-title mb-4">
               {t("login.hero_title", { year: 2025 })}
             </h1>
-            <p className="hero-description max-w-[500px] mx-auto">
+            <p className="hero-description max-w-125 mx-auto">
               {t("login.hero_description")}
             </p>
           </div>
