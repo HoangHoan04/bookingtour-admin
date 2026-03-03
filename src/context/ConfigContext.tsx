@@ -116,8 +116,8 @@ export const ConfigProvider: React.FC<{
   useEffect(() => {
     if (!settings.autoLogout || !onAutoLogout) return;
 
-    let timeout: ReturnType<typeof setTimeout>;
-    let warningTimeout: ReturnType<typeof setTimeout>;
+    let timeout: number;
+    let warningTimeout: number;
 
     const resetTimer = () => {
       clearTimeout(timeout);
@@ -134,7 +134,7 @@ export const ConfigProvider: React.FC<{
               {
                 body: "Bạn sẽ bị đăng xuất sau 30 giây do không hoạt động",
                 icon: "/favicon.ico",
-              }
+              },
             );
 
             notification.onclick = () => {
