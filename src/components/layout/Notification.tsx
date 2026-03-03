@@ -118,7 +118,7 @@ const Notification: FC = () => {
                   onClick={() =>
                     handleNotificationClick(
                       notification.id,
-                      notification.isRead
+                      notification.isRead,
                     )
                   }
                   className={`flex gap-3 p-3 rounded-lg cursor-pointer transition-all group ${
@@ -129,7 +129,7 @@ const Notification: FC = () => {
                 >
                   <div className="shrink-0 mt-1">
                     <i
-                      className={`${getIconByType(notification.type)} text-xl`}
+                      className={`${getIconByType(notification.type ?? notification.notificationType)} text-xl`}
                     />
                   </div>
                   <div className="flex-1 min-w-0">
@@ -149,7 +149,9 @@ const Notification: FC = () => {
                     </div>
                     <p className="text-sm m-0 mb-1  ">{notification.content}</p>
                     <span className="text-xs block mt-1">
-                      {formatTimeAgo(notification.publishDate)}
+                      {formatTimeAgo(
+                        notification.publishDate ?? notification.createdAt,
+                      )}
                     </span>
                   </div>
                 </div>

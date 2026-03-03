@@ -8,7 +8,7 @@ export const usePermission = () => {
       if (!requiredPermission) return true;
       if (user?.isAdmin) return true;
       if (!user?.permissions?.length) return false;
-      return user.permissions.includes(requiredPermission);
+      return user?.permissions?.includes(requiredPermission) ?? false;
     },
     [user],
   );
@@ -17,7 +17,7 @@ export const usePermission = () => {
     (requiredPermissions: string[]) => {
       if (user?.isAdmin) return true;
       if (!user?.permissions?.length) return false;
-      return requiredPermissions.some((p) => user.permissions!.includes(p));
+      return requiredPermissions.some((p) => user?.permissions?.includes(p));
     },
     [user],
   );
