@@ -15,13 +15,13 @@
     }
   ],
   "env": {
-    "VITE_API_BASE_URL": "https://api.himlamtourist.xyz",
-    "VITE_APP_ENV": "production"
+    "VITE_API_BASE_URL": "https://dev-api.himlamtourist.xyz",
+    "VITE_APP_ENV": "development"
   },
   "build": {
     "env": {
-      "VITE_API_BASE_URL": "https://api.himlamtourist.xyz",
-      "VITE_APP_ENV": "production"
+      "VITE_API_BASE_URL": "https://dev-api.himlamtourist.xyz",
+      "VITE_APP_ENV": "development"
     }
   }
 }
