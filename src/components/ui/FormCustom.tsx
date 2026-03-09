@@ -45,7 +45,7 @@ export interface FormField {
   placeholder?: string;
   maxLength?: number;
   options?: { id: string; name: string; value?: any; node?: any }[];
-  col?: 6 | 8 | 12 | 24;
+  col?: 4 | 6 | 8 | 12 | 24;
   gridColumn?: string;
   tabFields?: FormField[][];
   fileType?: "image" | "document";
@@ -143,7 +143,7 @@ const FormCustom = forwardRef<FormRef, FormCustomProps>(function FormCustom(
     onSubmit?.(values);
   };
 
-  const getGridColumnSpan = (col?: 6 | 8 | 12 | 24) => {
+  const getGridColumnSpan = (col?: 4 | 6 | 8 | 12 | 24) => {
     if (!col) return "span 1";
     return `span ${col}`;
   };
