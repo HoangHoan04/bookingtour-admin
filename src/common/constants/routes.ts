@@ -113,14 +113,14 @@ export const ROUTES = {
             EDIT_TOUR: {
               key: "EDIT_TOUR",
               translationKey: "tour.edit",
-              path: "/tour/edit",
+              path: "/tour/edit/:id",
               icon: "pi pi-pencil-circle",
               isShow: false,
             },
             DETAIL_TOUR: {
               key: "DETAIL_TOUR",
               translationKey: "tour.detail",
-              path: "/tour/detail",
+              path: "/tour/detail/:id",
               icon: "pi pi-info-circle",
               isShow: false,
             },

@@ -1,8 +1,8 @@
 import { error } from "@/assets/animations";
+import { ROUTES } from "@/common/constants/routes";
 import Lottie from "lottie-react";
 import type { JSX } from "react";
 import { Link } from "react-router-dom";
-import { ROUTES } from "../common/constants/routes";
 
 export default function NotFound(): JSX.Element {
   return (
