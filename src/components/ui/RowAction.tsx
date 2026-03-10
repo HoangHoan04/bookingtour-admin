@@ -1,4 +1,3 @@
-import { useTranslation } from "@/context/TranslationContext";
 import { Button } from "primereact/button";
 import { Menu } from "primereact/menu";
 import { OverlayPanel } from "primereact/overlaypanel";
@@ -91,7 +90,6 @@ const RowActions = ({
   gap = "small",
   fullWidth = false,
 }: RowActionsProps) => {
-  const { t } = useTranslation();
   const overlayRefs = useRef<Record<string, OverlayPanel | null>>({});
   const fileInputRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
@@ -146,7 +144,7 @@ const RowActions = ({
 
   const handleFileChange = (
     event: React.ChangeEvent<HTMLInputElement>,
-    onFileSelect?: (file: File) => void
+    onFileSelect?: (file: File) => void,
   ) => {
     const file = event.target.files?.[0];
     if (file && onFileSelect) {
@@ -171,12 +169,12 @@ const RowActions = ({
   const renderSubActionsMenu = (action: ActionButton) => {
     if (!action.subActions || action.subActions.length === 0) return null;
     const visibleSubActions = action.subActions.filter(
-      (sub) => sub.visible !== false
+      (sub) => sub.visible !== false,
     );
     if (visibleSubActions.length === 0) return null;
 
     const menuItems = visibleSubActions.map((subAction) => ({
-      label: t(subAction.label),
+      label: subAction.label,
       icon: subAction.icon,
       disabled: subAction.disabled,
       className: subAction.className,
@@ -232,7 +230,7 @@ const RowActions = ({
 
     const button = (
       <Button
-        label={action.label ? t(action.label) : undefined}
+        label={action.label}
         icon={action.icon}
         outlined={action.outlined}
         text={action.text}
@@ -262,7 +260,7 @@ const RowActions = ({
             ? (e) => overlayRefs.current[action.key]?.toggle(e)
             : action.onClick
         }
-        data-pr-tooltip={action.tooltip ? t(action.tooltip) : undefined}
+        data-pr-tooltip={action.tooltip || ""}
         data-pr-position={tooltipPosition}
       />
     );

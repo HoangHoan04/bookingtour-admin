@@ -1,7 +1,6 @@
 import { useAuth } from "@/context/AuthContext";
 import { useTheme } from "@/context/ThemeContext";
 import { useToast } from "@/context/ToastContext";
-import { useTranslation } from "@/context/TranslationContext";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
 import { Divider } from "primereact/divider";
@@ -21,18 +20,17 @@ export default function LoginForm() {
   const { login } = useAuth();
   const { showToast } = useToast();
   const { theme } = useTheme();
-  const { t } = useTranslation();
 
   const validateForm = () => {
     const newErrors = { username: "", password: "" };
     let isValid = true;
 
     if (!username.trim()) {
-      newErrors.username = t("login.errors.usernameRequired");
+      newErrors.username = "Vui lòng nhập tên đăng nhập";
       isValid = false;
     }
     if (!password.trim()) {
-      newErrors.password = t("login.errors.passwordRequired");
+      newErrors.password = "Vui lòng nhập mật khẩu";
       isValid = false;
     }
 
@@ -49,15 +47,15 @@ export default function LoginForm() {
       await login({ username, password });
       showToast({
         type: "success",
-        title: t("toast.successTitle"),
-        message: t("login.toast.successMessage"),
+        title: "Thành công",
+        message: "Đăng nhập thành công",
       });
     } catch (error: any) {
       const errorMessage =
-        error?.response?.data?.message || t("login.toast.errorMessage");
+        error?.response?.data?.message || "Đăng nhập thất bại";
       showToast({
         type: "error",
-        title: t("login.toast.errorTitle"),
+        title: "Lỗi",
         message: errorMessage,
       });
     } finally {
@@ -67,21 +65,21 @@ export default function LoginForm() {
 
   return (
     <Card
-      title={<h2 className="card-title">{t("login.title")}</h2>}
+      title={<h2 className="card-title">Đăng nhập</h2>}
       className="login-card"
       data-theme={theme}
     >
       <form onSubmit={handleSubmit} className="w-full">
         <div className="mb-6">
           <label htmlFor="username" className="form-label">
-            {t("login.username")} <span className="required">*</span>
+            Tên đăng nhập <span className="required">*</span>
           </label>
           <input
             id="username"
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            placeholder={t("login.usernamePlaceholder")}
+            placeholder="Nhập tên đăng nhập"
             className={`form-input ${errors.username ? "error" : ""}`}
           />
           {errors.username && (
@@ -91,7 +89,7 @@ export default function LoginForm() {
 
         <div className="mb-6">
           <label htmlFor="password" className="form-label">
-            {t("login.password")} <span className="required">*</span>
+            Mật khẩu <span className="required">*</span>
           </label>
           <div className="relative flex items-center">
             <input
@@ -99,7 +97,7 @@ export default function LoginForm() {
               type={showPassword ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder={t("login.passwordPlaceholder")}
+              placeholder="Nhập mật khẩu"
               className={`form-input with-icon ${
                 errors.password ? "error" : ""
               }`}
@@ -120,7 +118,7 @@ export default function LoginForm() {
 
         <Button
           type="submit"
-          label={t("login.submitButton")}
+          label="Đăng nhập"
           icon="pi pi-sign-in"
           loading={isSubmitting}
           disabled={isSubmitting}

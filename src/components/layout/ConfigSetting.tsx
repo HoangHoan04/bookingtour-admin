@@ -51,7 +51,7 @@ const ConfigSetting: FC<ConfigSettingProps> = ({ visible, onHide }) => {
 
   const handleFooterSettingChange = (
     key: keyof typeof footerSettings,
-    value: any
+    value: any,
   ) => {
     updateFooterSettings({ ...footerSettings, [key]: value });
   };
@@ -96,7 +96,7 @@ const ConfigSetting: FC<ConfigSettingProps> = ({ visible, onHide }) => {
       visible={visible}
       onHide={onHide}
       position={settings.settingsPanelPosition || "right"}
-      className={`w-full sm:w-[500px]! md:w-[600px]! transition-all duration-300 ${
+      className={`w-full sm:w-125! md:w-150! transition-all duration-300 ${
         isDark ? "bg-[#1a1a1a]" : "bg-white"
       }`}
       header={
@@ -311,7 +311,7 @@ const ConfigSetting: FC<ConfigSettingProps> = ({ visible, onHide }) => {
             <div className="space-y-2">
               <SmoothSlider
                 label={`Độ rộng Sidebar (${settings.sidebarWidth} ${t(
-                  "settings.pixels_unit"
+                  "settings.pixels_unit",
                 )})`}
                 value={settings.sidebarWidth || 270}
                 unit={t("settings.pixels_unit")}

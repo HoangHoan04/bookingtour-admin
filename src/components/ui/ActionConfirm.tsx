@@ -1,4 +1,3 @@
-import { useTranslation } from "@/context/TranslationContext";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { InputTextarea } from "primereact/inputtextarea";
@@ -34,7 +33,6 @@ const ActionConfirm = forwardRef<ActionConfirmRef, ActionConfirmProps>(
     },
     ref,
   ) => {
-    const { t } = useTranslation();
     const [visible, setVisible] = useState(false);
     const [reason, setReason] = useState("");
     const [loading, setLoading] = useState(false);
@@ -65,7 +63,7 @@ const ActionConfirm = forwardRef<ActionConfirmRef, ActionConfirmProps>(
     const footer = (
       <div className="flex justify-end gap-2 mt-5">
         <Button
-          label={cancelText || t("action.cancel")}
+          label={cancelText || "Hủy"}
           icon="pi pi-times-circle"
           className="p-button-danger"
           onClick={handleCancel}
@@ -75,7 +73,7 @@ const ActionConfirm = forwardRef<ActionConfirmRef, ActionConfirmProps>(
           }}
         />
         <Button
-          label={confirmText || t("action.confirm")}
+          label={confirmText || "Xác nhận"}
           onClick={handleOk}
           loading={loading}
           text
@@ -108,7 +106,7 @@ const ActionConfirm = forwardRef<ActionConfirmRef, ActionConfirmProps>(
             <InputTextarea
               value={reason}
               onChange={(e) => setReason(e.target.value)}
-              placeholder={t("actionConfirm.reasonPlaceholder")}
+              placeholder="Lý do"
               rows={3}
               className="w-full"
             />

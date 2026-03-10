@@ -1,7 +1,6 @@
 import { ROUTES } from "@/common/constants/routes";
 import { useConfig } from "@/context/ConfigContext";
 import { useTheme } from "@/context/ThemeContext";
-import { useTranslation } from "@/context/TranslationContext";
 import { usePermission } from "@/hooks/layout/usePermission";
 import { convertRoutesToMenuItems } from "@/utils/route.util";
 import { useEffect, useMemo, useState } from "react";
@@ -46,7 +45,6 @@ const getAllChildKeys = (item: MenuItem): string[] => {
 
 export default function AppSidebar({ collapsed }: AppSidebarProps) {
   const { theme } = useTheme();
-  const { t } = useTranslation();
   const { settings } = useConfig();
   const { hasPermission } = usePermission();
   const location = useLocation();
@@ -56,8 +54,8 @@ export default function AppSidebar({ collapsed }: AppSidebarProps) {
   const [hoveredKey, setHoveredKey] = useState<string | null>(null);
   const isDark = theme === "dark";
   const menuItems = useMemo(
-    () => convertRoutesToMenuItems(ROUTES.MAIN, hasPermission, t),
-    [hasPermission, t]
+    () => convertRoutesToMenuItems(ROUTES.MAIN, hasPermission),
+    [hasPermission],
   );
 
   useEffect(() => {
@@ -81,7 +79,7 @@ export default function AppSidebar({ collapsed }: AppSidebarProps) {
   const getParentKeys = (
     targetKey: string,
     items: MenuItem[],
-    parents: string[] = []
+    parents: string[] = [],
   ): string[] => {
     for (const item of items) {
       if (item.key === targetKey) {
@@ -143,7 +141,7 @@ export default function AppSidebar({ collapsed }: AppSidebarProps) {
         }`}
       >
         <div
-          className={`flex flex-col rounded-xl py-2 min-w-[220px] border shadow-2xl 
+          className={`flex flex-col rounded-xl py-2 min-w-55 border shadow-2xl 
           ${
             isDark
               ? "bg-[#262626] border-[#404040]"
@@ -172,8 +170,8 @@ export default function AppSidebar({ collapsed }: AppSidebarProps) {
                     checkIsActive(child, location.pathname)
                       ? "text-[#1890ff] bg-[#1890ff]/10 font-bold"
                       : isDark
-                      ? "text-gray-300 hover:text-[#1890ff] hover:bg-white/5"
-                      : "text-gray-700 hover:text-[#1890ff] hover:bg-black/5"
+                        ? "text-gray-300 hover:text-[#1890ff] hover:bg-white/5"
+                        : "text-gray-700 hover:text-[#1890ff] hover:bg-black/5"
                   }`}
                 >
                   {child.label}
@@ -213,8 +211,8 @@ export default function AppSidebar({ collapsed }: AppSidebarProps) {
                     ? "bg-[#1890ff]/15 text-[#1890ff] font-semibold"
                     : "bg-[#cfe8ff] text-[#1890ff] font-semibold"
                   : isDark
-                  ? "text-[#b0b0b0] hover:bg-[#1890ff]/10 hover:text-[#1890ff]"
-                  : "text-[#666] hover:bg-[#1890ff]/05 hover:text-[#1890ff]"
+                    ? "text-[#b0b0b0] hover:bg-[#1890ff]/10 hover:text-[#1890ff]"
+                    : "text-[#666] hover:bg-[#1890ff]/05 hover:text-[#1890ff]"
               }
             `}
             >
@@ -276,7 +274,7 @@ export default function AppSidebar({ collapsed }: AppSidebarProps) {
         }
       `}
     >
-      <div className="flex items-center justify-center h-[60px] p-4 shrink-0">
+      <div className="flex items-center justify-center h-15 p-4 shrink-0">
         <div
           className={`h-8 w-8 rounded-full transition-transform duration-300 hover:scale-110
             ${isDark ? "bg-white/10" : "bg-blue-500/20"}`}

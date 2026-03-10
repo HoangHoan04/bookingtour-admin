@@ -1,5 +1,4 @@
 import { useToast } from "@/context/ToastContext";
-import { useTranslation } from "@/context/TranslationContext";
 import { Button } from "primereact/button";
 import { Tooltip } from "primereact/tooltip";
 import { useEffect, useState } from "react";
@@ -8,7 +7,6 @@ import screenfull from "screenfull";
 const FullScreen = () => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const { showToast } = useToast();
-  const { t } = useTranslation();
 
   const handleChange = () => {
     setIsFullscreen(screenfull.isFullscreen);
@@ -18,8 +16,8 @@ const FullScreen = () => {
     if (!screenfull.isEnabled) {
       showToast({
         type: "warn",
-        title: t("fullscreen.toast.title"),
-        message: t("fullscreen.toast.notSupported"),
+        title: "Không hỗ trợ",
+        message: "Trình duyệt của bạn không hỗ trợ chế độ toàn màn hình",
         timeout: 2000,
       });
       return;
@@ -38,9 +36,7 @@ const FullScreen = () => {
     };
   }, []);
 
-  const title = isFullscreen
-    ? t("fullscreen.exitFullscreen")
-    : t("fullscreen.enterFullscreen");
+  const title = isFullscreen ? "Thoát toàn màn hình" : "Vào toàn màn hình";
 
   return (
     <>

@@ -1,6 +1,5 @@
 import { useTheme } from "@/context/ThemeContext";
 import { useToast } from "@/context/ToastContext";
-import { useTranslation } from "@/context/TranslationContext";
 import dayjs from "dayjs";
 import { Button } from "primereact/button";
 import { Calendar } from "primereact/calendar";
@@ -57,7 +56,6 @@ const FieldItem = memo(
     allValues,
   }: FieldItemProps) => {
     const { theme } = useTheme();
-    const { t } = useTranslation();
 
     const commonProps = {
       style: { width: "100%", ...(field.inputStyle || {}) },
@@ -120,7 +118,7 @@ const FieldItem = memo(
                 backgroundColor: theme === "dark" ? "#262626" : "#ffffff",
                 color: theme === "dark" ? "#ffffff" : "#000000",
               }}
-              placeholder={field.placeholder || t("form.phone_placeholder")}
+              placeholder={field.placeholder || "Số điện thoại"}
               disabled={field.disabled}
               enableSearch={true}
             />
@@ -174,10 +172,10 @@ const FieldItem = memo(
                       label: o.name,
                       value: o.value,
                     }))
-                  : [{ label: t("form.no_options"), value: "" }]
+                  : [{ label: "Không có lựa chọn", value: "" }]
               }
               onChange={(e) => onChange(field.name, e.value)}
-              placeholder={field.placeholder ?? t("form.no_options")}
+              placeholder={field.placeholder ?? "Không có lựa chọn"}
               {...commonProps}
             />
           </div>
@@ -211,8 +209,7 @@ const FieldItem = memo(
               dateFormat={field.dateFormat || "dd/mm/yy"}
               {...commonProps}
               placeholder={
-                field.rangePlaceholder?.join(" - ") ||
-                t("form.select_date_range")
+                field.rangePlaceholder?.join(" - ") || "Chọn khoảng ngày"
               }
             />
           </div>
@@ -295,7 +292,7 @@ const FieldItem = memo(
         return (
           <div ref={handleSetRef}>
             <Button
-              label={field.buttonText || field.label || t("form.action")}
+              label={field.buttonText || field.label || "Thực hiện"}
               icon="pi pi-check"
               onClick={() => field.onAction?.(getValues())}
             />
@@ -380,7 +377,6 @@ function useRenderFormCustom(
   initialValues: Record<string, any> = {},
   onChangeValue?: (allValues: any) => void,
 ) {
-  const { t } = useTranslation();
   const [values, setValues] = useState<Record<string, any>>(initialValues);
   const [errorField, setErrorField] = useState<string | null>(null);
   const fieldRefs = useRef<Record<string, any>>({});
@@ -463,8 +459,8 @@ function useRenderFormCustom(
       ) {
         showToast({
           type: "error",
-          title: t("common.error_title"),
-          message: t("validation.required_field", { label: field.label }),
+          title: "Lỗi",
+          message: "Trường này là bắt buộc",
         });
         setErrorField(field.name);
         return false;
@@ -474,8 +470,8 @@ function useRenderFormCustom(
         if (!validateEmail(val)) {
           showToast({
             type: "error",
-            title: t("common.error_title"),
-            message: t("validation.invalid_email"),
+            title: "Lỗi",
+            message: "Email không hợp lệ",
           });
           setErrorField(field.name);
           return false;
@@ -486,8 +482,8 @@ function useRenderFormCustom(
         if (val.length < 8) {
           showToast({
             type: "error",
-            title: t("common.error_title"),
-            message: t("validation.invalid_phone"),
+            title: "Lỗi",
+            message: "Số điện thoại không hợp lệ",
           });
           setErrorField(field.name);
           return false;
@@ -495,7 +491,7 @@ function useRenderFormCustom(
       }
     }
     return true;
-  }, [fields, values, showToast, t]);
+  }, [fields, values, showToast]);
 
   const renderField = useCallback(
     (field: FormField) => {
