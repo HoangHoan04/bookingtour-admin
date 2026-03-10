@@ -1,5 +1,4 @@
 import { useTheme } from "@/context/ThemeContext";
-import { useTranslation } from "@/context/TranslationContext";
 import { type FC } from "react";
 
 type AppFooterProps = {
@@ -16,13 +15,12 @@ const AppFooter: FC<AppFooterProps> = ({
   showCopyright = true,
 }) => {
   const { theme } = useTheme();
-  const { t } = useTranslation();
 
   if (!visible) return null;
 
   const isDark = theme === "dark";
   const currentYear = new Date().getFullYear();
-  const defaultContent = content || t("footer.systemName");
+  const defaultContent = content || "Hệ thống";
 
   return (
     <footer
@@ -65,13 +63,13 @@ const AppFooter: FC<AppFooterProps> = ({
             {showVersion && (
               <span className={`flex items-center gap-1 opacity-80`}>
                 <i className="pi pi-info-circle text-[#1890ff] text-[10px]"></i>
-                <span>{t("footer.version")}</span>
+                <span>Phiên bản 1.0.0</span>
               </span>
             )}
 
             {showCopyright && (
               <span className="opacity-80">
-                © {currentYear} {t("footer.copyright")}
+                © {currentYear} {defaultContent}
               </span>
             )}
           </div>

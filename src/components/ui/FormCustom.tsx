@@ -1,4 +1,3 @@
-import { useTranslation } from "@/context/TranslationContext";
 import type { Dayjs } from "dayjs";
 import { Button } from "primereact/button";
 import { Divider } from "primereact/divider";
@@ -125,7 +124,6 @@ const FormCustom = forwardRef<FormRef, FormCustomProps>(function FormCustom(
   },
   ref,
 ) {
-  const { t } = useTranslation();
   const { renderField, getValues, setValues, resetFields, validateFields } =
     useRenderFormCustom(fields, initialValues, onChangeValue);
 
@@ -186,7 +184,7 @@ const FormCustom = forwardRef<FormRef, FormCustomProps>(function FormCustom(
             <div className="flex justify-center gap-3">
               {onCancel && (
                 <Button
-                  label={cancelText || t("common.form.cancel")}
+                  label={cancelText || "Hủy"}
                   icon="pi pi-times-circle"
                   className="p-button-danger"
                   onClick={onCancel}
@@ -198,7 +196,7 @@ const FormCustom = forwardRef<FormRef, FormCustomProps>(function FormCustom(
               )}
               {onSubmit && (
                 <Button
-                  label={submitText || t("common.form.save")}
+                  label={submitText || "Lưu"}
                   icon="pi pi-save"
                   className="p-button-success rounded-2xl"
                   style={{

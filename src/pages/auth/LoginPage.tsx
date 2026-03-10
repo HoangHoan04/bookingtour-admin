@@ -2,14 +2,12 @@ import { login } from "@/assets/animations";
 import LoginForm from "@/components/auth/LoginForm";
 import ConfigSetting from "@/components/layout/ConfigSetting";
 import { useTheme } from "@/context/ThemeContext";
-import { useTranslation } from "@/context/TranslationContext";
 import Lottie from "lottie-react";
 import { Button } from "primereact/button";
 import { useState } from "react";
 
 export default function LoginPage() {
   const { theme } = useTheme();
-  const { t } = useTranslation();
   const [showSettings, setShowSettings] = useState(false);
 
   return (
@@ -23,7 +21,7 @@ export default function LoginPage() {
         text
         severity="secondary"
         onClick={() => setShowSettings(true)}
-        tooltip={t("login.settings_tooltip")}
+        tooltip="Cài đặt"
         tooltipOptions={{ position: "left" }}
         className="settings-btn"
       />
@@ -45,10 +43,12 @@ export default function LoginPage() {
 
           <div className="mt-8">
             <h1 className="hero-title mb-4">
-              {t("login.hero_title", { year: 2025 })}
+              Hệ thống đặt tour du lịch HIMLAMTOURIST
             </h1>
             <p className="hero-description max-w-125 mx-auto">
-              {t("login.hero_description")}
+              Chào mừng bạn đến với hệ thống quản lý đặt tour du lịch của chúng
+              tôi. Vui lòng đăng nhập để tiếp tục và trải nghiệm các tính năng
+              quản lý tour du lịch một cách dễ dàng và hiệu quả.
             </p>
           </div>
         </div>

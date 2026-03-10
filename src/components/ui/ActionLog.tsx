@@ -1,6 +1,5 @@
 import { enumData } from "@/common/enums/enum";
 import { formatDateTime } from "@/common/helpers/format";
-import { useTranslation } from "@/context/TranslationContext";
 import {
   type ActionLogDto,
   ActionType,
@@ -18,8 +17,6 @@ interface ActionLogProps {
 }
 
 function ActionLog({ functionType, functionId }: ActionLogProps) {
-  const { t } = useTranslation();
-
   const [paginationState, setPaginationState] = useState({
     pageIndex: enumData.PAGE.PAGEINDEX,
     pageSize: enumData.PAGE.PAGESIZE,
@@ -51,33 +48,28 @@ function ActionLog({ functionType, functionId }: ActionLogProps) {
     () => [
       {
         field: "createdAt",
-        header: t("actionLog.updatedDate"),
+        header: "Ngày tạo",
         body: (rowData: ActionLogDto) =>
           formatDateTime(rowData.createdAt, "DD/MM/YYYY HH:mm:ss"),
         style: { width: "160px" },
       },
       {
         field: "createdByName",
-        header: t("actionLog.updatedBy"),
+        header: "Người tạo",
         style: { width: "180px" },
       },
       {
         field: "createdByCode",
-        header: t("actionLog.employeeCode"),
+        header: "Mã nhân viên",
         style: { width: "120px" },
       },
       {
         field: "type",
-        header: t("actionLog.action"),
+        header: "Hành động",
         style: { width: "150px" },
         type: "tag",
         body: (rowData: ActionLogDto) => {
-          const actionTypeKey = `actionLog.${rowData.type}`;
-          return (
-            t(actionTypeKey) ||
-            (ActionType as any)[rowData.type] ||
-            rowData.type
-          );
+          return (ActionType as any)[rowData.type] || rowData.type;
         },
         tagSeverity: (val) => {
           const v = val?.toString().toUpperCase();
@@ -89,11 +81,11 @@ function ActionLog({ functionType, functionId }: ActionLogProps) {
       },
       {
         field: "description",
-        header: t("actionLog.description"),
+        header: "Mô tả",
         style: { minWidth: "300px" },
       },
     ],
-    [t]
+    [],
   );
 
   const paginationConfig = useMemo<PaginationConfig>(
@@ -103,7 +95,7 @@ function ActionLog({ functionType, functionId }: ActionLogProps) {
       pageSize: paginationState.pageSize,
       showSizeChanger: true,
     }),
-    [total, paginationState.pageIndex, paginationState.pageSize]
+    [total, paginationState.pageIndex, paginationState.pageSize],
   );
 
   const handlePageChange = (page: number, pageSize: number) => {

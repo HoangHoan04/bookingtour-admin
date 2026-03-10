@@ -1,4 +1,3 @@
-import { useTranslation } from "@/context/TranslationContext";
 import { Button } from "primereact/button";
 
 interface Document {
@@ -8,12 +7,10 @@ interface Document {
 }
 
 const DocumentList = ({ documents }: { documents: Document[] }) => {
-  const { t } = useTranslation();
-
   if (!documents || documents.length === 0) {
     return (
       <div className="text-gray-500 italic p-4 border border-dashed rounded-lg text-center">
-        {t("common.document.noDocuments")}
+        Không có tài liệu nào
       </div>
     );
   }
@@ -54,14 +51,14 @@ const DocumentList = ({ documents }: { documents: Document[] }) => {
           <div className="flex gap-2 shrink-0">
             <Button
               icon="pi pi-eye"
-              tooltip={t("common.document.view")}
+              tooltip="Xem"
               tooltipOptions={{ position: "top" }}
               className="p-button-rounded p-button-text p-button-info"
               onClick={() => handleView(doc.fileUrl)}
             />
             <Button
               icon="pi pi-download"
-              tooltip={t("common.document.download")}
+              tooltip="Tải xuống"
               tooltipOptions={{ position: "top" }}
               className="p-button-rounded p-button-text p-button-success"
               onClick={() => handleDownload(doc.fileUrl, doc.fileName)}
