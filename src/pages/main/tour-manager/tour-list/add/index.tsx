@@ -23,6 +23,10 @@ function AddTourPage({
   const { isLoading, onCreateTour } = useCreateTour();
   const router = useRouter();
 
+  type TourSubmitValues = Omit<TourDto, "tags"> & {
+    tags?: string | string[];
+  };
+
   const formFields = useMemo((): FormField[] => {
     return [
       {
@@ -119,11 +123,25 @@ function AddTourPage({
     ];
   }, []);
 
-  const handleSubmit = (values: TourDto) => {
+  const handleSubmit = (values: TourSubmitValues) => {
+    const parsedTags = Array.isArray(values?.tags)
+      ? values.tags
+      : typeof values?.tags === "string"
+        ? values.tags
+            .split(",")
+            .map((tag: string) => tag.trim())
+            .filter(Boolean)
+        : [];
+
+    const submitData: TourDto = {
+      ...values,
+      tags: parsedTags.length > 0 ? parsedTags : undefined,
+    };
+
     if (isEdit && handleUpdate) {
-      handleUpdate(values);
+      handleUpdate(submitData);
     } else {
-      onCreateTour(values);
+      onCreateTour(submitData);
     }
   };
 
