@@ -4,7 +4,6 @@ import AppLayout from "@/layout/AppLayout";
 import LoginPage from "@/pages/auth/LoginPage";
 import Dashboard from "@/pages/main/dashboard";
 
-import SettingLanguagePage from "@/pages/main/setting-system/setting-language";
 import SettingStringPage from "@/pages/main/setting-system/setting-string";
 
 import BannerManager from "@/pages/main/news-manager/banners";
@@ -418,16 +417,6 @@ export default function AppRoutes() {
             element={
               <AuthGuard requiredPermission="PERMISSION:ASSIGN">
                 <PermissionAssignmentPage />
-              </AuthGuard>
-            }
-          />
-
-          {/* Thiết lập ngôn ngữ */}
-          <Route
-            path={ROUTES.MAIN.SETTING_SYSTEM.children.SETTING_LANGUAGE.path}
-            element={
-              <AuthGuard requiredPermission="SETTING_LANGUAGE:VIEW">
-                <SettingLanguagePage />
               </AuthGuard>
             }
           />
