@@ -1,5 +1,4 @@
 import { useToast } from "@/context/ToastContext";
-import { useTranslation } from "@/context/TranslationContext";
 import { PageResponse, type PaginationDto, type SuccessResponse } from "@/dto";
 import type {
   CreateTranslationDto,
@@ -12,7 +11,7 @@ import { API_ENDPOINTS } from "@/services/endpoint";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const usePaginationTranslation = (
-  params: PaginationDto<TranslationFilterDto>
+  params: PaginationDto<TranslationFilterDto>,
 ) => {
   const { data, isLoading, refetch, error } = useQuery<
     PageResponse<TranslationDto>
@@ -41,7 +40,7 @@ export const useFindTranslationByKey = (key: string | undefined | null) => {
         API_ENDPOINTS.TRANSLATIONS.FIND_BY_KEY,
         {
           key,
-        }
+        },
       );
       return res as SuccessResponse<TranslationDto>;
     },
@@ -59,13 +58,12 @@ export const useFindTranslationByKey = (key: string | undefined | null) => {
 export const useCreateTranslation = () => {
   const queryClient = useQueryClient();
   const { showToast } = useToast();
-  const { t } = useTranslation();
 
   const { mutate: createTranslation, isPending } = useMutation({
     mutationFn: (body: CreateTranslationDto) =>
       rootApiService.post(
         API_ENDPOINTS.TRANSLATIONS.CREATE,
-        body
+        body,
       ) as Promise<SuccessResponse>,
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -73,8 +71,8 @@ export const useCreateTranslation = () => {
       });
       showToast({
         type: "success",
-        title: t("toast.successTitle"),
-        message: t("translation.create_success"),
+        title: "Thành công",
+        message: "Tạo bản dịch thành công",
       });
     },
   });
@@ -95,13 +93,12 @@ export const useCreateTranslation = () => {
 export const useUpdateTranslation = () => {
   const queryClient = useQueryClient();
   const { showToast } = useToast();
-  const { t } = useTranslation();
 
   const { mutate: updateTranslation, isPending } = useMutation({
     mutationFn: (data: UpdateTranslationDto) => {
       return rootApiService.post(
         API_ENDPOINTS.TRANSLATIONS.UPDATE,
-        data
+        data,
       ) as Promise<SuccessResponse>;
     },
     onSuccess: () => {
@@ -110,8 +107,8 @@ export const useUpdateTranslation = () => {
       });
       showToast({
         type: "success",
-        title: t("toast.successTitle"),
-        message: t("translation.update_success"),
+        title: "Thành công",
+        message: "Cập nhật bản dịch thành công",
       });
     },
   });
@@ -122,7 +119,6 @@ export const useUpdateTranslation = () => {
 export const useDeleteTranslation = () => {
   const { showToast } = useToast();
   const queryClient = useQueryClient();
-  const { t } = useTranslation();
 
   const { mutateAsync: onDeleteTranslation, isPending: isLoading } =
     useMutation({
@@ -136,8 +132,8 @@ export const useDeleteTranslation = () => {
         });
         showToast({
           type: "success",
-          title: t("toast.successTitle"),
-          message: t("translation.delete_success"),
+          title: "Thành công",
+          message: "Xóa bản dịch thành công",
         });
       },
     });

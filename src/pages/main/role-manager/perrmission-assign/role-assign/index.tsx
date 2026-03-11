@@ -1,7 +1,7 @@
 import FilterComponent, {
   type FilterField,
 } from "@/components/ui/FilterCustom";
-import type { EmployeeDto } from "@/dto/employee.dto";
+import type { EmployeeDto } from "@/dto";
 import {
   useEmployeesByRole,
   useRoleDetail,
@@ -31,7 +31,7 @@ export default function RoleAssignmentPage() {
 
   const { data: roles, isLoading: loadingRoles } = useRoleSelectBox();
   const { data: roleDetail, refetch: refetchRoleDetail } = useRoleDetail(
-    filters.roleId
+    filters.roleId,
   );
 
   const { getEmployees, isLoading: loadingEmps } = useEmployeesByRole();

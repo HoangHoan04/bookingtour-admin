@@ -1,4 +1,3 @@
-import { useTranslation } from "@/context/TranslationContext";
 import type { Dayjs } from "dayjs";
 import { Button } from "primereact/button";
 import { Divider } from "primereact/divider";
@@ -45,7 +44,7 @@ export interface FormField {
   placeholder?: string;
   maxLength?: number;
   options?: { id: string; name: string; value?: any; node?: any }[];
-  col?: 6 | 8 | 12 | 24;
+  col?: 4 | 6 | 8 | 12 | 24;
   gridColumn?: string;
   tabFields?: FormField[][];
   fileType?: "image" | "document";
@@ -125,7 +124,6 @@ const FormCustom = forwardRef<FormRef, FormCustomProps>(function FormCustom(
   },
   ref,
 ) {
-  const { t } = useTranslation();
   const { renderField, getValues, setValues, resetFields, validateFields } =
     useRenderFormCustom(fields, initialValues, onChangeValue);
 
@@ -143,7 +141,7 @@ const FormCustom = forwardRef<FormRef, FormCustomProps>(function FormCustom(
     onSubmit?.(values);
   };
 
-  const getGridColumnSpan = (col?: 6 | 8 | 12 | 24) => {
+  const getGridColumnSpan = (col?: 4 | 6 | 8 | 12 | 24) => {
     if (!col) return "span 1";
     return `span ${col}`;
   };
@@ -186,7 +184,7 @@ const FormCustom = forwardRef<FormRef, FormCustomProps>(function FormCustom(
             <div className="flex justify-center gap-3">
               {onCancel && (
                 <Button
-                  label={cancelText || t("common.form.cancel")}
+                  label={cancelText || "Hủy"}
                   icon="pi pi-times-circle"
                   className="p-button-danger"
                   onClick={onCancel}
@@ -198,7 +196,7 @@ const FormCustom = forwardRef<FormRef, FormCustomProps>(function FormCustom(
               )}
               {onSubmit && (
                 <Button
-                  label={submitText || t("common.form.save")}
+                  label={submitText || "Lưu"}
                   icon="pi pi-save"
                   className="p-button-success rounded-2xl"
                   style={{

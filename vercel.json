@@ -1,0 +1,27 @@
+{
+  "git": {
+    "deploymentEnabled": {
+      "main": true,
+      "develop": true
+    }
+  },
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
+  "env": {
+    "VITE_API_BASE_URL": "https://api.himlamtourist.xyz",
+    "VITE_APP_ENV": "production"
+  },
+  "build": {
+    "env": {
+      "VITE_API_BASE_URL": "https://api.himlamtourist.xyz",
+      "VITE_APP_ENV": "production"
+    }
+  }
+}

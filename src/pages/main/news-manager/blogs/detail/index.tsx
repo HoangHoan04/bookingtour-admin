@@ -49,7 +49,14 @@ export default function DetailBlogPage() {
 
   const handlePublish = async () => {
     if (!blog?.id) return;
-    if (isPublishing) return;
+    if (
+      isPublishing ||
+      isArchiving ||
+      isUnarchiving ||
+      isActivating ||
+      isDeactivating
+    )
+      return;
     await onPublishBlog(blog.id);
     await refetch();
   };
@@ -307,7 +314,7 @@ export default function DetailBlogPage() {
         <div className="mb-4">
           <h3 className="text-xl font-semibold mb-3">Nội dung bài viết</h3>
           <div
-            className="blog-content p-3 border-1 border-gray-300 border-round"
+            className="blog-content p-3 border border-gray-300 border-round"
             dangerouslySetInnerHTML={{ __html: blog.content || "" }}
           />
         </div>

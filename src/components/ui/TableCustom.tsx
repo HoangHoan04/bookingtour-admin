@@ -1,6 +1,5 @@
 import { empty } from "@/assets/animations";
 import { enumData } from "@/common/enums/enum";
-import { useTranslation } from "@/context/TranslationContext";
 import Lottie from "lottie-react";
 import { PrimeIcons } from "primereact/api";
 import { Button } from "primereact/button";
@@ -156,8 +155,6 @@ function TableCustom<T extends Record<string, any>>({
   style,
   tableStyle,
 }: DataTableProps<T>) {
-  const { t } = useTranslation();
-
   const [first, setFirst] = useState(
     pagination ? (pagination.current - 1) * pagination.pageSize : 0,
   );
@@ -215,9 +212,9 @@ function TableCustom<T extends Record<string, any>>({
       customRender ? (
         customRender(value)
       ) : value ? (
-        <Tag value={t("common.yes")} severity="success" />
+        <Tag value="Có" severity="success" />
       ) : (
-        <Tag value={t("common.no")} severity="danger" />
+        <Tag value="Không" severity="danger" />
       ),
     badge: (
       value: any,
@@ -315,7 +312,7 @@ function TableCustom<T extends Record<string, any>>({
                 e.stopPropagation();
                 action.onClick?.(rowData, options.rowIndex);
               }}
-              data-pr-tooltip={action.tooltip ? t(action.tooltip) : undefined}
+              data-pr-tooltip={action.tooltip || ""}
               data-pr-position={tooltipPosition}
               className="bg-transparent! hover:bg-black/5! shadow-none! action-button-tooltip"
               style={{
@@ -421,7 +418,7 @@ function TableCustom<T extends Record<string, any>>({
             {toolbar.showRefreshButton && (
               <Button
                 icon={PrimeIcons.REFRESH}
-                data-pr-tooltip={t("common.table.refresh")}
+                data-pr-tooltip="Làm mới"
                 data-pr-position="top"
                 severity="info"
                 outlined
@@ -511,7 +508,7 @@ function TableCustom<T extends Record<string, any>>({
             {rowActions.length > 0 && (
               <Column
                 key="actions"
-                header={t("common.table.actions")}
+                header="Thao tác"
                 body={actionBodyTemplate}
                 style={{
                   width: (() => {
@@ -558,14 +555,14 @@ function TableCustom<T extends Record<string, any>>({
             <Lottie animationData={empty} loop />
           </div>
           <span className="text-base font-medium ">
-            {emptyText || t("common.table.noData")}
+            {emptyText || "Không có dữ liệu"}
           </span>
         </div>
       )}
       {pagination && !loading && data.length > 0 && (
         <div className="flex mt-5 bg-inherit px-2 w-full">
           <Paginator
-            currentPageReportTemplate={t("common.table.pagination")}
+            currentPageReportTemplate="Phân trang"
             totalRecords={pagination.total}
             rows={rows}
             first={first}

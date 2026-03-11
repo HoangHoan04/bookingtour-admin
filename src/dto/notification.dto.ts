@@ -33,6 +33,8 @@ export interface NotificationItem {
     email?: string;
     avatar?: string;
   };
+  type: string;
+  publishDate: string;
 }
 
 export interface NotificationCreateDto {

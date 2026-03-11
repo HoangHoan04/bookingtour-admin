@@ -1,4 +1,3 @@
-import { useTranslation } from "@/context/TranslationContext";
 import dayjs from "dayjs";
 import { Accordion, AccordionTab } from "primereact/accordion";
 import { Button } from "primereact/button";
@@ -57,14 +56,12 @@ function FilterComponent({
   showClearButton = true,
   isOpen = true,
 }: FilterComponentProps) {
-  const { t } = useTranslation();
-
   const handleFilterChange = (key: string, value: any) => {
     onFiltersChange({ ...filters, [key]: value });
   };
 
   const [activeIndex, setActiveIndex] = useState<number | null>(
-    isOpen ? 0 : null
+    isOpen ? 0 : null,
   );
 
   const handleSearch = () => onSearch && onSearch();
@@ -157,7 +154,7 @@ function FilterComponent({
             onChange={(e) =>
               handleFilterChange(
                 field.key,
-                e.value ? dayjs(e.value).format("YYYY-MM-DD") : null
+                e.value ? dayjs(e.value).format("YYYY-MM-DD") : null,
               )
             }
           />
@@ -182,7 +179,7 @@ function FilterComponent({
                       dayjs(e.value[0]).format("YYYY-MM-DD"),
                       dayjs(e.value[1]).format("YYYY-MM-DD"),
                     ]
-                  : null
+                  : null,
               )
             }
           />
@@ -212,7 +209,7 @@ function FilterComponent({
       style={{ marginBottom: 5 }}
     >
       <AccordionTab
-        header={title || t("common.filter.search")}
+        header={title || "Tìm kiếm"}
         style={{
           fontSize: 12,
         }}
@@ -249,7 +246,7 @@ function FilterComponent({
           <div className="flex justify-center mt-4 gap-2">
             {showSearchButton && (
               <Button
-                label={t("common.filter.search")}
+                label="Tìm kiếm"
                 icon="pi pi-search"
                 style={{
                   height: 30,
@@ -261,7 +258,7 @@ function FilterComponent({
             )}
             {showClearButton && (
               <Button
-                label={t("common.filter.clearFilter")}
+                label="Xóa bộ lọc"
                 icon="pi pi-undo"
                 onClick={handleClear}
                 style={{

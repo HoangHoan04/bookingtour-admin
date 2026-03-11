@@ -7,7 +7,6 @@ import TableCustom, {
   type RowAction,
   type TableColumn,
 } from "@/components/ui/TableCustom";
-import { useTranslation } from "@/context/TranslationContext";
 import type { PaginationDto } from "@/dto";
 import type {
   NotificationFilterDto,
@@ -23,13 +22,13 @@ import { Tag } from "primereact/tag";
 import { useState } from "react";
 
 const initFilter: NotificationFilterDto = {
-  type: "",
-  priority: "",
-  status: "",
+  priority: "normal",
+  notificationType: "system",
+  isRead: false,
+  relatedEntity: "booking",
 };
 
 const NotificationListPage = () => {
-  const { t } = useTranslation();
   const [filter, setFilter] = useState<NotificationFilterDto>(initFilter);
   const [pagination, setPagination] = useState<
     PaginationDto<NotificationFilterDto>
@@ -74,39 +73,39 @@ const NotificationListPage = () => {
   const filterFields: FilterField[] = [
     {
       key: "type",
-      label: t("notification.filter.type"),
+      label: "Loại thông báo",
       type: "select",
-      placeholder: t("notification.filter.selectType"),
+      placeholder: "Chọn loại thông báo",
       col: 8,
       options: [
-        { label: t("notification.type.info"), value: "info" },
-        { label: t("notification.type.warning"), value: "warning" },
-        { label: t("notification.type.error"), value: "error" },
-        { label: t("notification.type.success"), value: "success" },
+        { label: "Thông báo", value: "info" },
+        { label: "Cảnh báo", value: "warning" },
+        { label: "Lỗi", value: "error" },
+        { label: "Thành công", value: "success" },
       ],
     },
     {
       key: "priority",
-      label: t("notification.filter.priority"),
+      label: "Độ ưu tiên",
       type: "select",
-      placeholder: t("notification.filter.selectPriority"),
+      placeholder: "Chọn độ ưu tiên",
       col: 8,
       options: [
-        { label: t("notification.priority.low"), value: "low" },
-        { label: t("notification.priority.normal"), value: "normal" },
-        { label: t("notification.priority.high"), value: "high" },
-        { label: t("notification.priority.urgent"), value: "urgent" },
+        { label: "Thấp", value: "low" },
+        { label: "Trung bình", value: "normal" },
+        { label: "Cao", value: "high" },
+        { label: "Khẩn cấp", value: "urgent" },
       ],
     },
     {
       key: "isRead",
-      label: t("notification.filter.status"),
+      label: "Trạng thái",
       type: "select",
-      placeholder: t("notification.filter.selectStatus"),
+      placeholder: "Chọn trạng thái",
       col: 8,
       options: [
-        { label: t("notification.status.read"), value: true },
-        { label: t("notification.status.unread"), value: false },
+        { label: "Đã đọc", value: true },
+        { label: "Chưa đọc", value: false },
       ],
     },
   ];
@@ -160,10 +159,10 @@ const NotificationListPage = () => {
           rowData.priority === "urgent"
             ? "danger"
             : rowData.priority === "high"
-            ? "warning"
-            : rowData.priority === "low"
-            ? "secondary"
-            : "info";
+              ? "warning"
+              : rowData.priority === "low"
+                ? "secondary"
+                : "info";
         return <Tag value={rowData.priority} severity={severity as any} />;
       },
     },
@@ -252,7 +251,7 @@ const NotificationListPage = () => {
           align: "between",
           leftContent: (
             <Button
-              label={t("notification.markAllRead")}
+              label="Đánh dấu tất cả đã đọc"
               icon="pi pi-check-square"
               severity="info"
               onClick={() => onMarkAllRead()}

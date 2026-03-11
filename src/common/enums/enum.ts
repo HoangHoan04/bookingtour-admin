@@ -157,6 +157,12 @@ export const enumData = {
     VI: { code: "VI", name: "Tiếng Việt" },
   },
 
+  TOUR_STATUS: {
+    DRAFT: { code: "DRAFT", name: "Bản nháp" },
+    ACTIVE: { code: "ACTIVE", name: "Đang hoạt động" },
+    INACTIVE: { code: "INACTIVE", name: "Ngưng hoạt động" },
+  },
+
   SPECIALTIES: {
     HISTORY: { code: "HISTORY", name: "Lịch sử" },
     ADVENTURE: { code: "ADVENTURE", name: "Phiêu lưu" },

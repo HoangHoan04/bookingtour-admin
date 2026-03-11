@@ -33,6 +33,7 @@ export interface UserSessionDto {
   lastLogin?: string | Date;
   roles: RoleDto[];
   employee?: EmployeeDto;
+  permissions?: string[];
 }
 
 export interface UserLogInResponseDto {

@@ -1,7 +1,6 @@
 import { loading } from "@/assets/animations";
 import { ROUTES } from "@/common/constants/routes";
 import { formatTimeAgo } from "@/common/helpers/format";
-import { useTranslation } from "@/context/TranslationContext";
 import {
   useMarkAllRead,
   useMarkReadList,
@@ -17,7 +16,6 @@ import { type FC, useRef } from "react";
 const Notification: FC = () => {
   const op = useRef<OverlayPanel>(null);
   const router = useRouter();
-  const { t } = useTranslation();
   const { count: unreadCount } = useUnreadCount();
   const { data: notifications, refetch } = usePaginationNotification({
     skip: 0,
@@ -59,7 +57,7 @@ const Notification: FC = () => {
           rounded
           text
           onClick={(e) => op.current?.toggle(e)}
-          tooltip={t("notification.tooltip")}
+          tooltip="Thông báo"
           tooltipOptions={{ position: "bottom" }}
           style={{
             background: "transparent",
@@ -79,9 +77,7 @@ const Notification: FC = () => {
       <OverlayPanel ref={op} className="w-96 shadow-lg">
         <div className="flex flex-col h-full">
           <div className="flex items-center justify-between pb-3 mb-3 border-b ">
-            <h3 className="text-lg font-semibold m-0 ">
-              {t("notification.title")}
-            </h3>
+            <h3 className="text-lg font-semibold m-0 ">Thông báo</h3>
             <div className="flex gap-1">
               <Button
                 icon={`pi ${loading ? "pi-spin pi-spinner" : "pi-refresh"}`}
@@ -90,7 +86,7 @@ const Notification: FC = () => {
                 severity="secondary"
                 size="small"
                 onClick={() => refetch()}
-                tooltip={t("notification.refresh")}
+                tooltip="Làm mới"
               />
               <Button
                 onClick={() => onMarkAllRead()}
@@ -99,17 +95,17 @@ const Notification: FC = () => {
                 text
                 severity="secondary"
                 size="small"
-                tooltip={t("notification.markAllRead")}
+                tooltip="Đánh dấu tất cả là đã đọc"
                 disabled={unreadCount === 0}
               />
             </div>
           </div>
 
-          <div className="flex flex-col gap-1 max-h-[400px] overflow-y-auto custom-scrollbar">
+          <div className="flex flex-col gap-1 max-h-100 overflow-y-auto custom-scrollbar">
             {notifications.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-10 text-center ">
                 <i className="pi pi-inbox text-4xl mb-3 opacity-30" />
-                <p className="m-0 text-sm">{t("notification.empty")}</p>
+                <p className="m-0 text-sm">Không có thông báo nào</p>
               </div>
             ) : (
               notifications.map((notification) => (
@@ -118,7 +114,7 @@ const Notification: FC = () => {
                   onClick={() =>
                     handleNotificationClick(
                       notification.id,
-                      notification.isRead
+                      notification.isRead,
                     )
                   }
                   className={`flex gap-3 p-3 rounded-lg cursor-pointer transition-all group ${
@@ -129,7 +125,7 @@ const Notification: FC = () => {
                 >
                   <div className="shrink-0 mt-1">
                     <i
-                      className={`${getIconByType(notification.type)} text-xl`}
+                      className={`${getIconByType(notification.type ?? notification.notificationType)} text-xl`}
                     />
                   </div>
                   <div className="flex-1 min-w-0">
@@ -149,7 +145,9 @@ const Notification: FC = () => {
                     </div>
                     <p className="text-sm m-0 mb-1  ">{notification.content}</p>
                     <span className="text-xs block mt-1">
-                      {formatTimeAgo(notification.publishDate)}
+                      {formatTimeAgo(
+                        notification.publishDate ?? notification.createdAt,
+                      )}
                     </span>
                   </div>
                 </div>
@@ -159,7 +157,7 @@ const Notification: FC = () => {
 
           <div className="pt-3 mt-3 border-t border-gray-100">
             <Button
-              label={t("notification.viewAll")}
+              label="Xem tất cả"
               text
               size="small"
               className="w-full text-blue-600 hover:bg-blue-50"

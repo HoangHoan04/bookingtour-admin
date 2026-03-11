@@ -1,6 +1,5 @@
 import { useConfig } from "@/context/ConfigContext";
 import { useTheme } from "@/context/ThemeContext";
-import { useTranslation } from "@/context/TranslationContext";
 import { findMatchingRoutePattern } from "@/utils/route.util";
 import { Button } from "primereact/button";
 import { Menu } from "primereact/menu";
@@ -13,7 +12,6 @@ type Tab = {
   label: string;
   path: string;
   icon?: string;
-  translationKey?: string;
 };
 
 type AppTabHeaderProps = {
@@ -23,7 +21,6 @@ type AppTabHeaderProps = {
 const AppTabHeader = ({ routes }: AppTabHeaderProps) => {
   const { theme } = useTheme();
   const { settings } = useConfig();
-  const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
   const [openTabs, setOpenTabs] = useState<Tab[]>([]);
@@ -61,7 +58,7 @@ const AppTabHeader = ({ routes }: AppTabHeaderProps) => {
             : newTabs;
         }
         return prev.map((tab) =>
-          tab.id === tabId ? { ...tab, path: currentPath } : tab
+          tab.id === tabId ? { ...tab, path: currentPath } : tab,
         );
       });
     }
@@ -109,7 +106,7 @@ const AppTabHeader = ({ routes }: AppTabHeaderProps) => {
   };
 
   const overflowMenuItems: MenuItem[] = hiddenTabs.map((tab) => ({
-    label: tab.translationKey ? t(tab.translationKey) : tab.label,
+    label: tab.label,
     icon: tab.icon || "pi pi-file",
     className: activeTab === tab.id ? "font-bold text-blue-500" : "",
     command: () => {
@@ -139,21 +136,19 @@ const AppTabHeader = ({ routes }: AppTabHeaderProps) => {
               key={tab.id}
               onClick={() => handleTabClick(tab)}
               className={`group relative flex items-center gap-2 px-4 cursor-pointer transition-all duration-150 
-                whitespace-nowrap min-w-[100px] max-w-[200px] flex-1 rounded-t-lg h-[34px] text-[12px]
+                whitespace-nowrap min-w-25 max-w-50 flex-1 rounded-t-lg h-8.5 text-[12px]
                 ${
                   isActive
                     ? isDark
                       ? "bg-[#2d2e31] text-white"
                       : "bg-white text-black shadow-sm"
                     : isDark
-                    ? "text-gray-400 hover:bg-[#323234]"
-                    : "text-gray-600 hover:bg-gray-200"
+                      ? "text-gray-400 hover:bg-[#323234]"
+                      : "text-gray-600 hover:bg-gray-200"
                 }
               `}
             >
-              <span className="truncate flex-1">
-                {tab.translationKey ? t(tab.translationKey) : tab.label}
-              </span>
+              <span className="truncate flex-1">{tab.label}</span>
               <i
                 className="pi pi-times hover:bg-gray-500/20 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
                 onClick={(e) => handleCloseTab(e, tab.id)}

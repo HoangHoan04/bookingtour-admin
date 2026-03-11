@@ -1,6 +1,5 @@
 import { enumData } from "@/common/enums/enum";
 import { useToast } from "@/context/ToastContext";
-import { useTranslation } from "@/context/TranslationContext";
 import type { FileDto } from "@/dto";
 import { useUploadSingle } from "@/hooks/uploadFile";
 import { Button } from "primereact/button";
@@ -34,7 +33,7 @@ interface FileUploadProps {
 
 const mapInitValueToFileList = (
   initValue?: FileUploadProps["initValue"],
-  mode: "single" | "multi" = "single"
+  mode: "single" | "multi" = "single",
 ): UploadFileItem[] => {
   if (!initValue || initValue === "") return [];
   const values = Array.isArray(initValue) ? initValue : [initValue];
@@ -42,13 +41,13 @@ const mapInitValueToFileList = (
     mode === "multi"
       ? values
       : values.length > 0
-      ? [values[values.length - 1]]
-      : [];
+        ? [values[values.length - 1]]
+        : [];
 
   return targetValues
     .filter(
       (item): item is FileDto =>
-        !!item && typeof item === "object" && !!item.fileUrl
+        !!item && typeof item === "object" && !!item.fileUrl,
     )
     .map((item) => ({
       uid: item.id || `file-${Date.now()}-${Math.random()}`,
@@ -87,7 +86,6 @@ export default function FileUploadCustom({
   mode = "single",
   disabled = false,
 }: FileUploadProps) {
-  const { t } = useTranslation();
   const { onUpload } = useUploadSingle();
   const { showToast } = useToast();
   const fileUploadRef = useRef<PrimeFileUpload>(null);
@@ -122,11 +120,8 @@ export default function FileUploadCustom({
     if (file.size / 1024 / 1024 >= maxSize) {
       showToast({
         type: "error",
-        title: t("common.error"),
-        message: t("common.upload.fileTooLarge").replace(
-          "{maxSize}",
-          maxSize.toString()
-        ),
+        title: "Lỗi",
+        message: `File quá lớn. Kích thước tối đa cho phép là ${maxSize} MB.`,
       });
       fileUploadRef.current?.clear();
       return;
@@ -161,16 +156,16 @@ export default function FileUploadCustom({
 
         showToast({
           type: "success",
-          title: t("common.success"),
-          message: t("common.upload.uploaded"),
+          title: "Thành công",
+          message: "Tải lên thành công",
           timeout: 2000,
         });
       }
     } catch (error) {
       showToast({
         type: "error",
-        title: t("common.error"),
-        message: t("common.upload.uploadFailed"),
+        title: "Lỗi",
+        message: "Tải lên thất bại",
       });
     } finally {
       setLoading(false);
@@ -209,7 +204,7 @@ export default function FileUploadCustom({
             key={item.uid}
             className={classNames(
               boxSizeClass,
-              "group relative rounded-lg border  overflow-hidden shadow-sm"
+              "group relative rounded-lg border  overflow-hidden shadow-sm",
             )}
           >
             <div className="w-full h-full flex items-center justify-center ">
@@ -240,7 +235,7 @@ export default function FileUploadCustom({
                     setPreviewImage(item);
                     setIsPreviewOpen(true);
                   }}
-                  tooltip={t("common.upload.view")}
+                  tooltip="Xem"
                   tooltipOptions={{ position: "top" }}
                 />
                 <Button
@@ -250,7 +245,7 @@ export default function FileUploadCustom({
                   severity="danger"
                   className="  w-8! h-8! p-0! text-red-600!"
                   onClick={() => handleRemove(item.uid)}
-                  tooltip={t("common.upload.delete")}
+                  tooltip="Xóa"
                   tooltipOptions={{ position: "top" }}
                 />
               </div>
@@ -273,7 +268,7 @@ export default function FileUploadCustom({
               chooseOptions={{
                 className: classNames(
                   "!absolute !inset-0 !w-full !h-full !opacity-0 !z-10 !p-0 !border-0",
-                  "cursor-pointer"
+                  "cursor-pointer",
                 ),
                 style: { width: "100%", height: "100%" },
               }}
@@ -286,7 +281,7 @@ export default function FileUploadCustom({
                 "border-2 border-dashed rounded-lg",
                 "flex flex-col items-center justify-center gap-1",
                 "group-hover:border-blue-500  transition-colors duration-200",
-                " group-hover:text-blue-500"
+                " group-hover:text-blue-500",
               )}
             >
               {loading ? (
@@ -295,7 +290,7 @@ export default function FileUploadCustom({
                 <>
                   <i className="pi pi-plus text-2xl"></i>
                   <span className="text-xs font-medium">
-                    {t("common.upload.upload")}
+                    Thêm {type === "image" ? "hình ảnh" : "tài liệu"}
                   </span>
                 </>
               )}
@@ -307,14 +302,14 @@ export default function FileUploadCustom({
       {!disabled && showUploadBtn && (
         <div className="text-xs ">
           {type === "image"
-            ? t("common.upload.imageType")
-            : t("common.upload.documentType")}{" "}
-          • {t("common.upload.maxSize")}: {maxSize}MB
+            ? "Chỉ chấp nhận tệp hình ảnh"
+            : "Chỉ chấp nhận tệp tài liệu"}{" "}
+          • Kích thước tối đa: {maxSize}MB
         </div>
       )}
 
       <Dialog
-        header={previewImage?.name || t("common.upload.detail")}
+        header={previewImage?.name || "Chi tiết tệp"}
         visible={isPreviewOpen}
         onHide={() => setIsPreviewOpen(false)}
         maximizable
@@ -336,7 +331,7 @@ export default function FileUploadCustom({
                 <i className="pi pi-file text-6xl  mb-4"></i>
                 <p className="font-bold text-xl mb-4">{previewImage.name}</p>
                 <Button
-                  label={t("common.download")}
+                  label="Tải xuống"
                   icon="pi pi-download"
                   onClick={() => window.open(previewImage.url, "_blank")}
                 />

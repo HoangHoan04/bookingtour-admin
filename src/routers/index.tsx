@@ -4,7 +4,6 @@ import AppLayout from "@/layout/AppLayout";
 import LoginPage from "@/pages/auth/LoginPage";
 import Dashboard from "@/pages/main/dashboard";
 
-import SettingLanguagePage from "@/pages/main/setting-system/setting-language";
 import SettingStringPage from "@/pages/main/setting-system/setting-string";
 
 import BannerManager from "@/pages/main/news-manager/banners";
@@ -29,6 +28,10 @@ import DestinationManager from "@/pages/main/tour-manager/destinations";
 import AddDestinationPage from "@/pages/main/tour-manager/destinations/add";
 import DetailDestinationPage from "@/pages/main/tour-manager/destinations/detail";
 import EditDestinationPage from "@/pages/main/tour-manager/destinations/edit";
+import TourManager from "@/pages/main/tour-manager/tour-list";
+import AddTourPage from "@/pages/main/tour-manager/tour-list/add";
+import DetailTourPage from "@/pages/main/tour-manager/tour-list/detail";
+import EditTourPage from "@/pages/main/tour-manager/tour-list/edit";
 import CustomerManager from "@/pages/main/user-manager/customer-manager";
 import AddCustomerPage from "@/pages/main/user-manager/customer-manager/add";
 import DetailCustomerPage from "@/pages/main/user-manager/customer-manager/detail";
@@ -37,7 +40,7 @@ import TourGuideManager from "@/pages/main/user-manager/tour-guide-manager";
 import AddTourGuidePage from "@/pages/main/user-manager/tour-guide-manager/add";
 import DetailTourGuidePage from "@/pages/main/user-manager/tour-guide-manager/detail";
 import EditTourGuidePage from "@/pages/main/user-manager/tour-guide-manager/edit";
-import NotFound from "@/pages/NotFound";
+import NotFound from "@/pages/other/NotFound";
 import NotificationListPage from "@/pages/other/NotificationList";
 import { Route, Routes } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
@@ -78,7 +81,6 @@ export default function AppRoutes() {
               </AuthGuard>
             }
           />
-
           <Route
             path={
               ROUTES.MAIN.NEW_MANAGER.children.BANNER_MANAGER.children
@@ -90,7 +92,6 @@ export default function AppRoutes() {
               </AuthGuard>
             }
           />
-
           <Route
             path={
               ROUTES.MAIN.NEW_MANAGER.children.BANNER_MANAGER.children
@@ -99,6 +100,48 @@ export default function AppRoutes() {
             element={
               <AuthGuard>
                 <DetailBannerPage />
+              </AuthGuard>
+            }
+          />
+
+          {/* Quản lý tour*/}
+          <Route
+            path={ROUTES.MAIN.TOUR_MANAGER.children.TOUR_LIST.path}
+            element={
+              <AuthGuard>
+                <TourManager />
+              </AuthGuard>
+            }
+          />
+          <Route
+            path={
+              ROUTES.MAIN.TOUR_MANAGER.children.TOUR_LIST.children.ADD_TOUR.path
+            }
+            element={
+              <AuthGuard>
+                <AddTourPage />
+              </AuthGuard>
+            }
+          />
+          <Route
+            path={
+              ROUTES.MAIN.TOUR_MANAGER.children.TOUR_LIST.children.EDIT_TOUR
+                .path
+            }
+            element={
+              <AuthGuard>
+                <EditTourPage />
+              </AuthGuard>
+            }
+          />
+          <Route
+            path={
+              ROUTES.MAIN.TOUR_MANAGER.children.TOUR_LIST.children.DETAIL_TOUR
+                .path
+            }
+            element={
+              <AuthGuard>
+                <DetailTourPage />
               </AuthGuard>
             }
           />
@@ -122,7 +165,6 @@ export default function AppRoutes() {
               </AuthGuard>
             }
           />
-
           <Route
             path={
               ROUTES.MAIN.NEW_MANAGER.children.NEW_LIST.children.EDIT_NEW.path
@@ -133,7 +175,6 @@ export default function AppRoutes() {
               </AuthGuard>
             }
           />
-
           <Route
             path={
               ROUTES.MAIN.NEW_MANAGER.children.NEW_LIST.children.DETAIL_NEW.path
@@ -165,7 +206,6 @@ export default function AppRoutes() {
               </AuthGuard>
             }
           />
-
           <Route
             path={
               ROUTES.MAIN.NEW_MANAGER.children.BLOG_MANAGER.children.EDIT_BLOG
@@ -177,7 +217,6 @@ export default function AppRoutes() {
               </AuthGuard>
             }
           />
-
           <Route
             path={
               ROUTES.MAIN.NEW_MANAGER.children.BLOG_MANAGER.children.DETAIL_BLOG
@@ -210,7 +249,6 @@ export default function AppRoutes() {
               </AuthGuard>
             }
           />
-
           <Route
             path={
               ROUTES.MAIN.NEW_MANAGER.children.TRAVEL_HINT_MANAGER.children
@@ -222,7 +260,6 @@ export default function AppRoutes() {
               </AuthGuard>
             }
           />
-
           <Route
             path={
               ROUTES.MAIN.NEW_MANAGER.children.TRAVEL_HINT_MANAGER.children
@@ -255,7 +292,6 @@ export default function AppRoutes() {
               </AuthGuard>
             }
           />
-
           <Route
             path={
               ROUTES.MAIN.TOUR_MANAGER.children.DESTINATION_MANAGER.children
@@ -267,7 +303,6 @@ export default function AppRoutes() {
               </AuthGuard>
             }
           />
-
           <Route
             path={
               ROUTES.MAIN.TOUR_MANAGER.children.DESTINATION_MANAGER.children
@@ -300,7 +335,6 @@ export default function AppRoutes() {
               </AuthGuard>
             }
           />
-
           <Route
             path={
               ROUTES.MAIN.USER_MANAGER.children.CUSTOMER_MANAGER.children
@@ -312,7 +346,6 @@ export default function AppRoutes() {
               </AuthGuard>
             }
           />
-
           <Route
             path={
               ROUTES.MAIN.USER_MANAGER.children.CUSTOMER_MANAGER.children
@@ -345,7 +378,6 @@ export default function AppRoutes() {
               </AuthGuard>
             }
           />
-
           <Route
             path={
               ROUTES.MAIN.USER_MANAGER.children.TOUR_GUIDE_MANAGER.children
@@ -357,7 +389,6 @@ export default function AppRoutes() {
               </AuthGuard>
             }
           />
-
           <Route
             path={
               ROUTES.MAIN.USER_MANAGER.children.TOUR_GUIDE_MANAGER.children
@@ -386,16 +417,6 @@ export default function AppRoutes() {
             element={
               <AuthGuard requiredPermission="PERMISSION:ASSIGN">
                 <PermissionAssignmentPage />
-              </AuthGuard>
-            }
-          />
-
-          {/* Thiết lập ngôn ngữ */}
-          <Route
-            path={ROUTES.MAIN.SETTING_SYSTEM.children.SETTING_LANGUAGE.path}
-            element={
-              <AuthGuard requiredPermission="SETTING_LANGUAGE:VIEW">
-                <SettingLanguagePage />
               </AuthGuard>
             }
           />

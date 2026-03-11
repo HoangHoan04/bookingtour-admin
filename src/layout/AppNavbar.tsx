@@ -1,6 +1,6 @@
+import Notification from "@/components/layout/Notification";
 import { useAuth } from "@/context/AuthContext";
 import { useTheme } from "@/context/ThemeContext";
-import { useTranslation } from "@/context/TranslationContext";
 import { Avatar } from "primereact/avatar";
 import { Button } from "primereact/button";
 import { Menu } from "primereact/menu";
@@ -27,19 +27,18 @@ const AppNavbar: FC<AppNavbarProps> = ({
   showNotification = true,
 }) => {
   const { theme } = useTheme();
-  const { t } = useTranslation();
   const menuRef = useRef<Menu>(null);
   const isDark = theme === "dark";
   const { user } = useAuth();
 
   const menuItems: MenuItem[] = [
     {
-      label: t("navbar.changePassword"),
+      label: "Đổi mật khẩu",
       icon: "pi pi-key",
       command: onChangePassword,
     },
     {
-      label: t("navbar.logout"),
+      label: "Đăng xuất",
       icon: "pi pi-sign-out",
       command: onLogout,
     },
@@ -52,7 +51,7 @@ const AppNavbar: FC<AppNavbarProps> = ({
       ? user.roles[0].name
       : user?.isAdmin
         ? "Administrator"
-        : t("navbar.userRole");
+        : "Vai trò";
 
   const getAvatarUrl = () => {
     if (user?.employee?.avatar) {
@@ -95,7 +94,7 @@ const AppNavbar: FC<AppNavbarProps> = ({
           <Button
             icon={collapsed ? "pi pi-bars" : "pi pi-times"}
             onClick={onToggleSidebar}
-            tooltip={collapsed ? t("navbar.openMenu") : t("navbar.closeMenu")}
+            tooltip={collapsed ? "Mở menu" : "Đóng menu"}
             tooltipOptions={{ position: "bottom" }}
             className={iconBtnClasses}
             text
@@ -110,12 +109,12 @@ const AppNavbar: FC<AppNavbarProps> = ({
 
         <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
           <FullScreen />
-          {/* {showNotification && <Notification />} */}
+          {showNotification && <Notification />}
 
           <Button
             icon="pi pi-cog"
             onClick={onOpenSettings}
-            tooltip={t("navbar.settings")}
+            tooltip="Cài đặt"
             tooltipOptions={{ position: "bottom" }}
             className={iconBtnClasses}
             text
