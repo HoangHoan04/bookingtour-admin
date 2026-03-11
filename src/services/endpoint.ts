@@ -152,4 +152,14 @@ export const API_ENDPOINTS = {
     FIND_BY_ID: "/api/admin/tour/find-by-id",
     SELECT_BOX: "/api/admin/tour/select-box",
   },
+
+  TOUR_DETAIL: {
+    PAGINATION: "/api/admin/tour-detail/pagination",
+    CREATE: "/api/admin/tour-detail/create",
+    UPDATE: "/api/admin/tour-detail/update",
+    DEACTIVATE: "/api/admin/tour-detail/deactivate",
+    ACTIVATE: "/api/admin/tour-detail/activate",
+    FIND_BY_ID: "/api/admin/tour-detail/find-by-id",
+    SELECT_BOX: "/api/admin/tour-detail/select-box",
+  },
 };

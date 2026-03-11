@@ -1,5 +1,14 @@
 import type { BaseDto } from "./common/base.dto";
 
+// Tour Price DTO
+export interface TourPriceDto extends BaseDto {
+  code: string;
+  price: number;
+  priceType: string;
+  currency: string;
+  tourDetailId: string;
+}
+
 // Tour Detail DTO
 export interface TourDetailDto extends BaseDto {
   tourId?: string;
@@ -20,6 +29,10 @@ export interface CreateTourDetailDto {
   capacity: number;
   status?: string;
   tourGuideId?: string;
+}
+
+export interface UpdateTourDetailDto extends CreateTourDetailDto {
+  id: string;
 }
 
 // Tour DTO

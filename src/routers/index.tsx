@@ -44,6 +44,10 @@ import NotFound from "@/pages/other/NotFound";
 import NotificationListPage from "@/pages/other/NotificationList";
 import { Route, Routes } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
+import TourDetailManager from "@/pages/main/tour-manager/tour-details";
+import AddTourDetailPage from "@/pages/main/tour-manager/tour-details/add";
+import EditTourDetailPage from "@/pages/main/tour-manager/tour-details/edit";
+import DetailTourDetailPage from "@/pages/main/tour-manager/tour-details/detail";
 
 export default function AppRoutes() {
   return (
@@ -142,6 +146,49 @@ export default function AppRoutes() {
             element={
               <AuthGuard>
                 <DetailTourPage />
+              </AuthGuard>
+            }
+          />
+
+          {/* Quản lý chi tiết tour */}
+          <Route
+            path={ROUTES.MAIN.TOUR_MANAGER.children.TOUR_DETAIL_MANAGER.path}
+            element={
+              <AuthGuard>
+                <TourDetailManager />
+              </AuthGuard>
+            }
+          />
+          <Route
+            path={
+              ROUTES.MAIN.TOUR_MANAGER.children.TOUR_DETAIL_MANAGER.children
+                .ADD_TOUR_DETAIL.path
+            }
+            element={
+              <AuthGuard>
+                <AddTourDetailPage />
+              </AuthGuard>
+            }
+          />
+          <Route
+            path={
+              ROUTES.MAIN.TOUR_MANAGER.children.TOUR_DETAIL_MANAGER.children
+                .EDIT_TOUR_DETAIL.path
+            }
+            element={
+              <AuthGuard>
+                <EditTourDetailPage />
+              </AuthGuard>
+            }
+          />
+          <Route
+            path={
+              ROUTES.MAIN.TOUR_MANAGER.children.TOUR_DETAIL_MANAGER.children
+                .DETAIL_TOUR_DETAIL.path
+            }
+            element={
+              <AuthGuard>
+                <DetailTourDetailPage />
               </AuthGuard>
             }
           />
