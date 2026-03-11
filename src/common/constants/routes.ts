@@ -1,3 +1,5 @@
+import { Children } from "react";
+
 export const ROUTES = {
   AUTH: {
     LOGIN: {
@@ -122,6 +124,32 @@ export const ROUTES = {
               label: "Chi tiết tour",
               path: "/tour/detail/:id",
               icon: "pi pi-info-circle",
+              isShow: false,
+            },
+          },
+        },
+
+        TOUR_DETAIL_MANAGER: {
+          key: "TOUR_DETAIL_MANAGER",
+          label: "Quản lý chi tiết tour",
+          path: "/tour-detail-manager",
+          children: {
+            ADD_TOUR_DETAIL: {
+              key: "ADD_TOUR_DETAIL",
+              label: "Thêm chi tiết tour",
+              path: "/tour-detail/add",
+              isShow: false,
+            },
+            EDIT_TOUR_DETAIL: {
+              key: "EDIT_TOUR_DETAIL",
+              label: "Chỉnh sửa chi tiết tour",
+              path: "/tour-detail/edit/:id",
+              isShow: false,
+            },
+            DETAIL_TOUR_DETAIL: {
+              key: "DETAIL_TOUR_DETAIL",
+              label: "Chi tiết chi tiết tour",
+              path: "/tour-detail/detail/:id",
               isShow: false,
             },
           },
@@ -335,11 +363,11 @@ export const ROUTES = {
       label: "Cài đặt hệ thống",
       icon: "pi pi-cog",
       children: {
-          // SETTING_LANGUAGE: {
-          //   key: "SETTING_LANGUAGE",
-          //   label: "Cài đặt ngôn ngữ",
-          //   path: "setting-system/setting-language",
-          // },
+        // SETTING_LANGUAGE: {
+        //   key: "SETTING_LANGUAGE",
+        //   label: "Cài đặt ngôn ngữ",
+        //   path: "setting-system/setting-language",
+        // },
         SETTING_STRING: {
           key: "SETTING_STRING",
           label: "settings.dynamicConfig",
