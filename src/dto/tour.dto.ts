@@ -75,3 +75,18 @@ export interface TourFilterDto {
   status?: string;
   isDeleted?: boolean;
 }
+
+export interface UpdateTourDto extends CreateTourDto {
+  id: string;
+}
+
+export interface TourFilterDto {
+  code?: string;
+  title?: string;
+}
+
+export interface TourSelectBoxDto {
+  id: string;
+  title: string;
+  code: string;
+}
