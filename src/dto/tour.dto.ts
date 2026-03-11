@@ -71,7 +71,7 @@ export interface TourFilterDto {
   code?: string;
   location?: string;
   category?: string;
-  tags?: string;
+  tags?: string[];
   status?: string;
   isDeleted?: boolean;
 }
