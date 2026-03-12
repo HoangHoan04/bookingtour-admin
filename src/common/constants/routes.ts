@@ -1,5 +1,3 @@
-import { Children } from "react";
-
 export const ROUTES = {
   AUTH: {
     LOGIN: {
