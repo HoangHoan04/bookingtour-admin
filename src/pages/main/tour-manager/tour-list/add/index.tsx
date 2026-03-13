@@ -2,6 +2,7 @@ import BaseView from "@/components/ui/BaseView";
 import FormCustom, { type FormField } from "@/components/ui/FormCustom";
 import type { TourDto } from "@/dto/tour.dto";
 import { useCreateTour } from "@/hooks/tour";
+import { useTourDetailSelectBox } from "@/hooks/tour-detail";
 import { useRouter } from "@/routers/hooks";
 import { useMemo } from "react";
 
@@ -21,6 +22,8 @@ function AddTourPage({
   onCancel?: () => void;
 }) {
   const { isLoading, onCreateTour } = useCreateTour();
+  const { data: tourDetails, isLoading: isLoadingTourDetails } =
+    useTourDetailSelectBox();
   const router = useRouter();
 
   type TourSubmitValues = Omit<TourDto, "tags"> & {
@@ -120,8 +123,22 @@ function AddTourPage({
         placeholder: "Nhập các dịch vụ không bao gồm trong tour",
         col: 6,
       },
+      {
+        name: "tourDetails",
+        label: "Chi tiết tour",
+        type: "multiselect",
+        options:
+          tourDetails?.map((item: any) => ({
+            id: String(item.code),
+            name: item.name,
+            value: item.code,
+          })) || [],
+        loading: isLoadingTourDetails,
+        placeholder: "Nhập các dịch vụ không bao gồm trong tour",
+        col: 6,
+      },
     ];
-  }, []);
+  }, [isLoadingTourDetails, tourDetails]);
 
   const handleSubmit = (values: TourSubmitValues) => {
     const parsedTags = Array.isArray(values?.tags)
