@@ -44,10 +44,10 @@ import NotFound from "@/pages/other/NotFound";
 import NotificationListPage from "@/pages/other/NotificationList";
 import { Route, Routes } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
-import TourDetailManager from "@/pages/main/tour-manager/tour-details";
-import AddTourDetailPage from "@/pages/main/tour-manager/tour-details/add";
-import EditTourDetailPage from "@/pages/main/tour-manager/tour-details/edit";
-import DetailTourDetailPage from "@/pages/main/tour-manager/tour-details/detail";
+import TourPriceManager from "@/pages/main/tour-manager/tour-price";
+import AddTourPricePage from "@/pages/main/tour-manager/tour-price/add";
+import DetailTourPricePage from "@/pages/main/tour-manager/tour-price/detail";
+import EditTourPricePage from "@/pages/main/tour-manager/tour-price/edit";
 
 export default function AppRoutes() {
   return (
@@ -150,45 +150,45 @@ export default function AppRoutes() {
             }
           />
 
-          {/* Quản lý chi tiết tour */}
+          {/* Quản lý giá tour */}
           <Route
-            path={ROUTES.MAIN.TOUR_MANAGER.children.TOUR_DETAIL_MANAGER.path}
+            path={ROUTES.MAIN.TOUR_MANAGER.children.TOUR_PRICE_MANAGER.path}
             element={
               <AuthGuard>
-                <TourDetailManager />
+                <TourPriceManager />
               </AuthGuard>
             }
           />
           <Route
             path={
-              ROUTES.MAIN.TOUR_MANAGER.children.TOUR_DETAIL_MANAGER.children
-                .ADD_TOUR_DETAIL.path
+              ROUTES.MAIN.TOUR_MANAGER.children.TOUR_PRICE_MANAGER.children
+                .ADD_TOUR_PRICE.path
             }
             element={
               <AuthGuard>
-                <AddTourDetailPage />
+                <AddTourPricePage />
               </AuthGuard>
             }
           />
           <Route
             path={
-              ROUTES.MAIN.TOUR_MANAGER.children.TOUR_DETAIL_MANAGER.children
-                .EDIT_TOUR_DETAIL.path
+              ROUTES.MAIN.TOUR_MANAGER.children.TOUR_PRICE_MANAGER.children
+                .EDIT_TOUR_PRICE.path
             }
             element={
               <AuthGuard>
-                <EditTourDetailPage />
+                <EditTourPricePage />
               </AuthGuard>
             }
           />
           <Route
             path={
-              ROUTES.MAIN.TOUR_MANAGER.children.TOUR_DETAIL_MANAGER.children
-                .DETAIL_TOUR_DETAIL.path
+              ROUTES.MAIN.TOUR_MANAGER.children.TOUR_PRICE_MANAGER.children
+                .DETAIL_TOUR_PRICE.path
             }
             element={
               <AuthGuard>
-                <DetailTourDetailPage />
+                <DetailTourPricePage />
               </AuthGuard>
             }
           />

@@ -9,16 +9,16 @@ import type {
 import type {
   CreateTourDetailDto,
   TourDetailDto,
-  TourFilterDto,
+  TourDetailFilterDto,
   UpdateTourDetailDto,
-} from "@/dto/tour.dto";
+} from "@/dto/tour-detail.dto";
 import { useRouter } from "@/routers/hooks";
 import rootApiService from "@/services/api.service";
 import { API_ENDPOINTS } from "@/services/endpoint";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const usePaginationTourDetail = (
-  params: PaginationDto<TourFilterDto>,
+  params: PaginationDto<TourDetailFilterDto>,
 ) => {
   const { data, isLoading, refetch, error } = useQuery<
     PageResponse<TourDetailDto>
