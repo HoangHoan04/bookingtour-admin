@@ -1,17 +1,18 @@
-import BaseView from "@/components/ui/BaseView";
 import FormCustom, { type FormField } from "@/components/ui/FormCustom";
-import type { TourDetailDto } from "@/dto/tour.dto";
+import type { TourDetailDto } from "@/dto/tour-detail.dto";
+import { useTourSelectBox } from "@/hooks/tour";
 import { useCreateTourDetail } from "@/hooks/tour-detail";
-import { useRouter } from "@/routers/hooks";
+import { Dialog } from "primereact/dialog";
 import { useMemo } from "react";
 
-function AddTourDetailPage({
+function AddTourDetailDialog({
   initData,
   isEdit = false,
   handleUpdate,
   title = "Tạo mới chi tiết tour",
   isLoadingUpdate = false,
   onCancel,
+  isOpenDialogAdd,
 }: {
   initData?: TourDetailDto;
   isEdit?: boolean;
@@ -19,9 +20,10 @@ function AddTourDetailPage({
   title?: string;
   isLoadingUpdate?: boolean;
   onCancel?: () => void;
+  isOpenDialogAdd: boolean;
 }) {
   const { isLoading, onCreateTourDetail } = useCreateTourDetail();
-  const router = useRouter();
+  const { data: tourOptions } = useTourSelectBox();
 
   type TourSubmitValues = Omit<TourDetailDto, "tags"> & {
     tags?: string | string[];
@@ -40,7 +42,7 @@ function AddTourDetailPage({
       {
         name: "startDay",
         label: "Ngày khởi hành",
-        type: "input",
+        type: "datepicker",
         required: true,
         placeholder: "Nhập ngày khởi hành (VD: 2024-12-31)",
         col: 4,
@@ -48,7 +50,7 @@ function AddTourDetailPage({
       {
         name: "endDay",
         label: "Ngày kết thúc",
-        type: "input",
+        type: "datepicker",
         required: true,
         placeholder: "Nhập ngày kết thúc (VD: 2024-12-31)",
         col: 4,
@@ -79,13 +81,18 @@ function AddTourDetailPage({
       {
         name: "tourId",
         label: "Mã tour",
-        type: "input",
+        type: "select",
         required: true,
-        placeholder: "Nhập mã tour",
+        placeholder: "Chọn mã tour",
         col: 12,
+        options: tourOptions?.map((tour) => ({
+          id: tour.id,
+          name: tour.title,
+          value: tour.id,
+        })),
       },
     ];
-  }, []);
+  }, [tourOptions]);
 
   const handleSubmit = (values: TourSubmitValues) => {
     const submitData: TourDetailDto = values;
@@ -97,12 +104,13 @@ function AddTourDetailPage({
     }
   };
 
-  const goBack = () => {
-    router.back();
-  };
-
   return (
-    <BaseView>
+    <Dialog
+      header={title}
+      visible={isOpenDialogAdd}
+      style={{ width: "50vw" }}
+      onHide={onCancel ?? (() => {})}
+    >
       <FormCustom
         title={title}
         showDivider={true}
@@ -110,14 +118,14 @@ function AddTourDetailPage({
         initialValues={initData}
         loading={isLoading || isLoadingUpdate}
         onSubmit={handleSubmit}
-        onCancel={goBack || onCancel}
+        onCancel={onCancel}
         submitText="Lưu"
         cancelText="Hủy"
         gap="20px"
         gridColumns={12}
       />
-    </BaseView>
+    </Dialog>
   );
 }
 
-export default AddTourDetailPage;
+export default AddTourDetailDialog;
