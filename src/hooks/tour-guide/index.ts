@@ -7,8 +7,10 @@ import type {
   UpdateTourGuideDto,
 } from "@/dto/tour-guide.dto";
 import { useRouter } from "@/routers/hooks";
+import { EHttpHeaders } from "@/common/constants";
 import rootApiService from "@/services/api.service";
-import { API_ENDPOINTS } from "@/services/endpoint";
+import { API_ENDPOINTS, API_ROUTES } from "@/services/endpoint";
+import tokenCache from "@/utils/token-cache";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const usePaginationTourGuide = (
@@ -237,3 +239,147 @@ export const useTourGuideSelectBox = () => {
     error,
   };
 };
+
+export const useImportTourGuideExcel = () => {
+  const queryClient = useQueryClient();
+  const { showToast } = useToast();
+
+  const { mutateAsync: importTourGuideExcel, isPending } = useMutation({
+    mutationFn: async (file: File) => {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      return rootApiService.post(
+        API_ENDPOINTS.TOUR_GUIDE.IMPORT_EXCEL,
+        formData,
+      ) as Promise<any>;
+    },
+    onSuccess: (res: any) => {
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.TOUR_GUIDE.PAGINATION],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [API_ENDPOINTS.TOUR_GUIDE.SELECT_BOX],
+      });
+
+      const total = Number(res?.total ?? 0);
+      const success = Number(res?.success ?? 0);
+      const failed = Number(res?.failed ?? 0);
+
+      if (failed > 0) {
+        showToast({
+          type: "error",
+          title: "Import thất bại",
+          message: res?.message || `Import hoàn tất: ${success}/${total} thành công`,
+          timeout: 6000,
+        });
+        return;
+      }
+
+      showToast({
+        type: "success",
+        title: "Thành công",
+        message: res?.message || `Import hoàn tất: ${success}/${total} thành công`,
+        timeout: 3000,
+      });
+    },
+    onError: (error: any) => {
+      showToast({
+        type: "error",
+        title: "Lỗi",
+        message: error?.message || "Có lỗi xảy ra khi import hướng dẫn viên",
+        timeout: 3000,
+      });
+    },
+  });
+
+  return {
+    onImportTourGuideExcel: importTourGuideExcel,
+    isLoading: isPending,
+  };
+};
+
+function parseFilenameFromContentDisposition(value: string | null): string | null {
+  if (!value) return null;
+
+  // Examples:
+  // - attachment; filename="file.xlsx"
+  // - attachment; filename*=UTF-8''mau%20nhap.xlsx
+  const filenameStar = value.match(/filename\*\s*=\s*UTF-8''([^;]+)/i)?.[1];
+  if (filenameStar) {
+    try {
+      return decodeURIComponent(filenameStar.replace(/(^"|"$)/g, ""));
+    } catch {
+      return filenameStar.replace(/(^"|"$)/g, "");
+    }
+  }
+
+  const filename = value.match(/filename\s*=\s*("?)([^";]+)\1/i)?.[2];
+  return filename || null;
+}
+
+export const useExportTourGuideExcel = () => {
+  const { showToast } = useToast();
+
+  const { mutateAsync: exportTourGuideExcel, isPending } = useMutation({
+    mutationFn: async (body?: Record<string, any>) => {
+      const token = tokenCache.getAccessToken();
+      const res = await fetch(
+        `${API_ROUTES.BASE_URL}${API_ENDPOINTS.TOUR_GUIDE.EXPORT_EXCEL}`,
+        {
+          method: "POST",
+          headers: {
+            ...(token ? { [EHttpHeaders.AUTHORIZATION]: `Bearer ${token}` } : {}),
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body ?? {}),
+        },
+      );
+
+      if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(errorText || res.statusText);
+      }
+
+      const blob = await res.blob();
+      const cd = res.headers.get("content-disposition");
+      const filename =
+        parseFilenameFromContentDisposition(cd) ||
+        `tour-guide_${new Date().toISOString().slice(0, 10)}.xlsx`;
+
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+
+      return { filename };
+    },
+    onSuccess: () => {
+      showToast({
+        type: "success",
+        title: "Thành công",
+        message: "Xuất Excel hướng dẫn viên thành công",
+        timeout: 2500,
+      });
+    },
+    onError: (error: any) => {
+      showToast({
+        type: "error",
+        title: "Lỗi",
+        message: error?.message || "Có lỗi xảy ra khi xuất Excel hướng dẫn viên",
+        timeout: 3000,
+      });
+    },
+  });
+
+  return {
+    onExportTourGuideExcel: exportTourGuideExcel,
+    isLoading: isPending,
+  };
+};
+
+

@@ -94,19 +94,13 @@ export default function NewManager() {
 
   const filterFields: FilterField[] = [
     {
-      key: "titleVI",
+      key: "title",
       label: "Tiêu đề tin tức",
       type: "input",
       placeholder: "Nhập tiêu đề tin tức",
       col: 6,
     },
-    {
-      key: "titleEn",
-      label: "Tiêu đề tin tức (English)",
-      type: "input",
-      placeholder: "Nhập tiêu đề tin tức (English)",
-      col: 6,
-    },
+
     {
       key: "status",
       label: "Trạng thái",
@@ -139,21 +133,8 @@ export default function NewManager() {
 
   const columns: TableColumn<NewDto>[] = [
     {
-      field: "url",
-      header: "Đường dẫn tin tức",
-      width: 120,
-      sortable: true,
-      frozen: true,
-    },
-    {
       field: "title",
       header: "Tiêu đề tin tức",
-      width: 200,
-      sortable: true,
-    },
-    {
-      field: "titleEn",
-      header: "Tiêu đề tin tức (English)",
       width: 200,
       sortable: true,
     },

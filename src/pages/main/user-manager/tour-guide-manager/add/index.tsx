@@ -32,6 +32,7 @@ function AddTourGuidePage({
         type: "input",
         placeholder: "Mã hướng dẫn viên tự động sinh khi lưu",
         disabled: true,
+        col: 6,
       },
       {
         name: "slug",
@@ -39,6 +40,7 @@ function AddTourGuidePage({
         type: "input",
         placeholder: "Slug tự động sinh khi lưu",
         disabled: true,
+        col: 6,
       },
       {
         name: "name",
@@ -46,6 +48,7 @@ function AddTourGuidePage({
         type: "input",
         placeholder: "Nhập tên hướng dẫn viên",
         required: true,
+        col: 6,
       },
       {
         name: "phone",
@@ -53,6 +56,7 @@ function AddTourGuidePage({
         type: "phoneNumber",
         required: true,
         placeholder: "Nhập số điện thoại",
+        col: 6,
       },
 
       {
@@ -61,12 +65,14 @@ function AddTourGuidePage({
         type: "email",
         required: true,
         placeholder: "Nhập email",
+        col: 6,
       },
       {
         name: "address",
         label: "Địa chỉ",
         type: "input",
         placeholder: "Nhập địa chỉ",
+        col: 6,
       },
       {
         name: "gender",
@@ -78,6 +84,7 @@ function AddTourGuidePage({
           name: item.name,
           value: item.code,
         })),
+        col: 6,
       },
       {
         name: "birthday",
@@ -85,37 +92,30 @@ function AddTourGuidePage({
         type: "datepicker",
         placeholder: "Nhập ngày sinh",
         required: true,
+        col: 6,
       },
       {
         name: "nationality",
         label: "Quốc tịch",
         type: "input",
         placeholder: "Nhập quốc tịch",
+        col: 6,
       },
       {
         name: "identityCard",
         label: "Số CMND/CCCD",
         type: "input",
         placeholder: "Nhập số CMND/CCCD",
+        col: 6,
       },
       {
         name: "passportNumber",
         label: "Số hộ chiếu",
         type: "input",
         placeholder: "Nhập số hộ chiếu",
+        col: 6,
       },
-      {
-        name: "shortBio",
-        label: "Tiểu sử ngắn",
-        type: "textarea",
-        placeholder: "Nhập tiểu sử ngắn",
-      },
-      {
-        name: "bio",
-        label: "Tiểu sử",
-        type: "textarea",
-        placeholder: "Nhập tiểu sử",
-      },
+
       {
         name: "languages",
         label: "Ngôn ngữ",
@@ -126,6 +126,7 @@ function AddTourGuidePage({
           name: item.name,
           value: item.code,
         })),
+        col: 6,
       },
       {
         name: "specialties",
@@ -137,78 +138,78 @@ function AddTourGuidePage({
           name: item.name,
           value: item.code,
         })),
+        col: 6,
       },
       {
         name: "yearsOfExperience",
         label: "Số năm kinh nghiệm",
         type: "number",
         placeholder: "Nhập số năm kinh nghiệm",
+        col: 6,
       },
       {
         name: "licenseNumber",
         label: "Số giấy phép",
         type: "input",
         placeholder: "Nhập số giấy phép",
+        col: 6,
       },
       {
         name: "licenseIssuedDate",
         label: "Ngày cấp giấy phép",
         type: "datepicker",
         placeholder: "Nhập ngày cấp giấy phép",
+        col: 6,
       },
       {
         name: "licenseExpiryDate",
         label: "Ngày hết hạn giấy phép",
         type: "datepicker",
         placeholder: "Nhập ngày hết hạn giấy phép",
+        col: 6,
       },
       {
         name: "licenseIssuedBy",
         label: "Nơi cấp giấy phép",
         type: "input",
         placeholder: "Nhập nơi cấp giấy phép",
+        col: 6,
       },
-      {
-        name: "description",
-        label: "Mô tả",
-        type: "textarea",
-        placeholder: "Nhập mô tả",
-      },
+
       {
         name: "baseSalary",
         label: "Lương cơ bản",
         type: "number",
         placeholder: "Nhập lương cơ bản",
+        col: 6,
       },
       {
         name: "commissionRate",
         label: "Tỷ lệ hoa hồng (%)",
         type: "number",
         placeholder: "Nhập tỷ lệ hoa hồng",
+        col: 6,
       },
       {
         name: "startDate",
         label: "Ngày bắt đầu",
         type: "datepicker",
         placeholder: "Nhập ngày bắt đầu",
+        col: 6,
       },
       {
         name: "endDate",
         label: "Ngày kết thúc",
         type: "datepicker",
         placeholder: "Nhập ngày kết thúc",
+        col: 6,
       },
       {
         name: "isAvailable",
         label: "Có sẵn",
         type: "checkbox",
         placeholder: "Chọn trạng thái có sẵn",
-      },
-      {
-        name: "bankAccountNumber",
-        label: "Số tài khoản ngân hàng",
-        type: "input",
-        placeholder: "Nhập số tài khoản ngân hàng",
+        col: 6,
       },
 
       {
@@ -216,21 +217,44 @@ function AddTourGuidePage({
         label: "Tên ngân hàng",
         type: "input",
         placeholder: "Nhập tên ngân hàng",
+        col: 6,
       },
-
       {
         name: "bankAccountNumber",
         label: "Số tài khoản ngân hàng",
         type: "input",
         placeholder: "Nhập số tài khoản ngân hàng",
+        col: 6,
       },
-
       {
         name: "bankAccountName",
         label: "Tên chủ tài khoản ngân hàng",
         type: "input",
         placeholder: "Nhập tên chủ tài khoản ngân hàng",
+        col: 6,
       },
+      {
+        name: "shortBio",
+        label: "Tiểu sử ngắn",
+        type: "textarea",
+        placeholder: "Nhập tiểu sử ngắn",
+        col: 6,
+      },
+      {
+        name: "description",
+        label: "Mô tả",
+        type: "input",
+        placeholder: "Nhập mô tả",
+        col: 6,
+      },
+      {
+        name: "bio",
+        label: "Tiểu sử",
+        type: "textarea",
+        placeholder: "Nhập tiểu sử",
+        col: 24,
+      },
+
       {
         name: "avatar",
         label: "Ảnh đại diện",
@@ -267,7 +291,7 @@ function AddTourGuidePage({
         submitText="Lưu"
         cancelText="Hủy"
         gap="20px"
-        gridColumns={5}
+        gridColumns={24}
       />
     </BaseView>
   );

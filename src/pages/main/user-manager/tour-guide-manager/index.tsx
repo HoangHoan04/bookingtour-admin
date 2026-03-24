@@ -19,12 +19,23 @@ import type { TourGuideDto, TourGuideFilterDto } from "@/dto/tour-guide.dto";
 import {
   useActivateTourGuide,
   useDeactivateTourGuide,
+  useExportTourGuideExcel,
+  useImportTourGuideExcel,
   usePaginationTourGuide,
 } from "@/hooks/tour-guide";
-
 import { useRouter } from "@/routers/hooks";
+import {
+  excelService,
+  pdfService,
+  type ExcelColumn,
+  type PdfColumn,
+} from "@/services";
 import { PrimeIcons } from "primereact/api";
 import { useRef, useState } from "react";
+
+// ============================================================
+// CONSTANTS
+// ============================================================
 
 export const initFilter: TourGuideFilterDto = {
   code: "",
@@ -32,6 +43,72 @@ export const initFilter: TourGuideFilterDto = {
   email: "",
   isDeleted: undefined,
 };
+
+/** Cột dùng cho file mẫu import (chỉ những trường cần thiết) */
+const TEMPLATE_COLUMNS: ExcelColumn[] = [
+  // NOTE: Header phải khớp 100% với mapping import (HEADER_MAP)
+  // Backend đang validate theo nhãn "Họ tên"
+  { field: "name", header: "Họ tên", width: 25, required: true },
+  { field: "phone", header: "Số điện thoại", width: 18, required: true },
+  { field: "email", header: "Email", width: 28, required: true },
+  { field: "address", header: "Địa chỉ", width: 30 },
+  {
+    field: "gender",
+    header: "Giới tính",
+    width: 14,
+    formatter: () => "Nam / Nữ",
+  },
+  { field: "birthday", header: "Ngày sinh", width: 16, required: true },
+  { field: "nationality", header: "Quốc tịch", width: 16 },
+  { field: "identityCard", header: "Số CCCD/CMND", width: 18 },
+  { field: "passportNumber", header: "Số hộ chiếu", width: 18 },
+  { field: "licenseNumber", header: "Số chứng chỉ", width: 18 },
+  { field: "licenseIssuedDate", header: "Ngày cấp CC", width: 16 },
+  { field: "licenseExpiryDate", header: "Ngày hết hạn CC", width: 18 },
+  { field: "licenseIssuedBy", header: "Nơi cấp CC", width: 22 },
+  { field: "yearsOfExperience", header: "Kinh nghiệm (năm)", width: 18 },
+  { field: "baseSalary", header: "Lương cơ bản", width: 18 },
+  { field: "commissionRate", header: "Hoa hồng (%)", width: 16 },
+  { field: "bankAccountNumber", header: "Số TK Ngân hàng", width: 20 },
+  { field: "bankName", header: "Tên ngân hàng", width: 20 },
+  { field: "bankAccountName", header: "Chủ tài khoản", width: 22 },
+  { field: "shortBio", header: "Giới thiệu ngắn", width: 35 },
+];
+
+/** Cột dùng cho xuất PDF */
+const PDF_COLUMNS: PdfColumn[] = [
+  { field: "code", header: "Mã HDV", width: 1, align: "center" },
+  { field: "name", header: "Họ và tên", width: 2 },
+  { field: "email", header: "Email", width: 2.5 },
+  { field: "phone", header: "Điện thoại", width: 1.5, align: "center" },
+  {
+    field: "gender",
+    header: "Giới tính",
+    width: 1,
+    align: "center",
+    formatter: (v) =>
+      v === "MALE" ? "Nam" : v === "FEMALE" ? "Nữ" : (v ?? ""),
+  },
+  {
+    field: "yearsOfExperience",
+    header: "Kinh nghiệm",
+    width: 1,
+    align: "center",
+    formatter: (v) => (v != null ? `${v} năm` : ""),
+  },
+  { field: "licenseNumber", header: "Số GP", width: 1.5, align: "center" },
+  {
+    field: "isDeleted",
+    header: "Trạng thái",
+    width: 1.2,
+    align: "center",
+    formatter: (v) => (v ? "Ngưng HĐ" : "Đang HĐ"),
+  },
+];
+
+// ============================================================
+// COMPONENT
+// ============================================================
 
 export default function TourGuideManager() {
   const router = useRouter();
@@ -46,6 +123,7 @@ export default function TourGuideManager() {
   const [selectedRows, setSelectedRows] = useState<TourGuideDto[]>([]);
   const [selectedTourGuide, setSelectedTourGuide] =
     useState<TourGuideDto | null>(null);
+
   const activateConfirmRef = useRef<ActionConfirmRef>(null);
   const deactivateConfirmRef = useRef<ActionConfirmRef>(null);
 
@@ -55,6 +133,14 @@ export default function TourGuideManager() {
     useDeactivateTourGuide();
   const { onActivateTourGuide, isLoading: isLoadingActivate } =
     useActivateTourGuide();
+  const { onExportTourGuideExcel, isLoading: isLoadingExportExcel } =
+    useExportTourGuideExcel();
+  const { onImportTourGuideExcel, isLoading: isLoadingImportExcel } =
+    useImportTourGuideExcel();
+
+  // ------------------------------------------------------------
+  // Filter / Paginate handlers
+  // ------------------------------------------------------------
 
   const handleSearch = (isReset?: boolean) => {
     setPagination((prev) => ({
@@ -77,6 +163,10 @@ export default function TourGuideManager() {
     }));
   };
 
+  // ------------------------------------------------------------
+  // Activate / Deactivate handlers
+  // ------------------------------------------------------------
+
   const handleActivate = async () => {
     if (!selectedTourGuide) return;
     await onActivateTourGuide(selectedTourGuide.id);
@@ -97,6 +187,134 @@ export default function TourGuideManager() {
         .ADD_TOUR_GUIDE.path,
     );
   };
+
+  // ------------------------------------------------------------
+  // ✅ Excel handlers
+  // ------------------------------------------------------------
+
+  /** Xuất toàn bộ dữ liệu trang hiện tại ra Excel */
+  const handleExportExcel = async () => {
+    try {
+      await onExportTourGuideExcel({
+        ...pagination,
+        where: pagination.where,
+      });
+    } catch (err: any) {
+      console.error("[ExportExcel]", err.message);
+    }
+  };
+
+  /** Tải file mẫu Excel để nhập dữ liệu */
+  const handleDownloadTemplate = async () => {
+    try {
+      await excelService.downloadTemplate(
+        TEMPLATE_COLUMNS,
+        "mau-nhap-huong-dan-vien.xlsx",
+        {
+          sheetName: "Dữ liệu HDV",
+          notes:
+            "- Các cột có dấu (*) là bắt buộc, không được để trống.\n" +
+            "- Giới tính: nhập 'Nam' hoặc 'Nữ'.\n" +
+            "- Ngày sinh / Ngày cấp / Ngày hết hạn: định dạng dd/mm/yyyy (ví dụ: 15/03/1990).\n" +
+            "- Lương cơ bản: nhập số (không cần ký hiệu VND).\n" +
+            "- Hoa hồng (%): nhập số từ 0 đến 100.\n" +
+            "- Không xóa hàng tiêu đề.",
+          sampleData: [
+            {
+              name: "Nguyễn Văn An",
+              phone: "0912345678",
+              email: "nguyenvanan@email.com",
+              address: "123 Đường ABC, TP.HCM",
+              gender: "Nam",
+              birthday: "15/03/1990",
+              nationality: "Việt Nam",
+              identityCard: "012345678901",
+              passportNumber: "B1234567",
+              licenseNumber: "CC-HDV-2024-001",
+              licenseIssuedDate: "01/01/2024",
+              licenseExpiryDate: "01/01/2029",
+              licenseIssuedBy: "Sở Du lịch TP.HCM",
+              yearsOfExperience: 3,
+              baseSalary: 12000000,
+              commissionRate: 5,
+              bankAccountNumber: "0123456789",
+              bankName: "Vietcombank",
+              bankAccountName: "NGUYEN VAN AN",
+              shortBio: "Hướng dẫn viên nội địa, nhiệt tình và đúng giờ.",
+            },
+          ],
+        },
+      );
+    } catch (err: any) {
+      console.error("[DownloadTemplate]", err.message);
+    }
+  };
+
+  /** Import từ file Excel người dùng chọn */
+  const handleImportExcel = async () => {
+    try {
+      const file = await excelService.openFileDialog();
+      if (!file) return;
+
+      const res: any = await onImportTourGuideExcel(file);
+      if (res?.failed > 0) {
+        console.warn("[ImportTourGuideExcel] errors:", res?.errors || []);
+      }
+      await refetch();
+    } catch (err: any) {
+      console.error("[ImportExcel]", err.message);
+    }
+  };
+
+  // ------------------------------------------------------------
+  // ✅ PDF handlers
+  // ------------------------------------------------------------
+
+  const PDF_OPTIONS = {
+    title: "DANH SÁCH HƯỚNG DẪN VIÊN",
+    subtitle: "Hệ thống quản lý BookingTour Admin",
+    orientation: "landscape" as const,
+    pageSize: "a4" as const,
+    headerColor: [31, 78, 121] as [number, number, number],
+    alternateRowColor: [235, 243, 255] as [number, number, number],
+    showPageNumber: true,
+    showDate: true,
+    footerText: "BookingTour Admin System — Tài liệu nội bộ",
+  };
+
+  /** Xuất danh sách ra file PDF và tải xuống */
+  const handleExportPdf = async () => {
+    try {
+      await pdfService.exportTableToPdf(data || [], PDF_COLUMNS, {
+        ...PDF_OPTIONS,
+        filename: `danh-sach-huong-dan-vien_${new Date().toLocaleDateString("vi-VN").replace(/\//g, "-")}.pdf`,
+      });
+    } catch (err: any) {
+      console.error("[ExportPdf]", err.message);
+    }
+  };
+
+  /** Xem trước PDF trong tab mới */
+  const handlePreviewPdf = async () => {
+    try {
+      await pdfService.previewTablePdf(data || [], PDF_COLUMNS, PDF_OPTIONS);
+    } catch (err: any) {
+      console.error("[PreviewPdf]", err.message);
+    }
+  };
+
+  /** In danh sách trực tiếp */
+  const handlePrint = async () => {
+    try {
+      await pdfService.printTablePdf(data || [], PDF_COLUMNS, PDF_OPTIONS);
+    } catch (err: any) {
+      console.error("[PrintPdf]", err.message);
+    }
+  };
+
+  // ------------------------------------------------------------
+  // Table config
+  // ------------------------------------------------------------
 
   const filterFields: FilterField[] = [
     {
@@ -229,6 +447,10 @@ export default function TourGuideManager() {
     },
   ];
 
+  // ------------------------------------------------------------
+  // RENDER
+  // ------------------------------------------------------------
+
   return (
     <BaseView>
       <FilterComponent
@@ -242,7 +464,13 @@ export default function TourGuideManager() {
       <TableCustom<TourGuideDto>
         data={data || []}
         columns={columns}
-        loading={isLoading || isLoadingActivate || isLoadingDeactivate}
+        loading={
+          isLoading ||
+          isLoadingActivate ||
+          isLoadingDeactivate ||
+          isLoadingExportExcel ||
+          isLoadingImportExcel
+        }
         enableSelection={true}
         selectedRows={selectedRows}
         onSelectionChange={setSelectedRows}
@@ -262,15 +490,62 @@ export default function TourGuideManager() {
           show: true,
           align: "between",
           leftContent: (
-            <RowActions
-              actions={[
-                {
-                  ...CommonActions.create(handleCreate),
-                },
-              ]}
-              justify="start"
-              gap="medium"
-            />
+            <>
+              {/* Thêm mới */}
+              <RowActions
+                actions={[CommonActions.create(handleCreate)]}
+                justify="start"
+                gap="medium"
+              />
+
+              {/* Xuất Excel */}
+              <RowActions
+                actions={[CommonActions.exportExcel(handleExportExcel)]}
+                justify="start"
+                gap="medium"
+              />
+
+              {/* Import Excel (tải mẫu + upload) */}
+              <RowActions
+                actions={[
+                  CommonActions.uploadExcel(
+                    handleDownloadTemplate,
+                    handleImportExcel,
+                  ),
+                ]}
+                justify="start"
+                gap="medium"
+              />
+
+              {/* Xuất PDF */}
+              <RowActions
+                actions={[CommonActions.exportPdf(handleExportPdf)]}
+                justify="start"
+                gap="medium"
+              />
+
+              {/* Xem trước PDF */}
+              <RowActions
+                actions={[
+                  {
+                    key: "preview-pdf",
+                    label: "Xem trước PDF",
+                    icon: PrimeIcons.FILE,
+                    severity: "info",
+                    onClick: handlePreviewPdf,
+                  },
+                ]}
+                justify="start"
+                gap="medium"
+              />
+
+              {/* In */}
+              <RowActions
+                actions={[CommonActions.print(handlePrint)]}
+                justify="start"
+                gap="medium"
+              />
+            </>
           ),
           showRefreshButton: true,
           onRefresh: refetch,
