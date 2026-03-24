@@ -152,11 +152,6 @@ export const enumData = {
     CITY: { code: "CITY", name: "Thành phố" },
   },
 
-  LANGUAGES: {
-    EN: { code: "EN", name: "English" },
-    VI: { code: "VI", name: "Tiếng Việt" },
-  },
-
   TOUR_STATUS: {
     DRAFT: { code: "DRAFT", name: "Bản nháp" },
     ACTIVE: { code: "ACTIVE", name: "Đang hoạt động" },

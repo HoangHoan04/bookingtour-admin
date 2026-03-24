@@ -25,7 +25,7 @@ function AddBannerPage({
   const router = useRouter();
 
   const formFields = useMemo((): FormField[] => {
-    const formFieldsVi: FormField[] = [
+    return [
       {
         name: "title",
         label: "Tiêu đề banner",
@@ -33,27 +33,6 @@ function AddBannerPage({
         required: true,
         placeholder: "Nhập tiêu đề banner",
         maxLength: 255,
-      },
-    ];
-
-    const formFieldsEn: FormField[] = [
-      {
-        name: "titleEn",
-        label: "Tiêu đề banner (Tiếng anh)",
-        type: "input",
-        required: true,
-        placeholder: "Nhập tiêu đề banner (Tiếng anh)",
-        maxLength: 255,
-      },
-    ];
-    return [
-      {
-        name: "tab_content",
-        label: "",
-        type: "tab",
-        placeholder: "",
-        tabFields: [formFieldsVi, formFieldsEn],
-        gridColumn: "span 3",
       },
       {
         name: "url",

@@ -20,7 +20,7 @@ function EditBannerPage() {
         <AddBannerPage
           isEdit={true}
           isLoadingUpdate={isLoadingUpdate}
-          title="Chỉnh sửa chi nhánh"
+          title="Chỉnh sửa banner"
           initData={data}
           handleUpdate={handleUpdate}
         />

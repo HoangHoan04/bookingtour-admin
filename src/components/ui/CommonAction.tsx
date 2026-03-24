@@ -4,7 +4,7 @@ import type { ActionButton } from "./RowAction";
 export const CommonActions = {
   create: (onClick?: () => void): ActionButton => ({
     key: "create",
-    label: "action.create",
+    label: "Thêm mới",
     icon: PrimeIcons.PLUS_CIRCLE,
     severity: "success",
     onClick,
@@ -12,7 +12,7 @@ export const CommonActions = {
 
   update: (onClick?: () => void): ActionButton => ({
     key: "update",
-    label: "action.update",
+    label: "Cập nhật",
     icon: PrimeIcons.PENCIL,
     severity: "warning",
     onClick,
@@ -20,7 +20,7 @@ export const CommonActions = {
 
   delete: (onClick?: () => void): ActionButton => ({
     key: "delete",
-    label: "action.delete",
+    label: "Xóa",
     icon: PrimeIcons.TRASH,
     severity: "danger",
     onClick,
@@ -28,7 +28,7 @@ export const CommonActions = {
 
   refresh: (onClick?: () => void): ActionButton => ({
     key: "refresh",
-    label: "action.refresh",
+    label: "Làm mới",
     icon: PrimeIcons.REFRESH,
     severity: "info",
     onClick,
@@ -36,22 +36,22 @@ export const CommonActions = {
 
   upload: (
     onDownloadTemplate?: () => void,
-    onUploadFile?: (file: File) => void
+    onUploadFile?: (file: File) => void,
   ): ActionButton => ({
     key: "upload",
-    label: "action.importExcel",
+    label: "Nhập Excel",
     icon: PrimeIcons.FILE_EXCEL,
     severity: "success",
     subActions: [
       {
         key: "download-template",
-        label: "action.downloadTemplate",
+        label: "Tải file mẫu",
         icon: PrimeIcons.DOWNLOAD,
         onClick: onDownloadTemplate,
       },
       {
         key: "upload-file",
-        label: "action.uploadFile",
+        label: "Tải file lên",
         icon: PrimeIcons.UPLOAD,
         onClick: onUploadFile as any,
       },
@@ -60,7 +60,7 @@ export const CommonActions = {
 
   exportExcel: (onClick?: () => void): ActionButton => ({
     key: "export-excel",
-    label: "action.exportExcel",
+    label: "Xuất Excel",
     icon: PrimeIcons.FILE_EXCEL,
     severity: "success",
     onClick,
@@ -68,7 +68,7 @@ export const CommonActions = {
 
   exportPdf: (onClick?: () => void): ActionButton => ({
     key: "export-pdf",
-    label: "action.exportPdf",
+    label: "Xuất PDF",
     icon: PrimeIcons.FILE_PDF,
     severity: "danger",
     onClick,
@@ -76,7 +76,7 @@ export const CommonActions = {
 
   save: (onClick?: () => void, loading?: boolean): ActionButton => ({
     key: "save",
-    label: "action.save",
+    label: "Lưu",
     icon: PrimeIcons.SAVE,
     severity: "info",
     loading,
@@ -85,7 +85,7 @@ export const CommonActions = {
 
   cancel: (onClick?: () => void): ActionButton => ({
     key: "cancel",
-    label: "action.cancel",
+    label: "Hủy",
     icon: PrimeIcons.TIMES,
     severity: "secondary",
     onClick,
@@ -93,7 +93,7 @@ export const CommonActions = {
 
   view: (onClick?: () => void): ActionButton => ({
     key: "view",
-    label: "action.view",
+    label: "Xem chi tiết",
     icon: PrimeIcons.EYE,
     severity: "info",
     onClick,
@@ -101,7 +101,7 @@ export const CommonActions = {
 
   copy: (onClick?: () => void): ActionButton => ({
     key: "copy",
-    label: "action.copy",
+    label: "Sao chép",
     icon: PrimeIcons.COPY,
     severity: "help",
     onClick,
@@ -109,7 +109,7 @@ export const CommonActions = {
 
   print: (onClick?: () => void): ActionButton => ({
     key: "print",
-    label: "action.print",
+    label: "In",
     icon: PrimeIcons.PRINT,
     severity: "secondary",
     onClick,
@@ -117,7 +117,7 @@ export const CommonActions = {
 
   filter: (onClick?: () => void): ActionButton => ({
     key: "filter",
-    label: "action.filter",
+    label: "Bộ lọc",
     icon: PrimeIcons.FILTER,
     severity: "info",
     onClick,
@@ -125,7 +125,7 @@ export const CommonActions = {
 
   settings: (onClick?: () => void): ActionButton => ({
     key: "settings",
-    label: "action.settings",
+    label: "Cài đặt",
     icon: PrimeIcons.COG,
     severity: "secondary",
     onClick,
@@ -133,7 +133,7 @@ export const CommonActions = {
 
   approve: (onClick?: () => void): ActionButton => ({
     key: "approve",
-    label: "action.approve",
+    label: "Phê duyệt",
     icon: PrimeIcons.CHECK_CIRCLE,
     severity: "success",
     onClick,
@@ -141,7 +141,7 @@ export const CommonActions = {
 
   reject: (onClick?: () => void): ActionButton => ({
     key: "reject",
-    label: "action.reject",
+    label: "Từ chối",
     icon: PrimeIcons.TIMES_CIRCLE,
     severity: "danger",
     onClick,
