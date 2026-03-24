@@ -167,6 +167,14 @@ export const enumData = {
     SHOPPING: { code: "SHOPPING", name: "Mua sắm" },
     RELAXATION: { code: "RELAXATION", name: "Nghỉ dưỡng" },
   },
+
+  LANGUAGES: {
+    VIETNAMESE: { code: "VIETNAMESE", name: "Tiếng Việt" },
+    ENGLISH: { code: "ENGLISH", name: "Tiếng Anh" },
+    CHINESE: { code: "CHINESE", name: "Tiếng Trung" },
+    JAPANESE: { code: "JAPANESE", name: "Tiếng Nhật" },
+    KOREAN: { code: "KOREAN", name: "Tiếng Hàn" },
+  },
 };
 
 export const millisecondInDay = 86400000;
