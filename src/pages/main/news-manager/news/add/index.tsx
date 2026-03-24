@@ -25,45 +25,6 @@ function AddNewPage({
   const router = useRouter();
 
   const formFields = useMemo((): FormField[] => {
-    const formFieldsVi: FormField[] = [
-      {
-        name: "titleVI",
-        label: "Tiêu đề tin tức (VI)",
-        type: "input",
-        required: true,
-        placeholder: "Nhập tiêu đề tin tức (VI)",
-        maxLength: 255,
-      },
-      {
-        name: "contentVI",
-        label: "Nội dung tin tức (VI)",
-        type: "richtext",
-        required: true,
-        placeholder:
-          "Nhập nội dung tin tức (VI). Bạn có thể nhúng hình ảnh trực tiếp bằng cách nhấn vào nút hình ảnh trên thanh công cụ.",
-      },
-    ];
-
-    const formFieldsEn: FormField[] = [
-      {
-        name: "titleEN",
-        label: "Tiêu đề tin tức (EN)",
-        type: "input",
-        required: true,
-        placeholder: "Nhập tiêu đề tin tức (EN)",
-        maxLength: 255,
-      },
-
-      {
-        name: "contentEN",
-        label: "Nội dung tin tức (EN)",
-        type: "richtext",
-        required: true,
-        placeholder:
-          "Nhập nội dung tin tức (EN). Bạn có thể nhúng hình ảnh trực tiếp bằng cách nhấn vào nút hình ảnh trên thanh công cụ.",
-      },
-    ];
-
     return [
       {
         name: "url",
@@ -72,6 +33,22 @@ function AddNewPage({
         required: false,
         placeholder: "Nhập URL tin tức",
         disabled: isEdit,
+      },
+        {
+        name: "title",
+        label: "Tiêu đề tin tức ",
+        type: "input",
+        required: true,
+        placeholder: "Nhập tiêu đề tin tức ",
+        maxLength: 255,
+      },
+       {
+        name: "content",
+        label: "Nội dung tin tức ",
+        type: "richtext",
+        required: true,
+        placeholder:
+          "Nhập nội dung tin tức. Bạn có thể nhúng hình ảnh trực tiếp bằng cách nhấn vào nút hình ảnh trên thanh công cụ.",
       },
       {
         name: "type",
@@ -109,14 +86,6 @@ function AddNewPage({
         type: "image",
         isSingle: true,
         required: false,
-        gridColumn: "span 3",
-      },
-      {
-        name: "tab_content",
-        label: "",
-        type: "tab",
-        placeholder: "",
-        tabFields: [formFieldsVi, formFieldsEn],
         gridColumn: "span 3",
       },
     ];

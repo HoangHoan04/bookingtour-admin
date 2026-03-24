@@ -14,7 +14,6 @@ const MODULE_MAPPING: Record<string, string> = {
   PERMISSION_MANAGER: "PERMISSION",
   SHIFT: "SHIFT",
   SHIFT_SHEDULE: "SHIFT_SCHEDULE",
-  SETTING_STRING: "SETTING_STRING",
   ASSIGN_PERMISSION: "ASSIGN_PERMISSION",
 };
 
@@ -25,7 +24,7 @@ interface ModuleOption {
 
 const extractModulesFromRoutes = (
   routes: any,
-  modules: Map<string, ModuleOption> = new Map()
+  modules: Map<string, ModuleOption> = new Map(),
 ): ModuleOption[] => {
   if (!routes || typeof routes !== "object") return [];
 
@@ -35,7 +34,7 @@ const extractModulesFromRoutes = (
       const hasVisibleChildren =
         value.children &&
         Object.values(value.children).some(
-          (child: any) => child.isShow !== false
+          (child: any) => child.isShow !== false,
         );
 
       if (!hasVisibleChildren) {

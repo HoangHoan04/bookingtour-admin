@@ -27,7 +27,6 @@ import { useRef, useState } from "react";
 
 export const initFilter: BannerFilterDto = {
   title: "",
-  titleEn: "",
   status: "",
   type: "",
 };
@@ -101,13 +100,6 @@ export default function BannerManager() {
       col: 6,
     },
     {
-      key: "titleEn",
-      label: "Tiêu đề banner (English)",
-      type: "input",
-      placeholder: "Nhập tiêu đề banner (English)",
-      col: 6,
-    },
-    {
       key: "status",
       label: "Trạng thái",
       type: "input",
@@ -148,12 +140,6 @@ export default function BannerManager() {
     {
       field: "title",
       header: "Tiêu đề banner",
-      width: 200,
-      sortable: true,
-    },
-    {
-      field: "titleEn",
-      header: "Tiêu đề banner (English)",
       width: 200,
       sortable: true,
     },

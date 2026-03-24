@@ -152,11 +152,6 @@ export const enumData = {
     CITY: { code: "CITY", name: "Thành phố" },
   },
 
-  LANGUAGES: {
-    EN: { code: "EN", name: "English" },
-    VI: { code: "VI", name: "Tiếng Việt" },
-  },
-
   TOUR_STATUS: {
     DRAFT: { code: "DRAFT", name: "Bản nháp" },
     ACTIVE: { code: "ACTIVE", name: "Đang hoạt động" },
@@ -171,6 +166,14 @@ export const enumData = {
     FOOD: { code: "FOOD", name: "Ẩm thực" },
     SHOPPING: { code: "SHOPPING", name: "Mua sắm" },
     RELAXATION: { code: "RELAXATION", name: "Nghỉ dưỡng" },
+  },
+
+  LANGUAGES: {
+    VIETNAMESE: { code: "VIETNAMESE", name: "Tiếng Việt" },
+    ENGLISH: { code: "ENGLISH", name: "Tiếng Anh" },
+    CHINESE: { code: "CHINESE", name: "Tiếng Trung" },
+    JAPANESE: { code: "JAPANESE", name: "Tiếng Nhật" },
+    KOREAN: { code: "KOREAN", name: "Tiếng Hàn" },
   },
 };
 

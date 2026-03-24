@@ -381,23 +381,5 @@ export const ROUTES = {
         },
       },
     },
-
-    SETTING_SYSTEM: {
-      key: "SETTING_SYSTEM",
-      label: "Cài đặt hệ thống",
-      icon: "pi pi-cog",
-      children: {
-        // SETTING_LANGUAGE: {
-        //   key: "SETTING_LANGUAGE",
-        //   label: "Cài đặt ngôn ngữ",
-        //   path: "setting-system/setting-language",
-        // },
-        SETTING_STRING: {
-          key: "SETTING_STRING",
-          label: "settings.dynamicConfig",
-          path: "setting-system/setting-string",
-        },
-      },
-    },
   },
 };

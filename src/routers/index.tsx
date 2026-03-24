@@ -4,8 +4,6 @@ import AppLayout from "@/layout/AppLayout";
 import LoginPage from "@/pages/auth/LoginPage";
 import Dashboard from "@/pages/main/dashboard";
 
-import SettingStringPage from "@/pages/main/setting-system/setting-string";
-
 import BannerManager from "@/pages/main/news-manager/banners";
 import AddBannerPage from "@/pages/main/news-manager/banners/add";
 import DetailBannerPage from "@/pages/main/news-manager/banners/detail";
@@ -32,6 +30,10 @@ import TourManager from "@/pages/main/tour-manager/tour-list";
 import AddTourPage from "@/pages/main/tour-manager/tour-list/add";
 import DetailTourPage from "@/pages/main/tour-manager/tour-list/detail";
 import EditTourPage from "@/pages/main/tour-manager/tour-list/edit";
+import TourPriceManager from "@/pages/main/tour-manager/tour-price";
+import AddTourPricePage from "@/pages/main/tour-manager/tour-price/add";
+import DetailTourPricePage from "@/pages/main/tour-manager/tour-price/detail";
+import EditTourPricePage from "@/pages/main/tour-manager/tour-price/edit";
 import CustomerManager from "@/pages/main/user-manager/customer-manager";
 import AddCustomerPage from "@/pages/main/user-manager/customer-manager/add";
 import DetailCustomerPage from "@/pages/main/user-manager/customer-manager/detail";
@@ -44,10 +46,6 @@ import NotFound from "@/pages/other/NotFound";
 import NotificationListPage from "@/pages/other/NotificationList";
 import { Route, Routes } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
-import TourPriceManager from "@/pages/main/tour-manager/tour-price";
-import AddTourPricePage from "@/pages/main/tour-manager/tour-price/add";
-import DetailTourPricePage from "@/pages/main/tour-manager/tour-price/detail";
-import EditTourPricePage from "@/pages/main/tour-manager/tour-price/edit";
 
 export default function AppRoutes() {
   return (
@@ -464,16 +462,6 @@ export default function AppRoutes() {
             element={
               <AuthGuard requiredPermission="PERMISSION:ASSIGN">
                 <PermissionAssignmentPage />
-              </AuthGuard>
-            }
-          />
-
-          {/* Thiết lập động */}
-          <Route
-            path={ROUTES.MAIN.SETTING_SYSTEM.children.SETTING_STRING.path}
-            element={
-              <AuthGuard requiredPermission="SETTING_STRING:VIEW">
-                <SettingStringPage />
               </AuthGuard>
             }
           />
