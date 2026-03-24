@@ -1,39 +1,5 @@
 import type { BaseDto } from "./common/base.dto";
-
-// Tour Price DTO
-export interface TourPriceDto extends BaseDto {
-  code: string;
-  price: number;
-  priceType: string;
-  currency: string;
-  tourDetailId: string;
-}
-
-// Tour Detail DTO
-export interface TourDetailDto extends BaseDto {
-  tourId?: string;
-  code: string;
-  startDay: Date;
-  endDay: Date;
-  startLocation: string;
-  capacity: number;
-  remainingSeats: number;
-  status: string;
-  tourGuideId?: string;
-}
-
-export interface CreateTourDetailDto {
-  startDay: Date;
-  endDay: Date;
-  startLocation: string;
-  capacity: number;
-  status?: string;
-  tourGuideId?: string;
-}
-
-export interface UpdateTourDetailDto extends CreateTourDetailDto {
-  id: string;
-}
+import type { CreateTourDetailDto, TourDetailDto } from "./tour-detail.dto";
 
 // Tour DTO
 export interface TourDto extends BaseDto {
@@ -55,13 +21,13 @@ export interface TourDto extends BaseDto {
   tags?: string[];
   status: string;
   tourDestinations?: any[];
-  tourDetails?: TourDetailDto[];
+  __tourDetails__?: TourDetailDto[];
   reviews?: any[];
 }
 
 export interface CreateTourDto {
   title: string;
-  slug?: string; // Slug sẽ được tự động tạo từ title nếu không cung cấp
+  slug?: string;
   location: string;
   durations: string;
   shortDescription: string;

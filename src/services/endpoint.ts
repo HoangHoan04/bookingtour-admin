@@ -162,4 +162,14 @@ export const API_ENDPOINTS = {
     FIND_BY_ID: "/api/admin/tour-detail/find-by-id",
     SELECT_BOX: "/api/admin/tour-detail/select-box",
   },
+
+  TOUR_PRICE: {
+    PAGINATION: "/api/admin/tour-price/pagination",
+    CREATE: "/api/admin/tour-price/create",
+    UPDATE: "/api/admin/tour-price/update",
+    DEACTIVATE: "/api/admin/tour-price/deactivate",
+    ACTIVATE: "/api/admin/tour-price/activate",
+    FIND_BY_ID: "/api/admin/tour-price/find-by-id",
+    SELECT_BOX: "/api/admin/tour-price/select-box",
+  },
 };

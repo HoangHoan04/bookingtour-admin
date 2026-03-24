@@ -152,6 +152,32 @@ export const ROUTES = {
             },
           },
         },
+        TOUR_PRICE_MANAGER: {
+          key: "TOUR_PRICE_MANAGER",
+          label: "Quản lý giá tour",
+          path: "/tour-price-manager",
+          children: {
+            ADD_TOUR_PRICE: {
+              key: "ADD_TOUR_PRICE",
+              label: "Thêm giá tour",
+              path: "/tour-price/add",
+              isShow: false,
+            },
+            EDIT_TOUR_PRICE: {
+              key: "EDIT_TOUR_PRICE",
+              label: "Chỉnh sửa giá tour",
+              path: "/tour-price/edit/:id",
+              isShow: false,
+            },
+            DETAIL_TOUR_PRICE: {
+              key: "DETAIL_TOUR_PRICE",
+              label: "Chi tiết giá tour",
+              path: "/tour-price/detail/:id",
+              isShow: false,
+            },
+          },
+        },
+
         DESTINATION_MANAGER: {
           key: "DESTINATION_MANAGER",
           label: "Quản lý điểm đến",

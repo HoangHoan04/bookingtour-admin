@@ -15,44 +15,42 @@ import TableCustom, {
   type TableColumn,
 } from "@/components/ui/TableCustom";
 import type { PaginationDto } from "@/dto";
-import type { TourDetailDto, TourFilterDto } from "@/dto/tour.dto";
+import type { TourPriceDto, TourPriceFilterDto } from "@/dto/tour-price.dto";
 import {
-  useActivateTour,
-  useDeactivateTour,
-  usePaginationTourDetail,
-} from "@/hooks/tour-detail";
+  useActivateTourPrice,
+  useDeactivateTourPrice,
+  usePaginationTourPrice,
+} from "@/hooks/tour-price";
 import { useRouter } from "@/routers/hooks";
 import { PrimeIcons } from "primereact/api";
 import { useRef, useState } from "react";
 
-export const initFilter: TourFilterDto = {
-  title: "",
+export const initFilter: TourPriceFilterDto = {
   code: "",
-  location: "",
-  category: "",
-  tags: [],
-  status: "",
-  isDeleted: undefined,
+  tourDetailId: "",
 };
 
-export default function TourDetailManager() {
+export default function TourPriceManager() {
   const router = useRouter();
-  const [filter, setFilter] = useState<TourFilterDto>(initFilter);
-  const [pagination, setPagination] = useState<PaginationDto<TourFilterDto>>({
+  const [filter, setFilter] = useState<TourPriceFilterDto>(initFilter);
+  const [pagination, setPagination] = useState<
+    PaginationDto<TourPriceFilterDto>
+  >({
     skip: 0,
     take: 10,
     where: initFilter,
   });
-  const [selectedRows, setSelectedRows] = useState<TourDetailDto[]>([]);
-  const [selectedTour, setSelectedTour] = useState<TourDetailDto | null>(null);
+  const [selectedRows, setSelectedRows] = useState<TourPriceDto[]>([]);
+  const [selectedTour, setSelectedTour] = useState<TourPriceDto | null>(null);
   const activateConfirmRef = useRef<ActionConfirmRef>(null);
   const deactivateConfirmRef = useRef<ActionConfirmRef>(null);
 
   const { data, isLoading, refetch, total } =
-    usePaginationTourDetail(pagination);
-  const { onDeactivateTour, isLoading: isLoadingDeactivate } =
-    useDeactivateTour();
-  const { onActivateTour, isLoading: isLoadingActivate } = useActivateTour();
+    usePaginationTourPrice(pagination);
+  const { onDeactivateTourPrice, isLoading: isLoadingDeactivate } =
+    useDeactivateTourPrice();
+  const { onActivateTourPrice, isLoading: isLoadingActivate } =
+    useActivateTourPrice();
 
   const handleSearch = (isReset?: boolean) => {
     setPagination((prev) => ({
@@ -64,7 +62,7 @@ export default function TourDetailManager() {
   };
 
   const handleFiltersChange = (newFilters: Record<string, any>) => {
-    setFilter(newFilters as TourFilterDto);
+    setFilter(newFilters as TourPriceFilterDto);
   };
 
   const handlePageChange = (page: number, pageSize: number) => {
@@ -77,119 +75,76 @@ export default function TourDetailManager() {
 
   const handleActivate = async () => {
     if (!selectedTour) return;
-    await onActivateTour(selectedTour.id);
+    await onActivateTourPrice(selectedTour.id);
     await refetch();
     setSelectedTour(null);
   };
 
   const handleDeactivate = async () => {
     if (!selectedTour) return;
-    await onDeactivateTour(selectedTour.id);
+    await onDeactivateTourPrice(selectedTour.id);
     await refetch();
     setSelectedTour(null);
   };
 
   const handleCreate = () => {
     router.push(
-      ROUTES.MAIN.TOUR_MANAGER.children.TOUR_DETAIL_MANAGER.children
-        .ADD_TOUR_DETAIL.path,
+      ROUTES.MAIN.TOUR_MANAGER.children.TOUR_PRICE_MANAGER.children
+        .ADD_TOUR_PRICE.path,
     );
   };
 
   const filterFields: FilterField[] = [
     {
       key: "code",
-      label: "Mã tour",
+      label: "Mã tour price",
       type: "input",
-      placeholder: "Nhập mã tour",
+      placeholder: "Nhập mã tour price",
       col: 6,
     },
     {
-      key: "title",
-      label: "Tên tour",
-      type: "input",
-      placeholder: "Nhập tên tour",
-      col: 6,
-    },
-    {
-      key: "location",
-      label: "Địa điểm",
-      type: "input",
-      placeholder: "Nhập địa điểm",
-      col: 6,
-    },
-    {
-      key: "category",
-      label: "Danh mục",
-      type: "input",
-      placeholder: "Nhập danh mục",
-      col: 6,
-    },
-    {
-      key: "status",
-      label: "Trạng thái tour",
+      key: "tourDetailId",
+      label: "Chi tiết tour được liên kết",
       type: "select",
-      options: Object.values(enumData.TOUR_STATUS || {}).map((item: any) => ({
-        label: item.name,
-        value: item.code,
-      })),
-      placeholder: "Chọn trạng thái",
-      col: 6,
-    },
-    {
-      key: "isDeleted",
-      label: "Hoạt động",
-      type: "select",
-      options: Object.values(enumData.STATUS_FILTER || {}).map((item: any) => ({
-        label: item.name,
-        value: item.code,
-      })),
-      placeholder: "Chọn trạng thái hoạt động",
+      placeholder: "Chọn chi tiết tour",
       col: 6,
     },
   ];
 
-  const columns: TableColumn<TourDetailDto>[] = [
+  const columns: TableColumn<TourPriceDto>[] = [
     {
       field: "code",
-      header: "Mã chi tiết tour",
+      header: "Mã tour price",
       width: 120,
       sortable: true,
       frozen: true,
     },
     {
-      field: "tourId",
-      header: "Mã tour liên kết",
-      width: 120,
-      sortable: true,
+      field: "tourDetailId",
+      header: "Chi tiết tour ID",
+      width: 350,
+      sortable: false,
     },
     {
-      field: "startLocation",
-      header: "Địa điểm khởi hành",
-      width: 180,
-      sortable: true,
-    },
-    {
-      field: "startDay",
-      header: "Thời gian khởi hành",
-      width: 120,
-      type: "date",
+      field: "priceType",
+      header: "Loại giá",
+      width: 100,
       sortable: true,
       align: "center",
     },
     {
-      field: "endDay",
-      header: "Thời gian kết thúc",
-      width: 120,
-      type: "date",
+      field: "price",
+      header: "Giá",
+      width: 100,
       sortable: true,
+      align: "center",
     },
     {
       field: "status",
       header: "Trạng thái",
       width: 130,
       align: "center",
-      body: (rowData: TourDetailDto) => {
+      body: (rowData: TourPriceDto) => {
         const status = Object.values(enumData.TOUR_STATUS || {}).find(
           (s: any) => s.code === rowData.status,
         ) as any;
@@ -212,7 +167,7 @@ export default function TourDetailManager() {
       header: "Hoạt động",
       width: 120,
       align: "center",
-      body: (rowData: TourDetailDto) => (
+      body: (rowData: TourPriceDto) => (
         <StatusTag
           severity={rowData.isDeleted ? "danger" : "success"}
           value={
@@ -225,7 +180,7 @@ export default function TourDetailManager() {
     },
   ];
 
-  const rowActions: RowAction<TourDetailDto>[] = [
+  const rowActions: RowAction<TourPriceDto>[] = [
     {
       key: "view",
       icon: PrimeIcons.EYE,
@@ -233,7 +188,7 @@ export default function TourDetailManager() {
       severity: "info",
       onClick: (record) =>
         router.push(
-          ROUTES.MAIN.TOUR_MANAGER.children.TOUR_DETAIL_MANAGER.children.DETAIL_TOUR_DETAIL.path.replace(
+          ROUTES.MAIN.TOUR_MANAGER.children.TOUR_PRICE_MANAGER.children.DETAIL_TOUR_PRICE.path.replace(
             ":id",
             record.id,
           ),
@@ -247,7 +202,7 @@ export default function TourDetailManager() {
       visible: (record) => !record.isDeleted,
       onClick: (record) => {
         router.push(
-          ROUTES.MAIN.TOUR_MANAGER.children.TOUR_DETAIL_MANAGER.children.EDIT_TOUR_DETAIL.path.replace(
+          ROUTES.MAIN.TOUR_MANAGER.children.TOUR_PRICE_MANAGER.children.EDIT_TOUR_PRICE.path.replace(
             ":id",
             record.id,
           ),
@@ -288,7 +243,7 @@ export default function TourDetailManager() {
         onClear={() => handleSearch(true)}
       />
 
-      <TableCustom<TourDetailDto>
+      <TableCustom<TourPriceDto>
         data={data || []}
         columns={columns}
         loading={isLoading || isLoadingActivate || isLoadingDeactivate}
