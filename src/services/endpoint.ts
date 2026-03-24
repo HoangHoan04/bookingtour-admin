@@ -130,6 +130,8 @@ export const API_ENDPOINTS = {
     FIND_BY_ID: "/api/admin/tour-guide/find-by-id",
     SELECT_BOX: "/api/admin/tour-guide/select-box",
     CHANGE_PASSWORD: "/api/admin/tour-guide/change-password",
+    IMPORT_EXCEL: "/api/admin/tour-guide/import-excel",
+    EXPORT_EXCEL: "/api/admin/tour-guide/export-excel",
   },
 
   DESTINATION: {

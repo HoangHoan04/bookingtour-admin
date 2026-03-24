@@ -34,7 +34,7 @@ export const CommonActions = {
     onClick,
   }),
 
-  upload: (
+  uploadExcel: (
     onDownloadTemplate?: () => void,
     onUploadFile?: (file: File) => void,
   ): ActionButton => ({

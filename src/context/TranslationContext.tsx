@@ -1,7 +1,7 @@
 import { enumData } from "@/common/enums/enum";
 import type { TranslationDto } from "@/dto/translation.dto";
+import { API_ENDPOINTS } from "@/services";
 import rootApiService from "@/services/api.service";
-import { API_ENDPOINTS } from "@/services/endpoint";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 type Language = "en" | "vi";
@@ -15,7 +15,7 @@ interface TranslationContextType {
 }
 
 const TranslationContext = createContext<TranslationContextType | undefined>(
-  undefined
+  undefined,
 );
 
 export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -41,7 +41,7 @@ export const TranslationProvider: React.FC<{ children: React.ReactNode }> = ({
           skip: 0,
           take: enumData.PAGE.PAGESIZE_MAX,
           where: {},
-        }
+        },
       );
 
       const translationMap: Record<string, { en: string; vi: string }> = {};
