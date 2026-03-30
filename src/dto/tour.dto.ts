@@ -18,7 +18,7 @@ export interface TourDto extends BaseDto {
   viewCount: number;
   bookingCount: number;
   category?: string;
-  tags?: string[];
+  tags?: string;
   status: string;
   tourDestinations?: any[];
   __tourDetails__?: TourDetailDto[];
@@ -36,7 +36,7 @@ export interface CreateTourDto {
   included?: string;
   excluded?: string;
   category?: string;
-  tags?: string[];
+  tags?: string;
   status?: string;
   tourDetails?: CreateTourDetailDto[];
 }

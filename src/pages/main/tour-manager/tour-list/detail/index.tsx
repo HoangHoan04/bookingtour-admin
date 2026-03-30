@@ -67,6 +67,14 @@ export default function DetailTourPage() {
     [],
   );
 
+  function formatText(input: string): string {
+    return input
+      .replace(/[{}"]/g, "")
+      .split(",")
+      .map((item) => item.trim())
+      .join(", ");
+  }
+
   const formatDateForInput = (value: Date | string | undefined) => {
     if (!value) return "";
     const date = new Date(value);
@@ -263,7 +271,10 @@ export default function DetailTourPage() {
             <InfoRow label="Địa điểm" value={tour.location} />
             <InfoRow label="Thời gian" value={tour.durations} />
             <InfoRow label="Danh mục" value={tour.category} />
-            <InfoRow label="Tags" value={tour.tags} />
+            <InfoRow
+              label="Tags"
+              value={formatText(tour.tags ? tour.tags : "") || "Không có tags"}
+            />
             <InfoRow
               label="Trạng thái"
               value={

@@ -24,7 +24,7 @@ function AddTourPage({
   const router = useRouter();
 
   type TourSubmitValues = Omit<TourDto, "tags"> & {
-    tags?: string | string[];
+    tags?: string;
   };
 
   const formFields = useMemo((): FormField[] => {
@@ -135,7 +135,7 @@ function AddTourPage({
 
     const submitData: TourDto = {
       ...values,
-      tags: parsedTags.length > 0 ? parsedTags : undefined,
+      tags: parsedTags.length > 0 ? parsedTags.join(",") : undefined,
     };
 
     if (isEdit && handleUpdate) {
