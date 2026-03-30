@@ -33,7 +33,7 @@ const BaseView: React.FC<BaseViewProps> = ({ children, isLoading, tabs }) => {
     return (
       <div
         className={`base-view flex flex-col h-full overflow-hidden ${
-          isDark ? "bg-[#1f1f1f]" : "bg-[#dee1e6]"
+          isDark ? "bg-black" : "bg-[#dee1e6]"
         }`}
       >
         <style>{`
@@ -71,7 +71,7 @@ const BaseView: React.FC<BaseViewProps> = ({ children, isLoading, tabs }) => {
           }
 
           .base-view-tabs .p-tabview-nav li.p-highlight .p-tabview-nav-link {
-            background: ${isDark ? "#2d2e31" : "#ffffff"} !important;
+            background: ${isDark ? "#000000" : "#ffffff"} !important;
             color: ${isDark ? "#e8eaed" : "#3c4043"} !important;
             z-index: 10 !important;
             font-weight: 500 !important;
@@ -89,17 +89,17 @@ const BaseView: React.FC<BaseViewProps> = ({ children, isLoading, tabs }) => {
           .base-view-tabs .p-tabview-nav li.p-highlight .p-tabview-nav-link::before {
             left: -16px;
             border-bottom-right-radius: 12px;
-            box-shadow: 6px 6px 0 ${isDark ? "#2d2e31" : "#ffffff"};
+            box-shadow: 6px 6px 0 ${isDark ? "#000000" : "#ffffff"};
           }
           .base-view-tabs .p-tabview-nav li.p-highlight .p-tabview-nav-link::after {
             right: -16px;
             border-bottom-left-radius: 12px;
-            box-shadow: -6px 6px 0 ${isDark ? "#2d2e31" : "#ffffff"};
+            box-shadow: -6px 6px 0 ${isDark ? "#000000" : "#ffffff"};
           }
 
           .base-view-tabs .p-tabview-panels {
             flex: 1 !important;
-            background: ${isDark ? "#2d2e31" : "#ffffff"} !important;
+            background: ${isDark ? "#000000" : "#ffffff"} !important;
             overflow-y: auto !important;
             display: flex !important;
             flex-direction: column !important;
@@ -137,7 +137,7 @@ const BaseView: React.FC<BaseViewProps> = ({ children, isLoading, tabs }) => {
   return (
     <div
       className={`base-view flex flex-col h-full overflow-hidden ${
-        isDark ? "bg-[#2d2e31]" : "bg-white"
+        isDark ? "bg-[#000000]" : "bg-white"
       }`}
     >
       <div className="flex-1 overflow-y-auto p-3 custom-scrollbar">

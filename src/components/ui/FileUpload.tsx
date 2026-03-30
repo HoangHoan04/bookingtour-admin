@@ -132,11 +132,11 @@ export default function FileUploadCustom({
       const formData = new FormData();
       formData.append("file", file);
 
-      const response = await onUpload(formData);
+      const response = (await onUpload(formData)) as FileDto;
 
       if (response) {
         const newItem: UploadFileItem = {
-          uid: response.id || `new-${Date.now()}`,
+          uid: response?.id || `new-${Date.now()}`,
           name: file.name,
           url: response.fileUrl,
           file: file,

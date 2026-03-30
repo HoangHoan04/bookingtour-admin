@@ -1,3 +1,4 @@
+import type { UserSessionDto } from ".";
 import type { BaseDto, FileDto } from "./common/base.dto";
 
 export interface TourGuideDto extends BaseDto {
@@ -35,6 +36,7 @@ export interface TourGuideDto extends BaseDto {
   bankName?: string;
   bankAccountName?: string;
   avatar: FileDto[];
+  user?: UserSessionDto;
 }
 export interface TourGuideFilterDto {
   code?: string;

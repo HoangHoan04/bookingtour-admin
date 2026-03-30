@@ -100,14 +100,6 @@ export default function NewManager() {
       placeholder: "Nhập tiêu đề tin tức",
       col: 6,
     },
-
-    {
-      key: "status",
-      label: "Trạng thái",
-      type: "input",
-      placeholder: "Nhập trạng thái",
-      col: 6,
-    },
     {
       key: "type",
       label: "Loại tin tức",
@@ -132,6 +124,12 @@ export default function NewManager() {
   ];
 
   const columns: TableColumn<NewDto>[] = [
+    {
+      field: "code",
+      header: "Mã tin tức",
+      width: 200,
+      sortable: true,
+    },
     {
       field: "title",
       header: "Tiêu đề tin tức",

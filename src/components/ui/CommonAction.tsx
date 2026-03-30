@@ -66,14 +66,6 @@ export const CommonActions = {
     onClick,
   }),
 
-  exportPdf: (onClick?: () => void): ActionButton => ({
-    key: "export-pdf",
-    label: "Xuất PDF",
-    icon: PrimeIcons.FILE_PDF,
-    severity: "danger",
-    onClick,
-  }),
-
   save: (onClick?: () => void, loading?: boolean): ActionButton => ({
     key: "save",
     label: "Lưu",

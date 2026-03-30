@@ -24,12 +24,7 @@ import {
   usePaginationTourGuide,
 } from "@/hooks/tour-guide";
 import { useRouter } from "@/routers/hooks";
-import {
-  excelService,
-  pdfService,
-  type ExcelColumn,
-  type PdfColumn,
-} from "@/services";
+import { excelService, type ExcelColumn } from "@/services";
 import { PrimeIcons } from "primereact/api";
 import { useRef, useState } from "react";
 
@@ -74,41 +69,6 @@ const TEMPLATE_COLUMNS: ExcelColumn[] = [
   { field: "bankAccountName", header: "Chủ tài khoản", width: 22 },
   { field: "shortBio", header: "Giới thiệu ngắn", width: 35 },
 ];
-
-/** Cột dùng cho xuất PDF */
-const PDF_COLUMNS: PdfColumn[] = [
-  { field: "code", header: "Mã HDV", width: 1, align: "center" },
-  { field: "name", header: "Họ và tên", width: 2 },
-  { field: "email", header: "Email", width: 2.5 },
-  { field: "phone", header: "Điện thoại", width: 1.5, align: "center" },
-  {
-    field: "gender",
-    header: "Giới tính",
-    width: 1,
-    align: "center",
-    formatter: (v) =>
-      v === "MALE" ? "Nam" : v === "FEMALE" ? "Nữ" : (v ?? ""),
-  },
-  {
-    field: "yearsOfExperience",
-    header: "Kinh nghiệm",
-    width: 1,
-    align: "center",
-    formatter: (v) => (v != null ? `${v} năm` : ""),
-  },
-  { field: "licenseNumber", header: "Số GP", width: 1.5, align: "center" },
-  {
-    field: "isDeleted",
-    header: "Trạng thái",
-    width: 1.2,
-    align: "center",
-    formatter: (v) => (v ? "Ngưng HĐ" : "Đang HĐ"),
-  },
-];
-
-// ============================================================
-// COMPONENT
-// ============================================================
 
 export default function TourGuideManager() {
   const router = useRouter();
@@ -163,10 +123,6 @@ export default function TourGuideManager() {
     }));
   };
 
-  // ------------------------------------------------------------
-  // Activate / Deactivate handlers
-  // ------------------------------------------------------------
-
   const handleActivate = async () => {
     if (!selectedTourGuide) return;
     await onActivateTourGuide(selectedTourGuide.id);
@@ -187,10 +143,6 @@ export default function TourGuideManager() {
         .ADD_TOUR_GUIDE.path,
     );
   };
-
-  // ------------------------------------------------------------
-  // ✅ Excel handlers
-  // ------------------------------------------------------------
 
   /** Xuất toàn bộ dữ liệu trang hiện tại ra Excel */
   const handleExportExcel = async () => {
@@ -250,7 +202,6 @@ export default function TourGuideManager() {
     }
   };
 
-  /** Import từ file Excel người dùng chọn */
   const handleImportExcel = async () => {
     try {
       const file = await excelService.openFileDialog();
@@ -265,56 +216,6 @@ export default function TourGuideManager() {
       console.error("[ImportExcel]", err.message);
     }
   };
-
-  // ------------------------------------------------------------
-  // ✅ PDF handlers
-  // ------------------------------------------------------------
-
-  const PDF_OPTIONS = {
-    title: "DANH SÁCH HƯỚNG DẪN VIÊN",
-    subtitle: "Hệ thống quản lý BookingTour Admin",
-    orientation: "landscape" as const,
-    pageSize: "a4" as const,
-    headerColor: [31, 78, 121] as [number, number, number],
-    alternateRowColor: [235, 243, 255] as [number, number, number],
-    showPageNumber: true,
-    showDate: true,
-    footerText: "BookingTour Admin System — Tài liệu nội bộ",
-  };
-
-  /** Xuất danh sách ra file PDF và tải xuống */
-  const handleExportPdf = async () => {
-    try {
-      await pdfService.exportTableToPdf(data || [], PDF_COLUMNS, {
-        ...PDF_OPTIONS,
-        filename: `danh-sach-huong-dan-vien_${new Date().toLocaleDateString("vi-VN").replace(/\//g, "-")}.pdf`,
-      });
-    } catch (err: any) {
-      console.error("[ExportPdf]", err.message);
-    }
-  };
-
-  /** Xem trước PDF trong tab mới */
-  const handlePreviewPdf = async () => {
-    try {
-      await pdfService.previewTablePdf(data || [], PDF_COLUMNS, PDF_OPTIONS);
-    } catch (err: any) {
-      console.error("[PreviewPdf]", err.message);
-    }
-  };
-
-  /** In danh sách trực tiếp */
-  const handlePrint = async () => {
-    try {
-      await pdfService.printTablePdf(data || [], PDF_COLUMNS, PDF_OPTIONS);
-    } catch (err: any) {
-      console.error("[PrintPdf]", err.message);
-    }
-  };
-
-  // ------------------------------------------------------------
-  // Table config
-  // ------------------------------------------------------------
 
   const filterFields: FilterField[] = [
     {
@@ -513,35 +414,6 @@ export default function TourGuideManager() {
                     handleImportExcel,
                   ),
                 ]}
-                justify="start"
-                gap="medium"
-              />
-
-              {/* Xuất PDF */}
-              <RowActions
-                actions={[CommonActions.exportPdf(handleExportPdf)]}
-                justify="start"
-                gap="medium"
-              />
-
-              {/* Xem trước PDF */}
-              <RowActions
-                actions={[
-                  {
-                    key: "preview-pdf",
-                    label: "Xem trước PDF",
-                    icon: PrimeIcons.FILE,
-                    severity: "info",
-                    onClick: handlePreviewPdf,
-                  },
-                ]}
-                justify="start"
-                gap="medium"
-              />
-
-              {/* In */}
-              <RowActions
-                actions={[CommonActions.print(handlePrint)]}
                 justify="start"
                 gap="medium"
               />
