@@ -10,6 +10,7 @@ export interface BannerDto extends BaseDto {
   effectiveEndDate?: Date;
   type?: string;
   image: FileDto[];
+  status: string;
 }
 
 export interface CreateBannerDto {

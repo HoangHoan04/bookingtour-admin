@@ -27,14 +27,6 @@ function AddNewPage({
   const formFields = useMemo((): FormField[] => {
     return [
       {
-        name: "url",
-        label: "URL tin tức",
-        type: "input",
-        required: false,
-        placeholder: "Nhập URL tin tức",
-        disabled: isEdit,
-      },
-        {
         name: "title",
         label: "Tiêu đề tin tức ",
         type: "input",
@@ -42,14 +34,7 @@ function AddNewPage({
         placeholder: "Nhập tiêu đề tin tức ",
         maxLength: 255,
       },
-       {
-        name: "content",
-        label: "Nội dung tin tức ",
-        type: "richtext",
-        required: true,
-        placeholder:
-          "Nhập nội dung tin tức. Bạn có thể nhúng hình ảnh trực tiếp bằng cách nhấn vào nút hình ảnh trên thanh công cụ.",
-      },
+
       {
         name: "type",
         label: "Loại tin tức",
@@ -79,6 +64,15 @@ function AddNewPage({
         type: "number",
         required: false,
         placeholder: "Nhập thứ tự tin tức",
+      },
+      {
+        name: "content",
+        label: "Nội dung tin tức ",
+        type: "richtext",
+        required: true,
+        placeholder:
+          "Nhập nội dung tin tức. Bạn có thể nhúng hình ảnh trực tiếp bằng cách nhấn vào nút hình ảnh trên thanh công cụ.",
+        gridColumn: "span 3",
       },
       {
         name: "images",

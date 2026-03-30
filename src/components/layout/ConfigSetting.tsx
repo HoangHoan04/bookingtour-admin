@@ -19,7 +19,7 @@ type ConfigSettingProps = {
 const ConfigSetting: FC<ConfigSettingProps> = ({ visible, onHide }) => {
   const { theme, setTheme } = useTheme();
   const isDark = theme === "dark";
-  const { language, setLanguage, t } = useTranslation();
+  const { language, setLanguage } = useTranslation();
   const {
     settings,
     footerSettings,
@@ -29,24 +29,24 @@ const ConfigSetting: FC<ConfigSettingProps> = ({ visible, onHide }) => {
   } = useConfig();
 
   const languageOptions = [
-    { label: t("settings.lang_vi"), value: "vi", icon: viFlag },
-    { label: t("settings.lang_en"), value: "en", icon: enFlag },
+    { label: "Tiếng Việt", value: "vi", icon: viFlag },
+    { label: "English", value: "en", icon: enFlag },
   ];
 
   const fontSizeOptions = [
-    { label: t("settings.font_small"), value: "small" },
-    { label: t("settings.font_medium"), value: "medium" },
-    { label: t("settings.font_large"), value: "large" },
+    { label: "Nhỏ", value: "small" },
+    { label: "Trung bình", value: "medium" },
+    { label: "Lớn", value: "large" },
   ];
 
   const sidebarPositionOptions = [
-    { label: t("settings.position_left"), value: "left" },
-    { label: t("settings.position_right"), value: "right" },
+    { label: "Trái", value: "left" },
+    { label: "Phải", value: "right" },
   ];
 
   const settingsPanelPositionOptions = [
-    { label: t("settings.position_left"), value: "left" },
-    { label: t("settings.position_right"), value: "right" },
+    { label: "Trái", value: "left" },
+    { label: "Phải", value: "right" },
   ];
 
   const handleFooterSettingChange = (
@@ -57,7 +57,7 @@ const ConfigSetting: FC<ConfigSettingProps> = ({ visible, onHide }) => {
   };
 
   const handleResetSettings = () => {
-    if (window.confirm(t("settings.reset_confirm"))) {
+    if (window.confirm("Bạn có chắc chắn muốn reset cài đặt?")) {
       resetSettings();
     }
   };
@@ -107,7 +107,7 @@ const ConfigSetting: FC<ConfigSettingProps> = ({ visible, onHide }) => {
               isDark ? "text-[#f0f0f0]" : "text-[#262626]"
             }`}
           >
-            {t("settings.title")}
+            Cài đặt
           </h2>
         </div>
       }
@@ -127,7 +127,7 @@ const ConfigSetting: FC<ConfigSettingProps> = ({ visible, onHide }) => {
         >
           <h3 className={sectionTitleClass}>
             <i className="pi pi-palette"></i>
-            {t("settings.appearance_section")}
+            Giao diện
           </h3>
           <div className="space-y-4">
             <div className="flex items-center justify-between p-2 rounded-lg">
@@ -137,7 +137,7 @@ const ConfigSetting: FC<ConfigSettingProps> = ({ visible, onHide }) => {
                     isDark ? "text-yellow-400" : "text-blue-500"
                   }`}
                 ></i>
-                <span className="font-medium">{t("settings.dark_mode")}</span>
+                <span className="font-medium">Chế độ tối</span>
               </div>
               <InputSwitch
                 checked={isDark}
@@ -146,9 +146,7 @@ const ConfigSetting: FC<ConfigSettingProps> = ({ visible, onHide }) => {
             </div>
 
             <div className="flex items-center justify-between p-2">
-              <span className="text-sm font-medium">
-                {t("settings.font_size")}
-              </span>
+              <span className="text-sm font-medium">Kích thước chữ</span>
               <Dropdown
                 value={settings.fontSize || "medium"}
                 onChange={(e) => updateSettings("fontSize", e.value)}
@@ -158,9 +156,7 @@ const ConfigSetting: FC<ConfigSettingProps> = ({ visible, onHide }) => {
             </div>
 
             <div className="flex items-center justify-between p-2">
-              <span className="text-sm font-medium">
-                {t("settings.sidebar_position")}
-              </span>
+              <span className="text-sm font-medium">Vị trí Sidebar</span>
               <Dropdown
                 value={settings.sidebarPosition || "left"}
                 onChange={(e) => updateSettings("sidebarPosition", e.value)}
@@ -194,12 +190,12 @@ const ConfigSetting: FC<ConfigSettingProps> = ({ visible, onHide }) => {
         >
           <h3 className={sectionTitleClass}>
             <i className="pi pi-sliders-h"></i>
-            {t("settings.behavior_section")}
+            Hành vi
           </h3>
           <div className="space-y-4">
             <div className="flex items-center justify-between p-2 rounded-lg">
               <div className="flex flex-col gap-1">
-                <span className="font-medium">{t("settings.max_tabs")}</span>
+                <span className="font-medium">Số tab tối đa</span>
                 <p className="text-xs opacity-70">Giới hạn từ 3 đến 20 tab</p>
               </div>
 
@@ -223,7 +219,7 @@ const ConfigSetting: FC<ConfigSettingProps> = ({ visible, onHide }) => {
             </div>
 
             <div className="flex items-center justify-between p-2 rounded-lg">
-              <span className="font-medium">{t("settings.show_tabs")}</span>
+              <span className="font-medium">Hiển thị tab</span>
               <InputSwitch
                 checked={settings.showTabHeader}
                 onChange={(e) => updateSettings("showTabHeader", e.value)}
@@ -242,11 +238,11 @@ const ConfigSetting: FC<ConfigSettingProps> = ({ visible, onHide }) => {
         >
           <h3 className={sectionTitleClass}>
             <i className="pi pi-bell"></i>
-            {t("settings.notification_section")}
+            Thông báo
           </h3>
           <div className="space-y-4">
             <div className="flex items-center justify-between p-2 rounded-lg">
-              <span className="font-medium">{t("settings.notifications")}</span>
+              <span className="font-medium">Thông báo</span>
               <InputSwitch
                 checked={settings.notifications}
                 onChange={(e) => updateSettings("notifications", e.value)}
@@ -266,15 +262,13 @@ const ConfigSetting: FC<ConfigSettingProps> = ({ visible, onHide }) => {
         >
           <h3 className={sectionTitleClass}>
             <i className="pi pi-shield"></i>
-            {t("settings.security_section")}
+            Bảo mật
           </h3>
           <div className="space-y-4">
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <div className="flex flex-col gap-1">
-                  <span className="font-medium">
-                    {t("settings.auto_logout")}
-                  </span>
+                  <span className="font-medium">Tự động đăng xuất</span>
                   <p className="text-xs opacity-70">
                     Tự động đăng xuất khi không hoạt động. Cảnh báo trước 30
                     giây.
@@ -282,9 +276,9 @@ const ConfigSetting: FC<ConfigSettingProps> = ({ visible, onHide }) => {
                 </div>
               </div>
               <SmoothSlider
-                label={`${settings.autoLogout} ${t("settings.minutes_unit")}`}
+                label={`${settings.autoLogout} phút`}
                 value={settings.autoLogout || 30}
-                unit={t("settings.minutes_unit")}
+                unit={"phút"}
                 min={1}
                 max={120}
                 step={5}
@@ -310,11 +304,9 @@ const ConfigSetting: FC<ConfigSettingProps> = ({ visible, onHide }) => {
           <div className="space-y-4">
             <div className="space-y-2">
               <SmoothSlider
-                label={`Độ rộng Sidebar (${settings.sidebarWidth} ${t(
-                  "settings.pixels_unit",
-                )})`}
+                label={`Độ rộng Sidebar (${settings.sidebarWidth} px)`}
                 value={settings.sidebarWidth || 270}
-                unit={t("settings.pixels_unit")}
+                unit={"px"}
                 min={200}
                 max={350}
                 onChange={(val) => updateSettings("sidebarWidth", val)}
@@ -349,7 +341,7 @@ const ConfigSetting: FC<ConfigSettingProps> = ({ visible, onHide }) => {
         <div className="flex items-center justify-between p-2">
           <div className="flex items-center gap-3">
             <i className="pi pi-globe text-[#1890ff]"></i>
-            <span className="font-medium">{t("settings.app_language")}</span>
+            <span className="font-medium">Ngôn ngữ ứng dụng</span>
           </div>
           <Dropdown
             value={language}
@@ -379,13 +371,11 @@ const ConfigSetting: FC<ConfigSettingProps> = ({ visible, onHide }) => {
         >
           <h3 className={sectionTitleClass}>
             <i className="pi pi-window-maximize"></i>
-            {t("settings.footer_config")}
+            Cấu hình chân trang
           </h3>
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <p className="text-sm font-medium">
-                {t("settings.enable_footer")}
-              </p>
+              <p className="text-sm font-medium">Hiển thị chân trang</p>
               <InputSwitch
                 checked={footerSettings.showFooter}
                 onChange={(e) =>
@@ -395,21 +385,21 @@ const ConfigSetting: FC<ConfigSettingProps> = ({ visible, onHide }) => {
             </div>
             <div className="space-y-2">
               <label className="text-xs font-semibold uppercase opacity-60">
-                {t("settings.footer_content")}
+                Nội dung chân trang
               </label>
               <InputText
                 value={footerSettings.footerContent}
                 onChange={(e) =>
                   handleFooterSettingChange("footerContent", e.target.value)
                 }
-                placeholder={t("settings.footer_placeholder")}
+                placeholder="Nhập nội dung chân trang"
                 className="w-full text-sm"
                 disabled={!footerSettings.showFooter}
               />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="flex items-center justify-between bg-black/5 dark:bg-white/5 p-2 rounded-md">
-                <span className="text-xs">{t("settings.show_version")}</span>
+                <span className="text-xs">Hiển thị phiên bản</span>
                 <InputSwitch
                   className="scale-75"
                   checked={footerSettings.showVersion}
@@ -420,7 +410,7 @@ const ConfigSetting: FC<ConfigSettingProps> = ({ visible, onHide }) => {
                 />
               </div>
               <div className="flex items-center justify-between bg-black/5 dark:bg-white/5 p-2 rounded-md">
-                <span className="text-xs">{t("settings.show_copyright")}</span>
+                <span className="text-xs">Hiển thị bản quyền</span>
                 <InputSwitch
                   className="scale-75"
                   checked={footerSettings.showCopyright}
@@ -436,12 +426,13 @@ const ConfigSetting: FC<ConfigSettingProps> = ({ visible, onHide }) => {
 
         <div className="pt-4 flex flex-col gap-4">
           <Button
-            label={t("settings.reset_button")}
+            label="Khôi phục cài đặt gốc"
             icon="pi pi-refresh"
             severity="danger"
             outlined
             onClick={handleResetSettings}
             className="w-full"
+            style={{ color: "white" }}
           />
           <div
             className={`p-3 rounded-lg border border-dashed flex items-start gap-3 ${
@@ -452,7 +443,7 @@ const ConfigSetting: FC<ConfigSettingProps> = ({ visible, onHide }) => {
           >
             <i className="pi pi-info-circle text-blue-500 mt-0.5"></i>
             <p className="text-xs leading-relaxed opacity-80">
-              {t("settings.auto_save_info")}
+              Cài đặt sẽ được lưu tự động sau 2 giây
             </p>
           </div>
         </div>

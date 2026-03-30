@@ -11,18 +11,22 @@ export interface ActionLogFilter {
 }
 
 export const ActionType = {
-  CREATE: "action_log.type.create",
-  UPDATE: "action_log.type.update",
-  DELETE: "action_log.type.delete",
-  CANCEL: "action_log.type.cancel",
-  APPROVE: "action_log.type.approve",
-  DEACTIVE: "action_log.type.deactive",
-  ACTIVE: "action_log.type.active",
+  CREATE: "Tạo mới",
+  UPDATE: "Cập nhật",
+  DELETE: "Xóa",
+  CANCEL: "Hủy",
+  APPROVE: "Phê duyệt",
+  DEACTIVE: "Không hoạt động",
+  ACTIVE: "Hoạt động",
 } as const;
 
 export interface ActionLogDto {
+  dataOld: string;
+  dataNew: string;
   id: string;
   createdAt: Date;
+  createdById: string;
+  createdByCode: string;
   createdByName: string;
   employeeCode: string;
   type: keyof typeof ActionType;

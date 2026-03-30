@@ -1,448 +1,348 @@
-import { ROUTES } from "@/common/constants/routes";
-import { enumData } from "@/common/enums/enum";
+import { useParams } from "react-router-dom";
+import { useRef } from "react";
+import { PrimeIcons } from "primereact/api";
+import { Divider } from "primereact/divider";
+import { TabView, TabPanel } from "primereact/tabview";
+import { Tag } from "primereact/tag";
+import BaseView from "@/components/ui/BaseView";
+import Title from "@/components/ui/Title";
+import ActionLog from "@/components/ui/ActionLog";
+import RowActions, { type ActionButton } from "@/components/ui/RowAction";
+import StatusTag from "@/components/ui/StatusTag";
 import ActionConfirm, {
   type ActionConfirmRef,
 } from "@/components/ui/ActionConfirm";
-import BaseView from "@/components/ui/BaseView";
-import { CommonActions } from "@/components/ui/CommonAction";
-import GlobalLoading from "@/components/ui/Loading";
-import RowActions from "@/components/ui/RowAction";
-import StatusTag from "@/components/ui/StatusTag";
 import {
-  useActivateBlog,
-  useArchiveBlog,
   useBlogDetail,
-  useDeactivateBlog,
-  useDraftBlog,
   usePublishBlog,
+  useDraftBlog,
   useRejectBlog,
-  useUnarchiveBlog,
+  useArchiveBlog,
 } from "@/hooks/blog";
 import { useRouter } from "@/routers/hooks";
-import { PrimeIcons } from "primereact/api";
-import { Card } from "primereact/card";
-import { Divider } from "primereact/divider";
-import { Tag } from "primereact/tag";
-import { useRef } from "react";
-import { useParams } from "react-router-dom";
+import { ROUTES } from "@/common/constants/routes";
+import { formatDateTime } from "@/common/helpers/format";
 
 export default function DetailBlogPage() {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const router = useRouter();
   const { data: blog, isLoading, refetch } = useBlogDetail(id);
+  const publishRef = useRef<ActionConfirmRef>(null);
+  const draftRef = useRef<ActionConfirmRef>(null);
+  const rejectRef = useRef<ActionConfirmRef>(null);
+  const archiveRef = useRef<ActionConfirmRef>(null);
+  const { onPublishBlog } = usePublishBlog();
+  const { onDraftBlog } = useDraftBlog();
+  const { onRejectBlog } = useRejectBlog();
+  const { onArchiveBlog } = useArchiveBlog();
 
-  const publishConfirmRef = useRef<ActionConfirmRef>(null);
-  const draftConfirmRef = useRef<ActionConfirmRef>(null);
-  const rejectConfirmRef = useRef<ActionConfirmRef>(null);
-  const archiveConfirmRef = useRef<ActionConfirmRef>(null);
-  const unarchiveConfirmRef = useRef<ActionConfirmRef>(null);
-  const activateConfirmRef = useRef<ActionConfirmRef>(null);
-  const deactivateConfirmRef = useRef<ActionConfirmRef>(null);
+  if (!blog && !isLoading) return <BaseView>Không tìm thấy bài viết</BaseView>;
 
-  const { onPublishBlog, isLoading: isPublishing } = usePublishBlog();
-  const { onDraftBlog, isLoading: isDrafting } = useDraftBlog();
-  const { onRejectBlog, isLoading: isRejecting } = useRejectBlog();
-  const { onArchiveBlog, isLoading: isArchiving } = useArchiveBlog();
-  const { onUnarchiveBlog, isLoading: isUnarchiving } = useUnarchiveBlog();
-  const { onActivateBlog, isLoading: isActivating } = useActivateBlog();
-  const { onDeactivateBlog, isLoading: isDeactivating } = useDeactivateBlog();
-
-  const handlePublish = async () => {
-    if (!blog?.id) return;
-    if (
-      isPublishing ||
-      isArchiving ||
-      isUnarchiving ||
-      isActivating ||
-      isDeactivating
-    )
-      return;
-    await onPublishBlog(blog.id);
+  const handleAction = async (fn: Function, ...args: any[]) => {
+    await fn(...args);
     await refetch();
   };
-
-  const handleDraft = async () => {
-    if (!blog?.id) return;
-    if (isDrafting) return;
-    await onDraftBlog(blog.id);
-    await refetch();
-  };
-
-  const handleReject = async (reason?: string) => {
-    if (!blog?.id) return;
-    if (isRejecting) return;
-    await onRejectBlog({ id: blog.id, reason });
-    await refetch();
-  };
-
-  const handleArchive = async () => {
-    if (!blog?.id) return;
-
-    await onArchiveBlog(blog.id);
-    await refetch();
-  };
-
-  const handleUnarchive = async () => {
-    if (!blog?.id) return;
-    await onUnarchiveBlog(blog.id);
-    await refetch();
-  };
-
-  const handleActivate = async () => {
-    if (!blog?.id) return;
-    await onActivateBlog(blog.id);
-    await refetch();
-  };
-
-  const handleDeactivate = async () => {
-    if (!blog?.id) return;
-    await onDeactivateBlog(blog.id);
-    await refetch();
-  };
-
-  const handleEdit = () => {
-    router.push(
-      ROUTES.MAIN.NEW_MANAGER.children.BLOG_MANAGER.children.EDIT_BLOG.path.replace(
-        ":id",
-        blog?.id || "",
-      ),
-    );
-  };
-
-  const handleBack = () => {
-    router.back();
-  };
-
-  if (isLoading) {
-    return <GlobalLoading />;
-  }
-
-  if (!blog) {
-    return (
-      <BaseView>
-        <Card>
-          <p>Không tìm thấy bài viết</p>
-        </Card>
-      </BaseView>
-    );
-  }
-
-  const DetailRow = ({
-    label,
-    value,
-  }: {
-    label: string;
-    value: React.ReactNode;
-  }) => (
-    <div className="grid mb-3">
-      <div className="col-12 md:col-3">
-        <strong className="text-gray-700">{label}:</strong>
-      </div>
-      <div className="col-12 md:col-9">{value || "-"}</div>
-    </div>
-  );
 
   const getStatusSeverity = (status: string) => {
     switch (status) {
-      case enumData.BLOG_STATUS.PUBLISHED.code:
+      case "PUBLISHED":
         return "success";
-      case enumData.BLOG_STATUS.DRAFT.code:
+      case "DRAFT":
         return "info";
-      case enumData.BLOG_STATUS.NEW.code:
-        return "warning";
-      case enumData.BLOG_STATUS.REJECT.code:
+      case "REJECTED":
         return "danger";
-      case enumData.BLOG_STATUS.ARCHIVED.code:
+      case "ARCHIVED":
         return "secondary";
       default:
-        return "info";
+        return "warning";
     }
   };
 
-  const canPublish =
-    !blog.isDeleted && blog.status !== enumData.BLOG_STATUS.PUBLISHED.code;
-  const canDraft =
-    !blog.isDeleted && blog.status !== enumData.BLOG_STATUS.DRAFT.code;
-  const canReject =
-    !blog.isDeleted && blog.status !== enumData.BLOG_STATUS.REJECT.code;
-  const canArchive =
-    !blog.isDeleted && blog.status !== enumData.BLOG_STATUS.ARCHIVED.code;
-  const canUnarchive = blog.status === enumData.BLOG_STATUS.ARCHIVED.code;
+  const headerActions: ActionButton[] = [
+    {
+      key: "back",
+      label: "Quay lại",
+      icon: PrimeIcons.ARROW_LEFT,
+      severity: "secondary",
+      onClick: () => router.back(),
+    },
+    {
+      key: "edit",
+      label: "Chỉnh sửa",
+      icon: PrimeIcons.PENCIL,
+      severity: "warning",
+      visible: !blog?.isDeleted,
+      onClick: () =>
+        router.push(
+          ROUTES.MAIN.NEW_MANAGER.children.BLOG_MANAGER.children.EDIT_BLOG.path.replace(
+            ":id",
+            blog?.id || "",
+          ),
+        ),
+    },
+    {
+      key: "publish",
+      label: "Xuất bản",
+      icon: PrimeIcons.SEND,
+      severity: "success",
+      visible: blog?.status !== "PUBLISHED",
+      onClick: () => publishRef.current?.show(),
+    },
+    {
+      key: "draft",
+      label: "Chuyển nháp",
+      icon: PrimeIcons.FILE,
+      severity: "info",
+      visible: blog?.status !== "DRAFT",
+      onClick: () => draftRef.current?.show(),
+    },
+    {
+      key: "archive",
+      label: "Lưu trữ",
+      icon: PrimeIcons.INBOX,
+      severity: "secondary",
+      visible: blog?.status !== "ARCHIVED",
+      onClick: () => archiveRef.current?.show(),
+    },
+  ];
 
   return (
-    <BaseView>
-      <Card
-        title={
-          <div className="flex align-items-center justify-content-between">
-            <span>Chi tiết bài viết</span>
-            <div className="flex gap-2">
-              <StatusTag
-                severity={getStatusSeverity(blog.status)}
-                value={
-                  enumData.BLOG_STATUS[
-                    blog.status as keyof typeof enumData.BLOG_STATUS
-                  ]?.name || blog.status
-                }
-              />
-              <StatusTag
-                severity={blog.isDeleted ? "danger" : "success"}
-                value={
-                  blog.isDeleted
-                    ? enumData.STATUS_FILTER.INACTIVE.name
-                    : enumData.STATUS_FILTER.ACTIVE.name
-                }
-              />
-            </div>
+    <BaseView isLoading={isLoading}>
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 gap-4">
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center gap-3">
+            <Title>Chi tiết bài viết</Title>
+            <StatusTag
+              severity={getStatusSeverity(blog?.status || "")}
+              value={blog?.status}
+            />
           </div>
+        </div>
+        <RowActions actions={headerActions} justify="end" />
+      </div>
+
+      <TabView className="mt-2">
+        <TabPanel header="Nội dung bài viết" leftIcon="pi pi-file-edit mr-2">
+          {blog && <BlogDetailContent data={blog} />}
+        </TabPanel>
+
+        <TabPanel header="Lịch sử thao tác" leftIcon="pi pi-history mr-2">
+          <ActionLog functionType="Blog" functionId={id} />
+        </TabPanel>
+      </TabView>
+
+      <ActionConfirm
+        ref={publishRef}
+        title="Xuất bản"
+        message="Đưa bài viết này lên hiển thị công khai?"
+        onConfirm={() => handleAction(onPublishBlog, blog?.id)}
+      />
+      <ActionConfirm
+        ref={draftRef}
+        title="Chuyển nháp"
+        message="Gỡ bài viết xuống và chuyển về trạng thái nháp?"
+        onConfirm={() => handleAction(onDraftBlog, blog?.id)}
+      />
+      <ActionConfirm
+        ref={archiveRef}
+        title="Lưu trữ"
+        message="Xác nhận đưa bài viết này vào kho lưu trữ?"
+        onConfirm={() => handleAction(onArchiveBlog, blog?.id)}
+      />
+      <ActionConfirm
+        ref={rejectRef}
+        title="Từ chối"
+        message="Lý do từ chối bài viết?"
+        withReason
+        isRequireReason
+        onConfirm={(reason) =>
+          handleAction(onRejectBlog, { id: blog?.id, reason })
         }
-      >
-        <div className="mb-4">
-          <RowActions
-            actions={[
-              {
-                ...CommonActions.cancel(handleBack),
-                label: "Quay lại",
-              },
-              {
-                ...CommonActions.update(handleEdit),
-                label: "Chỉnh sửa",
-                visible: !blog.isDeleted,
-              },
-              {
-                // eslint-disable-next-line react-hooks/refs
-                ...CommonActions.approve(() =>
-                  publishConfirmRef.current?.show(),
-                ),
-                label: "Xuất bản",
-                visible: canPublish,
-              },
-              {
-                key: "draft",
-                label: "Chuyển sang nháp",
-                icon: PrimeIcons.PENCIL,
-                severity: "info",
-                visible: canDraft,
-                onClick: () => draftConfirmRef.current?.show(),
-              },
-              {
-                // eslint-disable-next-line react-hooks/refs
-                ...CommonActions.reject(() => rejectConfirmRef.current?.show()),
-                label: "Từ chối",
-                visible: canReject,
-              },
-              {
-                key: "archive",
-                label: "Lưu trữ",
-                icon: PrimeIcons.INBOX,
-                severity: "warning",
-                visible: canArchive,
-                onClick: () => archiveConfirmRef.current?.show(),
-              },
-              {
-                key: "unarchive",
-                label: "Khôi phục",
-                icon: PrimeIcons.REPLAY,
-                severity: "info",
-                visible: canUnarchive,
-                onClick: () => unarchiveConfirmRef.current?.show(),
-              },
-              {
-                key: "activate",
-                label: "Kích hoạt",
-                icon: PrimeIcons.CHECK_CIRCLE,
-                severity: "success",
-                visible: blog.isDeleted,
-                onClick: () => activateConfirmRef.current?.show(),
-              },
-              {
-                key: "deactivate",
-                label: "Ngừng hoạt động",
-                icon: PrimeIcons.BAN,
-                severity: "warning",
-                visible: !blog.isDeleted,
-                onClick: () => deactivateConfirmRef.current?.show(),
-              },
-            ]}
-            justify="start"
-            gap="medium"
-          />
-        </div>
-
-        <Divider />
-
-        {/* Thông tin cơ bản */}
-        <div className="mb-4">
-          <h3 className="text-xl font-semibold mb-3">Thông tin cơ bản</h3>
-          <DetailRow label="Tiêu đề" value={blog.title} />
-          <DetailRow label="Slug" value={blog.slug} />
-          <DetailRow label="Mô tả ngắn" value={blog.excerpt || "-"} />
-          <DetailRow label="Danh mục" value={blog.category || "-"} />
-          <DetailRow
-            label="Tags"
-            value={
-              blog.tags && blog.tags.length > 0 ? (
-                <div className="flex gap-2 flex-wrap">
-                  {blog.tags.map((tag, index) => (
-                    <Tag key={index} value={tag} severity="info" />
-                  ))}
-                </div>
-              ) : (
-                "-"
-              )
-            }
-          />
-        </div>
-
-        <Divider />
-
-        {/* Ảnh đại diện */}
-        {blog.featuredImage && (
-          <>
-            <div className="mb-4">
-              <h3 className="text-xl font-semibold mb-3">Ảnh đại diện</h3>
-              <img
-                src={blog.featuredImage.fileUrl}
-                alt={blog.title}
-                className="w-full max-w-30rem border-round shadow-2"
-              />
-            </div>
-            <Divider />
-          </>
-        )}
-
-        {/* Nội dung */}
-        <div className="mb-4">
-          <h3 className="text-xl font-semibold mb-3">Nội dung bài viết</h3>
-          <div
-            className="blog-content p-3 border border-gray-300 border-round"
-            dangerouslySetInnerHTML={{ __html: blog.content || "" }}
-          />
-        </div>
-
-        <Divider />
-
-        {/* SEO */}
-        <div className="mb-4">
-          <h3 className="text-xl font-semibold mb-3">Thông tin SEO</h3>
-          <DetailRow label="SEO Title" value={blog.seoTitle || "-"} />
-          <DetailRow
-            label="SEO Description"
-            value={blog.seoDescription || "-"}
-          />
-        </div>
-
-        <Divider />
-
-        {/* Thống kê */}
-        <div className="mb-4">
-          <h3 className="text-xl font-semibold mb-3">Thống kê</h3>
-          <DetailRow label="Lượt xem" value={blog.viewCount || 0} />
-          <DetailRow label="Lượt thích" value={blog.likeCount || 0} />
-          <DetailRow
-            label="Ngày xuất bản"
-            value={
-              blog.publishedAt
-                ? new Date(blog.publishedAt).toLocaleString("vi-VN")
-                : "-"
-            }
-          />
-        </div>
-
-        <Divider />
-
-        {/* Thông tin hệ thống */}
-        <div className="mb-4">
-          <h3 className="text-xl font-semibold mb-3">Thông tin hệ thống</h3>
-          <DetailRow
-            label="Tác giả"
-            value={blog.author?.fullName || blog.author?.username || "-"}
-          />
-          <DetailRow
-            label="Ngày tạo"
-            value={
-              blog.createdAt
-                ? new Date(blog.createdAt).toLocaleString("vi-VN")
-                : "-"
-            }
-          />
-          <DetailRow
-            label="Ngày cập nhật"
-            value={
-              blog.updatedAt
-                ? new Date(blog.updatedAt).toLocaleString("vi-VN")
-                : "-"
-            }
-          />
-        </div>
-      </Card>
-
-      {/* Action Confirms */}
-      <ActionConfirm
-        ref={publishConfirmRef}
-        title="Xác nhận xuất bản bài viết"
-        message="Bạn có chắc chắn muốn xuất bản bài viết này không?"
-        confirmText="Xuất bản"
-        cancelText="Hủy"
-        onConfirm={handlePublish}
-      />
-
-      <ActionConfirm
-        ref={draftConfirmRef}
-        title="Xác nhận chuyển sang bản nháp"
-        message="Bạn có chắc chắn muốn chuyển bài viết này sang bản nháp không?"
-        confirmText="Chuyển sang nháp"
-        cancelText="Hủy"
-        onConfirm={handleDraft}
-      />
-
-      <ActionConfirm
-        ref={rejectConfirmRef}
-        title="Xác nhận từ chối bài viết"
-        message="Bạn có chắc chắn muốn từ chối bài viết này không?"
-        confirmText="Từ chối"
-        cancelText="Hủy"
-        withReason={true}
-        isRequireReason={true}
-        onConfirm={handleReject}
-      />
-
-      <ActionConfirm
-        ref={archiveConfirmRef}
-        title="Xác nhận lưu trữ bài viết"
-        message="Bạn có chắc chắn muốn lưu trữ bài viết này không?"
-        confirmText="Lưu trữ"
-        cancelText="Hủy"
-        onConfirm={handleArchive}
-      />
-
-      <ActionConfirm
-        ref={unarchiveConfirmRef}
-        title="Xác nhận khôi phục từ lưu trữ"
-        message="Bạn có chắc chắn muốn khôi phục bài viết này từ lưu trữ không?"
-        confirmText="Khôi phục"
-        cancelText="Hủy"
-        onConfirm={handleUnarchive}
-      />
-
-      <ActionConfirm
-        ref={activateConfirmRef}
-        title="Xác nhận kích hoạt bài viết"
-        message="Bạn có chắc chắn muốn kích hoạt bài viết này không?"
-        confirmText="Kích hoạt"
-        cancelText="Hủy"
-        onConfirm={handleActivate}
-      />
-
-      <ActionConfirm
-        ref={deactivateConfirmRef}
-        title="Xác nhận ngừng hoạt động bài viết"
-        message="Bạn có chắc chắn muốn ngừng hoạt động bài viết này không?"
-        confirmText="Ngừng hoạt động"
-        cancelText="Hủy"
-        withReason={true}
-        isRequireReason={true}
-        onConfirm={handleDeactivate}
       />
     </BaseView>
   );
 }
+
+const BlogDetailContent = ({ data }: { data: any }) => {
+  return (
+    <div className="flex flex-col md:flex-row p-6 gap-8 animate-in fade-in duration-500 bg-[#262626]">
+      <div className="flex-1 space-y-6">
+        <div className="border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+          <div className="p-10">
+            <div className="flex items-center gap-3 mb-6">
+              <Tag
+                value={data.category}
+                severity="info"
+                className="text-blue-700 border-blue-100 px-3"
+              />
+              <div className="flex gap-2">
+                {data.tags?.map((t: string) => (
+                  <span
+                    key={t}
+                    className="text-[10px] text-slate-500 px-2 py-1 rounded font-bold"
+                  >
+                    #{t}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <h1 className="text-3xl md:text-5xl font-black  mb-6 leading-tight tracking-tight">
+              {data.title}
+            </h1>
+
+            <div className="p-5 rounded-lg border-l-3 border-blue-500 mb-8 shadow-inner shadow-amber-50">
+              <span className="text-[10px] font-black text-slate-400 uppercase block mb-2 tracking-widest">
+                Tóm tắt ngắn
+              </span>
+              <p className="text-slate-700 text-lg italic leading-relaxed m-0">
+                "{data.excerpt || "Không có tóm tắt"}"
+              </p>
+            </div>
+
+            <Divider />
+
+            <div
+              className="blog-content-viewer prose prose-slate max-w-none 
+              prose-headings:text-slate-900 prose-p:text-slate-600 prose-p:leading-relaxed text-lg"
+              dangerouslySetInnerHTML={{ __html: data.content }}
+            />
+          </div>
+        </div>
+
+        <div className="border border-slate-200 rounded-2xl p-6 shadow-sm">
+          <h4 className="text-sm font-black mb-5 flex items-center gap-2 uppercase tracking-widest">
+            <i className="pi pi-search text-blue-500"></i> Thông tin SEO &
+            Metadata
+          </h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="flex flex-col gap-2">
+              <span className="text-[10px] font-bold text-slate-400 uppercase">
+                SEO Title
+              </span>
+              <span className="text-sm font-semibold">
+                {data.seoTitle || "Chưa cấu hình"}
+              </span>
+            </div>
+            <div className="flex flex-col gap-2">
+              <span className="text-[10px] font-bold text-slate-400 uppercase">
+                Slug
+              </span>
+              <span className="text-sm text-blue-600 font-mono italic">
+                /{data.slug}
+              </span>
+            </div>
+            <div className="col-span-1 md:col-span-2 flex flex-col gap-2">
+              <span className="text-[10px] font-bold text-slate-400 uppercase">
+                SEO Description
+              </span>
+              <p className="text-sm text-slate-600 leading-relaxed m-0">
+                {data.seoDescription || "Chưa cấu hình mô tả SEO"}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* CỘT PHẢI: SIDEBAR THÔNG TIN (Chiếm 1/3) */}
+      <div className="w-full lg:w-96 flex flex-col gap-6">
+        {/* CARD: STATS & PUBLISH */}
+        <div className="border border-slate-200 rounded-2xl p-6 shadow-sm">
+          <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">
+            Chỉ số tương tác
+          </h4>
+          <div className="grid grid-cols-2 gap-4 mb-6">
+            <div className="bg-blue-50 p-4 rounded-xl text-center flex flex-col items-center justify-center">
+              <p className="text-[10px] text-blue-400 font-bold uppercase mt-1 flex items-center gap-2">
+                <i className="pi pi-eye text-blue-500"></i>
+                Lượt xem
+              </p>
+              <span className="text-2xl font-black text-blue-700">
+                {data.viewCount || 0}
+              </span>
+            </div>
+            <div className="bg-rose-50 p-4 rounded-xl text-center flex flex-col items-center justify-center">
+              <p className="text-[10px] text-rose-400 font-bold uppercase mt-1 flex items-center gap-2">
+                <i className="pi pi-heart-fill text-rose-500"></i>
+                Yêu thích
+              </p>
+              <span className="text-2xl font-black text-rose-700">
+                {data.likeCount || 0}
+              </span>
+            </div>
+          </div>
+
+          <div className="space-y-4 pt-2 border-t border-slate-100 mt-4">
+            <SidebarItem
+              label="Tác giả"
+              value={data.author?.username}
+              icon="pi-user"
+            />
+            <SidebarItem
+              label="Xuất bản lúc"
+              value={formatDateTime(data.publishedAt)}
+              icon="pi-send"
+            />
+            <SidebarItem
+              label="Cập nhật cuối"
+              value={formatDateTime(data.updatedAt)}
+              icon="pi-sync"
+            />
+          </div>
+        </div>
+
+        {/* CARD: TÁC GIẢ (DARK MODE STYLE) */}
+        <div className="rounded-2xl p-6 shadow-2xl relative overflow-hidden">
+          <h4 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-4">
+            Thông tin tác giả
+          </h4>
+          <div className="flex items-center gap-4 relative z-10">
+            <div className="w-14 h-14 rounded-full bg-linear-to-tr from-blue-600 to-cyan-400 flex items-center justify-center text-xl font-black shadow-lg">
+              {data.author?.username?.charAt(0).toUpperCase()}
+            </div>
+            <div className="flex flex-col">
+              <span className="text-lg font-bold">
+                {data.author?.username || "Admin"}
+              </span>
+              <span className="text-xs text-slate-400">
+                {data.author?.email}
+              </span>
+              <div className="mt-2">
+                {data.author?.isAdmin && (
+                  <Tag
+                    value="Administrator"
+                    severity="danger"
+                    className="text-[9px] h-auto py-0 px-2"
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* THỜI GIAN HỆ THỐNG */}
+        <div className="px-4 py-2 rounded-lg text-center">
+          <span className="text-[10px] text-slate-400 font-medium italic">
+            Bài viết được tạo vào: {formatDateTime(data.createdAt)}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const SidebarItem = ({ label, value, icon }: any) => (
+  <div className="flex justify-between items-center group">
+    <div className="flex items-center gap-2 hover:text-blue-500 rounded-lg">
+      <div className="w-6 h-6 rounded flex items-center justify-center">
+        <i
+          className={`pi ${icon} text-[10px] text-slate-500 group-hover:text-blue-500`}
+        ></i>
+      </div>
+      <span className="text-xs text-slate-500 font-medium hover:text-blue-500">
+        {label}
+      </span>
+    </div>
+    <span className="text-xs font-bold">{value || "---"}</span>
+  </div>
+);
