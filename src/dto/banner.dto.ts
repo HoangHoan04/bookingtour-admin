@@ -1,9 +1,7 @@
 import type { BaseDto, FileDto } from "./common/base.dto";
 
 export interface BannerDto extends BaseDto {
-  url?: string;
   title: string;
-  titleEn: string;
   displayOrder: number;
   isVisible: boolean;
   effectiveStartDate?: Date;
@@ -14,9 +12,7 @@ export interface BannerDto extends BaseDto {
 }
 
 export interface CreateBannerDto {
-  url?: string;
   title: string;
-  titleEn: string;
   displayOrder: number;
   isVisible: boolean;
   effectiveStartDate?: Date;
@@ -31,7 +27,6 @@ export interface UpdateBannerDto extends CreateBannerDto {
 
 export interface BannerFilterDto {
   title?: string;
-  titleEn?: string;
   status?: string;
   type?: string;
 }
@@ -39,5 +34,4 @@ export interface BannerFilterDto {
 export interface BannerSelectBoxDto {
   id: string;
   title: string;
-  titleEn: string;
 }
