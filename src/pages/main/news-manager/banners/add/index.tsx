@@ -34,14 +34,7 @@ function AddBannerPage({
         placeholder: "Nhập tiêu đề banner",
         maxLength: 255,
       },
-      {
-        name: "url",
-        label: "Đường dẫn banner",
-        type: "input",
-        required: true,
-        placeholder: "Nhập đường dẫn banner",
-        disabled: isEdit,
-      },
+
       {
         name: "displayOrder",
         label: "Thứ tự hiển thị",

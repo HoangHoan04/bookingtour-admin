@@ -131,13 +131,6 @@ export default function BannerManager() {
 
   const columns: TableColumn<BannerDto>[] = [
     {
-      field: "url",
-      header: "Đường dẫn banner",
-      width: 120,
-      sortable: true,
-      frozen: true,
-    },
-    {
       field: "title",
       header: "Tiêu đề banner",
       width: 200,
