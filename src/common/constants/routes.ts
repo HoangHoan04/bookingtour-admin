@@ -177,30 +177,31 @@ export const ROUTES = {
             },
           },
         },
-        BOOKING_MANAGER: {
-          key: "BOOKING_MANAGER",
-          label: "Quản lý đặt chỗ",
-          path: "/booking-manager",
-          children: {
-            ADD_BOOKING: {
-              key: "ADD_BOOKING",
-              label: "Thêm đặt chỗ",
-              path: "/booking-manager/add",
-              isShow: false,
-            },
-            EDIT_BOOKING: {
-              key: "EDIT_BOOKING",
-              label: "Chỉnh sửa đặt chỗ",
-              path: "/booking-manager/edit/:id",
-              isShow: false,
-            },
-            DETAIL_BOOKING: {
-              key: "DETAIL_BOOKING",
-              label: "Chi tiết đặt chỗ",
-              path: "/booking-manager/detail/:id",
-              isShow: false,
-            },
-          },
+      },
+    },
+    BOOKING_MANAGER: {
+      key: "BOOKING_MANAGER",
+      label: "Quản lý đặt chỗ",
+      path: "/booking-manager",
+      icon: "pi pi-book",
+      children: {
+        ADD_BOOKING: {
+          key: "ADD_BOOKING",
+          label: "Thêm đặt chỗ",
+          path: "/booking-manager/add",
+          isShow: false,
+        },
+        EDIT_BOOKING: {
+          key: "EDIT_BOOKING",
+          label: "Chỉnh sửa đặt chỗ",
+          path: "/booking-manager/edit/:id",
+          isShow: false,
+        },
+        DETAIL_BOOKING: {
+          key: "DETAIL_BOOKING",
+          label: "Chi tiết đặt chỗ",
+          path: "/booking-manager/detail/:id",
+          isShow: false,
         },
       },
     },
