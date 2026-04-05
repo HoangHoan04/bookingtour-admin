@@ -30,7 +30,7 @@ export const initFilter: TourFilterDto = {
   code: "",
   location: "",
   category: "",
-  tags: [],
+  tags: "",
   status: "",
   isDeleted: undefined,
 };
