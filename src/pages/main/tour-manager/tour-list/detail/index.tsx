@@ -69,7 +69,6 @@ export default function DetailTourPage() {
 
   function formatText(input: string): string {
     return input
-      .replace(/[{}"]/g, "")
       .split(",")
       .map((item) => item.trim())
       .join(", ");
