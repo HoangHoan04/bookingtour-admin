@@ -141,18 +141,8 @@ function AddTourPage({
   }, [isLoadingTourDetails, tourDetails]);
 
   const handleSubmit = (values: TourSubmitValues) => {
-    const parsedTags = Array.isArray(values?.tags)
-      ? values.tags
-      : typeof values?.tags === "string"
-        ? values.tags
-            .split(",")
-            .map((tag: string) => tag.trim())
-            .filter(Boolean)
-        : [];
-
     const submitData: TourDto = {
       ...values,
-      tags: parsedTags.length > 0 ? parsedTags.join(",") : undefined,
     };
 
     if (isEdit && handleUpdate) {
