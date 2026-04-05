@@ -166,12 +166,12 @@ export const API_ENDPOINTS = {
   },
 
   TOUR_PRICE: {
-    PAGINATION: "/api/admin/tour-price/pagination",
-    CREATE: "/api/admin/tour-price/create",
-    UPDATE: "/api/admin/tour-price/update",
-    DEACTIVATE: "/api/admin/tour-price/deactivate",
-    ACTIVATE: "/api/admin/tour-price/activate",
-    FIND_BY_ID: "/api/admin/tour-price/find-by-id",
-    SELECT_BOX: "/api/admin/tour-price/select-box",
+    PAGINATION: "/api/admin/tour-prices/pagination",
+    CREATE: "/api/admin/tour-prices/create",
+    UPDATE: "/api/admin/tour-prices/update",
+    DEACTIVATE: "/api/admin/tour-prices/deactivate",
+    ACTIVATE: "/api/admin/tour-prices/activate",
+    FIND_BY_ID: "/api/admin/tour-prices/find-by-id",
+    SELECT_BOX: "/api/admin/tour-prices/select-box",
   },
 };
