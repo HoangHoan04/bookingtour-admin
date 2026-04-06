@@ -157,13 +157,13 @@ export default function CustomerManager() {
       header: "Giới tính",
       width: 220,
       sortable: true,
+      body: (rowData: CustomerDto) =>
+        rowData.gender
+          ? enumData.GENDER[rowData.gender as keyof typeof enumData.GENDER]
+              ?.name
+          : "",
     },
-    {
-      field: "status",
-      header: "Trạng thái",
-      width: 220,
-      sortable: true,
-    },
+
     {
       field: "isDeleted",
       header: "Hoạt động",

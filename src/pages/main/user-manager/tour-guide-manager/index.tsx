@@ -276,6 +276,12 @@ export default function TourGuideManager() {
       header: "Giới tính",
       width: 220,
       sortable: true,
+      body: (rowData: any) =>
+        rowData.gender
+          ? enumData.GENDER_TOUR_GUIDE[
+              rowData.gender as keyof typeof enumData.GENDER_TOUR_GUIDE
+            ]?.name
+          : "",
     },
     {
       field: "isDeleted",

@@ -52,7 +52,7 @@ export default function DetailDestinationPage() {
 
 const DestinationDetailView = ({ data }: { data: any }) => {
   return (
-    <div className="p-0 lg:p-4 animate-in fade-in duration-500 bg-[#262626]">
+    <div className="p-0 lg:p-4 animate-in fade-in duration-500">
       <div className="border rounded-2xl shadow-sm overflow-hidden flex flex-col lg:flex-row">
         {/* CỘT TRÁI: TỔNG QUAN */}
         <div className="w-full lg:w-1/3 p-6 lg:p-8 border-b lg:border-b-0 lg:border-r ">

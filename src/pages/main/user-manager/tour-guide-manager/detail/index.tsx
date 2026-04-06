@@ -53,7 +53,7 @@ export default function DetailTourGuidePage() {
 
 const DetailView = ({ data }: { data: TourGuideDto }) => {
   return (
-    <div className="p-0 md:p-3 mx-auto bg-[#262626]">
+    <div className="p-0 md:p-3 mx-auto">
       <div className="surface-card p-4 md:p-5 shadow-1 border-round-xl">
         <div className="flex">
           {/* CỘT TRÁI: AVATAR & LIÊN HỆ NHANH */}

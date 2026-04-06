@@ -32,7 +32,7 @@ export default function DetailCustomerPage() {
 }
 const DetailView = ({ data }: { data: CustomerDto }) => {
   return (
-    <div className="p-3 mx-auto bg-[#262626]">
+    <div className="p-3 mx-auto ">
       <div className="p-5 shadow-1-xl">
         <div className="flex">
           {/* PHẦN BÊN TRÁI: AVATAR & INFO CƠ BẢN */}

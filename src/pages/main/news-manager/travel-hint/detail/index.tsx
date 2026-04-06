@@ -56,7 +56,7 @@ export default function DetailTravelHintPage() {
 
 const TravelHintContent = ({ data }: { data: any }) => {
   return (
-    <div className="flex flex-col lg:flex-row gap-8 p-10 animate-in fade-in duration-500 bg-[#262626]">
+    <div className="flex flex-col lg:flex-row gap-8 p-10 animate-in fade-in duration-500">
       <div className="flex-1 space-y-6">
         <div className="border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
           <div className="w-full h-96 md:h-96 overflow-hidden">
