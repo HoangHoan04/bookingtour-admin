@@ -19,6 +19,14 @@ export const enumData = {
     INACTIVE: { value: true, code: "INACTIVE", name: "Ngưng hoạt động" },
   },
 
+  BOOKING_STATUS: {
+    PENDING: { code: "PENDING", name: "Chờ xác nhận", color: "yellow" },
+    CONFIRMED: { code: "CONFIRMED", name: "Đã xác nhận", color: "blue" },
+    COMPLETED: { code: "COMPLETED", name: "Hoàn thành", color: "green" },
+    CANCELLED: { code: "CANCELLED", name: "Đã hủy", color: "red" },
+    EXPIRED: { code: "EXPIRED", name: "Hết hạn", color: "gray" },
+  },
+
   DATA_TYPE: {
     STRING: { code: "STRING", name: "Kiểu chuỗi", format: "" },
     INT: { code: "INT", name: "Kiểu sổ nguyên", format: "" },
@@ -102,6 +110,11 @@ export const enumData = {
     BOOKING: { code: "BOOKING", name: "Đặt tour" },
     NEWS: { code: "NEWS", name: "Tin tức" },
     FAQ: { code: "FAQ", name: "Câu hỏi thường gặp" },
+  },
+
+  PRICE_TYPE: {
+    ADULT: { code: "ADULT", name: "Người lớn" },
+    CHILD: { code: "CHILD", name: "Trẻ em" },
   },
 
   NEW_TYPE: {
