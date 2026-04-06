@@ -11,13 +11,10 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
   PieChart,
   Pie,
   Cell,
-  LineChart,
-  Line,
   AreaChart,
   Area,
 } from "recharts";
@@ -43,7 +40,7 @@ const MOCK_REVENUE = [
 ];
 
 export default function Dashboard() {
-  const { total: totalCustomers, data: customers } = usePaginationCustomer({
+  const { total: totalCustomers } = usePaginationCustomer({
     skip: 0,
     take: 100,
     where: {} as any,
@@ -117,6 +114,14 @@ export default function Dashboard() {
       title: "Hướng dẫn viên",
       value: totalGuides || 18,
       icon: PrimeIcons.ID_CARD,
+      color: "from-purple-500 to-indigo-400",
+      trend: "-2.1%",
+      trendUp: false,
+    },
+    {
+      title: "Bài viết",
+      value: totalNews || 18,
+      icon: PrimeIcons.FILE,
       color: "from-purple-500 to-indigo-400",
       trend: "-2.1%",
       trendUp: false,
@@ -269,7 +274,7 @@ export default function Dashboard() {
                     dataKey="value"
                     stroke="none"
                   >
-                    {toursByCategory.map((entry, index) => (
+                    {toursByCategory.map((index: any) => (
                       <Cell
                         key={`cell-${index}`}
                         fill={COLORS[index % COLORS.length]}
