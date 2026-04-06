@@ -135,7 +135,7 @@ function ActionLog({ functionType, functionId }: ActionLogProps) {
   if (!functionId) return null;
 
   return (
-    <div className="bg-[#262626] mt-2 rounded-xl overflow-hidden shadow-sm">
+    <div className="mt-2 rounded-xl overflow-hidden shadow-sm">
       <TableCustom<ActionLogDto>
         data={data || []}
         columns={columns}

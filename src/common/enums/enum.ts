@@ -44,8 +44,15 @@ export const enumData = {
   },
 
   GENDER: {
+    male: { code: "male", name: "Nam" },
+    female: { code: "female", name: "Nữ" },
+    OTHER: { code: "OTHER", name: "Khác" },
+  },
+
+  GENDER_TOUR_GUIDE: {
     MALE: { code: "MALE", name: "Nam" },
     FEMALE: { code: "FEMALE", name: "Nữ" },
+    OTHER: { code: "OTHER", name: "Khác" },
   },
 
   USER_TYPE: {

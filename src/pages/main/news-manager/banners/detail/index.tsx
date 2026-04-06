@@ -62,7 +62,7 @@ export default function DetailBannerPage() {
 
 const BannerDetailView = ({ data }: { data: any }) => {
   return (
-    <div className="p-0 lg:p-4 animate-in fade-in duration-500 bg-[#262626]">
+    <div className="p-0 lg:p-4 animate-in fade-in duration-500">
       <div className="border border-slate-200 rounded-2xl shadow-sm overflow-hidden flex flex-col">
         {/* PHẦN 1: HÌNH ẢNH BANNER (PREVIEW) */}
         <div

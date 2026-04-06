@@ -59,7 +59,7 @@ export default function DetailNewPage() {
 
 const NewDetailContent = ({ data }: { data: any }) => {
   return (
-    <div className="flex flex-col lg:flex-row gap-6 p-0 lg:p-4 animate-in fade-in duration-500 bg-[#262626]">
+    <div className="flex flex-col lg:flex-row gap-6 p-0 lg:p-4 animate-in fade-in duration-500">
       {/* CỘT TRÁI: NỘI DUNG CHÍNH (Chiếm 2/3) */}
       <div className="flex-1 border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
         {/* Ảnh bìa bài viết */}

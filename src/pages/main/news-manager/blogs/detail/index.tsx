@@ -165,7 +165,7 @@ export default function DetailBlogPage() {
 
 const BlogDetailContent = ({ data }: { data: any }) => {
   return (
-    <div className="flex flex-col md:flex-row p-6 gap-8 animate-in fade-in duration-500 bg-[#262626]">
+    <div className="flex flex-col md:flex-row p-6 gap-8 animate-in fade-in duration-500">
       <div className="flex-1 space-y-6">
         <div className="border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
           <div className="p-10">
