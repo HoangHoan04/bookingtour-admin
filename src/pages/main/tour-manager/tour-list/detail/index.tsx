@@ -270,6 +270,30 @@ export default function DetailTourPage() {
             <InfoRow label="Địa điểm" value={tour.location} />
             <InfoRow label="Thời gian" value={tour.durations} />
             <InfoRow label="Danh mục" value={tour.category} />
+            {/* <div
+              className="w-full relative group overflow-hidden"
+              style={{ minHeight: "300px", maxHeight: "450px" }}
+            >
+              {tour.image?.fileUrl ? (
+                <img
+                  src={tour.image.fileUrl}
+                  alt={tour.title}
+                  className="w-full h-full object-contain mx-auto"
+                />
+              ) : (
+                <div className="flex flex-col items-center justify-center h-full text-slate-500">
+                  <i className="pi pi-image text-6xl mb-2"></i>
+                  <span>Không có hình ảnh</span>
+                </div>
+              )}
+              <div className="absolute top-4 left-4">
+                <Tag
+                  value={tour.type}
+                  severity="warning"
+                  className="shadow-lg"
+                />
+              </div>
+            </div> */}
             <InfoRow
               label="Tags"
               value={formatText(tour.tags ? tour.tags : "") || "Không có tags"}

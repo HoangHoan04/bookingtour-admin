@@ -1,4 +1,4 @@
-import type { BaseDto } from "./common/base.dto";
+import type { BaseDto, FileDto } from "./common/base.dto";
 import type { CreateTourDetailDto, TourDetailDto } from "./tour-detail.dto";
 
 // Tour DTO
@@ -23,6 +23,8 @@ export interface TourDto extends BaseDto {
   tourDestinations?: any[];
   __tourDetails__?: TourDetailDto[];
   reviews?: any[];
+  image: FileDto[];
+  type?: string;
 }
 
 export interface CreateTourDto {
