@@ -1,6 +1,9 @@
+import { enumData } from "@/common/enums/enum";
+import { formatDateTime } from "@/common/helpers/format";
 import BaseView from "@/components/ui/BaseView";
 import FormCustom, { type FormField } from "@/components/ui/FormCustom";
 import type { TourPriceDto } from "@/dto/tour-price.dto";
+import { useTourDetailSelectBox } from "@/hooks/tour-detail";
 import { useCreateTourPrice } from "@/hooks/tour-price";
 import { useRouter } from "@/routers/hooks";
 import { useMemo } from "react";
@@ -22,100 +25,63 @@ function AddTourPricePage({
 }) {
   const { isLoading, onCreateTourPrice } = useCreateTourPrice();
   const router = useRouter();
+  const { data: tourDetailOptions } = useTourDetailSelectBox();
 
-  type TourSubmitValues = Omit<TourPriceDto, "tags"> & {
-    tags?: string | string[];
-  };
+  const normalizedInitialValues = useMemo(() => {
+    if (!initData) return undefined;
+
+    const tourDetailId =
+      initData.tourDetailId ||
+      (initData as any)?.tourDetail?.id ||
+      (initData as any)?.tourDetail?._id;
+
+    return {
+      ...initData,
+      priceType: initData.priceType ? String(initData.priceType) : undefined,
+      tourDetailId: tourDetailId ? String(tourDetailId) : undefined,
+    };
+  }, [initData]);
 
   const formFields = useMemo((): FormField[] => {
     return [
       {
-        name: "code",
-        label: "Mã tour",
-        type: "input",
-        placeholder: "Mã tour sẽ được tự động tạo",
-        disabled: true,
-        col: 4,
-      },
-      {
-        name: "title",
-        label: "Tiêu đề tour",
-        type: "input",
+        name: "priceType",
+        label: "Loại giá",
+        type: "select",
+        placeholder: "Chọn loại giá tour",
         required: true,
-        placeholder: "Nhập tiêu đề tour",
+        options: Object.values(enumData.PRICE_TYPE || {}).map((item: any) => ({
+          id: item.code,
+          name: item.name,
+          value: item.code,
+        })),
         col: 4,
       },
       {
-        name: "location",
-        label: "Địa điểm",
-        type: "input",
+        name: "price",
+        label: "Giá tour",
+        type: "number",
         required: true,
-        placeholder: "Nhập địa điểm tour (VD: Hà Nội - Hạ Long)",
+        placeholder: "Nhập giá tour",
         col: 4,
       },
       {
-        name: "durations",
-        label: "Thời gian",
-        type: "input",
+        name: "tourDetailId",
+        label: "Chọn chi tiết tour",
+        type: "select",
         required: true,
-        placeholder: "Nhập thời gian tour (VD: 3 ngày 2 đêm)",
+        placeholder: "Chọn chi tiết tour",
+        options: tourDetailOptions?.map((item) => ({
+          id: item.id,
+          name: `Code: ${item.code} - Bắt đầu:${formatDateTime(item.startDay)}`,
+          value: String(item.id),
+        })),
         col: 4,
-      },
-      {
-        name: "category",
-        label: "Danh mục",
-        type: "input",
-        placeholder: "Nhập danh mục tour (VD: Du lịch biển, Du lịch văn hóa)",
-        col: 4,
-      },
-      {
-        name: "tags",
-        label: "Tags",
-        type: "input",
-        placeholder:
-          "Nhập tags, phân cách bằng dấu phẩy (VD: biển, núi, văn hóa)",
-        col: 4,
-      },
-      {
-        name: "shortDescription",
-        label: "Mô tả ngắn",
-        type: "textarea",
-        required: true,
-        placeholder: "Nhập mô tả ngắn gọn về tour",
-        col: 12,
-      },
-      {
-        name: "longDescription",
-        label: "Mô tả chi tiết",
-        type: "textarea",
-        placeholder: "Nhập mô tả chi tiết về tour",
-        col: 12,
-      },
-      {
-        name: "highlights",
-        label: "Điểm nổi bật",
-        type: "textarea",
-        placeholder: "Nhập các điểm nổi bật của tour",
-        col: 12,
-      },
-      {
-        name: "included",
-        label: "Dịch vụ bao gồm",
-        type: "textarea",
-        placeholder: "Nhập các dịch vụ đã bao gồm trong tour",
-        col: 6,
-      },
-      {
-        name: "excluded",
-        label: "Dịch vụ không bao gồm",
-        type: "textarea",
-        placeholder: "Nhập các dịch vụ không bao gồm trong tour",
-        col: 6,
       },
     ];
-  }, []);
+  }, [tourDetailOptions]);
 
-  const handleSubmit = (values: TourSubmitValues) => {
+  const handleSubmit = (values: TourPriceDto) => {
     const submitData: TourPriceDto = values;
 
     if (isEdit && handleUpdate) {
@@ -135,7 +101,7 @@ function AddTourPricePage({
         title={title}
         showDivider={true}
         fields={formFields}
-        initialValues={initData}
+        initialValues={normalizedInitialValues}
         loading={isLoading || isLoadingUpdate}
         onSubmit={handleSubmit}
         onCancel={goBack || onCancel}

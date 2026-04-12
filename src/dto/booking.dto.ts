@@ -12,3 +12,12 @@ export interface BookingDto extends BaseDto {
     title: string;
   };
 }
+
+export interface BookingFilterDto {
+  tourId: string;
+  contactFullname: string;
+  contactEmail: string;
+  contactPhone: string;
+  bookingDate: Date;
+  status: string;
+}
