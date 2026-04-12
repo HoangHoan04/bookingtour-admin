@@ -110,6 +110,15 @@ function AddTourPage({
         col: 12,
       },
       {
+        name: "image",
+        label: "Hình ảnh tour",
+        type: "image",
+        isSingle: true,
+        required: true,
+        placeholder: "Tải lên hình ảnh đại diện cho tour",
+        col: 12,
+      },
+      {
         name: "included",
         label: "Dịch vụ bao gồm",
         type: "textarea",
@@ -123,6 +132,7 @@ function AddTourPage({
         placeholder: "Nhập các dịch vụ không bao gồm trong tour",
         col: 6,
       },
+
       {
         name: "tourDetails",
         label: "Chi tiết tour",
@@ -135,7 +145,7 @@ function AddTourPage({
           })) || [],
         loading: isLoadingTourDetails,
         placeholder: "Nhập các dịch vụ không bao gồm trong tour",
-        col: 6,
+        col: 12,
       },
     ];
   }, [isLoadingTourDetails, tourDetails]);
