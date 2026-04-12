@@ -1,8 +1,5 @@
 import { ROUTES } from "@/common/constants/routes";
 import { enumData } from "@/common/enums/enum";
-import ActionConfirm, {
-  type ActionConfirmRef,
-} from "@/components/ui/ActionConfirm";
 import BaseView from "@/components/ui/BaseView";
 import { CommonActions } from "@/components/ui/CommonAction";
 import FilterComponent, {
@@ -15,43 +12,36 @@ import TableCustom, {
   type TableColumn,
 } from "@/components/ui/TableCustom";
 import type { PaginationDto } from "@/dto";
-import type { TourDto, TourFilterDto } from "@/dto/tour.dto";
-import {
-  useActivateTour,
-  useDeactivateTour,
-  usePaginationTour,
-} from "@/hooks/tour";
+import type { BookingDto, BookingFilterDto } from "@/dto/booking.dto";
+import { usePaginationBooking } from "@/hooks/booking";
 import { useRouter } from "@/routers/hooks";
 import { PrimeIcons } from "primereact/api";
-import { useRef, useState } from "react";
+import { useState } from "react";
 
-export const initFilter: TourFilterDto = {
-  title: "",
-  code: "",
-  location: "",
-  category: "",
-  tags: "",
+export const initFilter: BookingFilterDto = {
+  tourId: "",
+  contactFullname: "",
+  contactEmail: "",
+  contactPhone: "",
+  bookingDate: new Date(),
   status: "",
-  isDeleted: undefined,
 };
 
 export default function BookingManager() {
   const router = useRouter();
-  const [filter, setFilter] = useState<TourFilterDto>(initFilter);
-  const [pagination, setPagination] = useState<PaginationDto<TourFilterDto>>({
-    skip: 0,
-    take: 10,
-    where: initFilter,
-  });
-  const [selectedRows, setSelectedRows] = useState<TourDto[]>([]);
-  const [selectedTour, setSelectedTour] = useState<TourDto | null>(null);
-  const activateConfirmRef = useRef<ActionConfirmRef>(null);
-  const deactivateConfirmRef = useRef<ActionConfirmRef>(null);
+  const [filter, setFilter] = useState<BookingFilterDto>(initFilter);
+  const [pagination, setPagination] = useState<PaginationDto<BookingFilterDto>>(
+    {
+      skip: 0,
+      take: 10,
+      where: initFilter,
+    },
+  );
+  const [selectedRows, setSelectedRows] = useState<BookingDto[]>([]);
+  // const activateConfirmRef = useRef<ActionConfirmRef>(null);
+  // const deactivateConfirmRef = useRef<ActionConfirmRef>(null);
 
-  const { data, isLoading, refetch, total } = usePaginationTour(pagination);
-  const { onDeactivateTour, isLoading: isLoadingDeactivate } =
-    useDeactivateTour();
-  const { onActivateTour, isLoading: isLoadingActivate } = useActivateTour();
+  const { data, isLoading, refetch, total } = usePaginationBooking(pagination);
 
   const handleSearch = (isReset?: boolean) => {
     setPagination((prev) => ({
@@ -63,7 +53,7 @@ export default function BookingManager() {
   };
 
   const handleFiltersChange = (newFilters: Record<string, any>) => {
-    setFilter(newFilters as TourFilterDto);
+    setFilter(newFilters as BookingFilterDto);
   };
 
   const handlePageChange = (page: number, pageSize: number) => {
@@ -74,20 +64,6 @@ export default function BookingManager() {
     }));
   };
 
-  const handleActivate = async () => {
-    if (!selectedTour) return;
-    await onActivateTour(selectedTour.id);
-    await refetch();
-    setSelectedTour(null);
-  };
-
-  const handleDeactivate = async () => {
-    if (!selectedTour) return;
-    await onDeactivateTour(selectedTour.id);
-    await refetch();
-    setSelectedTour(null);
-  };
-
   const handleCreate = () => {
     router.push(ROUTES.MAIN.BOOKING_MANAGER.children.ADD_BOOKING.path);
   };
@@ -95,40 +71,42 @@ export default function BookingManager() {
   const filterFields: FilterField[] = [
     {
       key: "code",
-      label: "Mã tour",
+      label: "Mã booking",
       type: "input",
-      placeholder: "Nhập mã tour",
+      placeholder: "Nhập mã booking",
       col: 6,
     },
     {
-      key: "title",
-      label: "Tên tour",
+      key: "contactFullname",
+      label: "Tên khách hàng",
       type: "input",
-      placeholder: "Nhập tên tour",
+      placeholder: "Nhập tên khách hàng",
       col: 6,
     },
     {
-      key: "location",
-      label: "Địa điểm",
+      key: "contactEmail",
+      label: "Email",
       type: "input",
-      placeholder: "Nhập địa điểm",
+      placeholder: "Nhập email",
       col: 6,
     },
     {
-      key: "category",
-      label: "Danh mục",
+      key: "contactPhone",
+      label: "Số điện thoại",
       type: "input",
-      placeholder: "Nhập danh mục",
+      placeholder: "Nhập số điện thoại",
       col: 6,
     },
     {
       key: "status",
-      label: "Trạng thái tour",
+      label: "Trạng thái booking",
       type: "select",
-      options: Object.values(enumData.TOUR_STATUS || {}).map((item: any) => ({
-        label: item.name,
-        value: item.code,
-      })),
+      options: Object.values(enumData.BOOKING_STATUS || {}).map(
+        (item: any) => ({
+          label: item.name,
+          value: item.code,
+        }),
+      ),
       placeholder: "Chọn trạng thái",
       col: 6,
     },
@@ -145,84 +123,54 @@ export default function BookingManager() {
     },
   ];
 
-  const columns: TableColumn<TourDto>[] = [
+  const columns: TableColumn<BookingDto>[] = [
     {
       field: "code",
-      header: "Mã tour",
+      header: "Mã booking",
       width: 120,
       sortable: true,
       frozen: true,
     },
     {
-      field: "title",
-      header: "Tên tour",
+      field: "contactFullname",
+      header: "Tên khách hàng",
       width: 250,
       sortable: true,
     },
     {
-      field: "location",
-      header: "Địa điểm",
-      width: 180,
+      field: "contactEmail",
+      header: "Email",
+      width: 200,
       sortable: true,
     },
     {
-      field: "durations",
-      header: "Thời gian",
-      width: 120,
-      sortable: true,
-      align: "center",
-    },
-    {
-      field: "category",
-      header: "Danh mục",
+      field: "contactPhone",
+      header: "Số điện thoại",
       width: 150,
       sortable: true,
-    },
-    {
-      field: "rating",
-      header: "Đánh giá",
-      width: 100,
-      sortable: true,
-      align: "center",
-      body: (rowData: TourDto) => (
-        <div className="flex items-center gap-1">
-          <i className="pi pi-star-fill text-yellow-500" />
-          <span>{rowData.rating?.toFixed(1) || "0.0"}</span>
-          <span className="text-gray-500 text-sm">
-            ({rowData.reviewCount || 0})
-          </span>
-        </div>
-      ),
-    },
-    {
-      field: "viewCount",
-      header: "Lượt xem",
-      width: 100,
-      sortable: true,
       align: "center",
     },
     {
-      field: "bookingCount",
-      header: "Lượt đặt",
-      width: 100,
+      field: "totalPrice",
+      header: "Tổng giá",
+      width: 150,
       sortable: true,
-      align: "center",
     },
     {
       field: "status",
       header: "Trạng thái",
       width: 130,
       align: "center",
-      body: (rowData: TourDto) => {
-        const status = Object.values(enumData.TOUR_STATUS || {}).find(
+      body: (rowData: BookingDto) => {
+        const status = Object.values(enumData.BOOKING_STATUS || {}).find(
           (s: any) => s.code === rowData.status,
         ) as any;
         return (
           <StatusTag
             severity={
-              status?.code === enumData.TOUR_STATUS.ACTIVE.code
+              status?.code === enumData.BOOKING_STATUS.CONFIRMED.code
                 ? "success"
-                : status?.code === enumData.TOUR_STATUS.INACTIVE.code
+                : status?.code === enumData.BOOKING_STATUS.CANCELLED.code
                   ? "warning"
                   : "danger"
             }
@@ -236,7 +184,7 @@ export default function BookingManager() {
       header: "Hoạt động",
       width: 120,
       align: "center",
-      body: (rowData: TourDto) => (
+      body: (rowData: BookingDto) => (
         <StatusTag
           severity={rowData.isDeleted ? "danger" : "success"}
           value={
@@ -249,7 +197,7 @@ export default function BookingManager() {
     },
   ];
 
-  const rowActions: RowAction<TourDto>[] = [
+  const rowActions: RowAction<BookingDto>[] = [
     {
       key: "view",
       icon: PrimeIcons.EYE,
@@ -257,7 +205,7 @@ export default function BookingManager() {
       severity: "info",
       onClick: (record) =>
         router.push(
-          ROUTES.MAIN.TOUR_MANAGER.children.TOUR_LIST.children.DETAIL_TOUR.path.replace(
+          ROUTES.MAIN.BOOKING_MANAGER.children.DETAIL_BOOKING.path.replace(
             ":id",
             record.id,
           ),
@@ -271,7 +219,7 @@ export default function BookingManager() {
       visible: (record) => !record.isDeleted,
       onClick: (record) => {
         router.push(
-          ROUTES.MAIN.TOUR_MANAGER.children.TOUR_LIST.children.EDIT_TOUR.path.replace(
+          ROUTES.MAIN.BOOKING_MANAGER.children.EDIT_BOOKING.path.replace(
             ":id",
             record.id,
           ),
@@ -284,10 +232,10 @@ export default function BookingManager() {
       tooltip: "Ngưng hoạt động",
       severity: "warning",
       visible: (record) => !record.isDeleted,
-      onClick: (record) => {
-        setSelectedTour(record);
-        deactivateConfirmRef.current?.show();
-      },
+      // onClick: (record) => {
+      //   // setSelectedBooking(record);
+      //   deactivateConfirmRef.current?.show();
+      // },
     },
     {
       key: "activate",
@@ -295,10 +243,10 @@ export default function BookingManager() {
       tooltip: "Kích hoạt",
       severity: "success",
       visible: (record) => record.isDeleted,
-      onClick: (record) => {
-        setSelectedTour(record);
-        activateConfirmRef.current?.show();
-      },
+      // onClick: (record) => {
+      //   // setSelectedBooking(record);
+      //   activateConfirmRef.current?.show();
+      // },
     },
   ];
 
@@ -312,10 +260,10 @@ export default function BookingManager() {
         onClear={() => handleSearch(true)}
       />
 
-      <TableCustom<TourDto>
+      <TableCustom<BookingDto>
         data={data || []}
         columns={columns}
-        loading={isLoading || isLoadingActivate || isLoadingDeactivate}
+        loading={isLoading}
         enableSelection={true}
         selectedRows={selectedRows}
         onSelectionChange={setSelectedRows}
@@ -323,7 +271,7 @@ export default function BookingManager() {
         stripedRows={true}
         showGridlines={true}
         scrollable={true}
-        emptyText="Không tìm thấy tour nào"
+        emptyText="Không tìm thấy booking nào"
         pagination={{
           current: Math.floor(pagination.skip / pagination.take) + 1,
           pageSize: pagination.take,
@@ -348,24 +296,6 @@ export default function BookingManager() {
           showRefreshButton: true,
           onRefresh: refetch,
         }}
-      />
-
-      <ActionConfirm
-        ref={activateConfirmRef}
-        title="Xác nhận kích hoạt tour"
-        confirmText="Kích hoạt"
-        cancelText="Hủy"
-        onConfirm={handleActivate}
-      />
-
-      <ActionConfirm
-        ref={deactivateConfirmRef}
-        title="Xác nhận ngừng hoạt động tour"
-        confirmText="Ngừng hoạt động"
-        cancelText="Hủy"
-        withReason={true}
-        isRequireReason={true}
-        onConfirm={handleDeactivate}
       />
     </BaseView>
   );

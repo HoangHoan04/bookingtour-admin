@@ -257,10 +257,8 @@ export const useTourPriceSelectBox = () => {
 //   };
 // };
 
-export const useTourPrice = (id: string | undefined | null) => {
-  const { data, isLoading, refetch, error } = useQuery<
-    SuccessResponse<TourPriceDto>
-  >({
+export const useTourPrice = (id: string | undefined) => {
+  const { data, isLoading, refetch, error } = useQuery<TourPriceDto>({
     queryKey: [API_ENDPOINTS.TOUR_PRICE.FIND_BY_ID, id],
     queryFn: async () => {
       const res = await rootApiService.post(
@@ -269,13 +267,13 @@ export const useTourPrice = (id: string | undefined | null) => {
           id,
         },
       );
-      return res as SuccessResponse<TourPriceDto>;
+      return res as TourPriceDto;
     },
     enabled: !!id,
   });
 
   return {
-    data: data?.data,
+    data: data,
     isLoading,
     refetch,
     error,

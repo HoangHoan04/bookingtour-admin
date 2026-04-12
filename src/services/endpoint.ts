@@ -18,6 +18,12 @@ export const API_ENDPOINTS = {
 
   ACTION_LOG: "/api/admin/action-log/pagination",
 
+  BOOKING: {
+    PAGINATION: "/api/admin/bookings/pagination",
+    CREATE: "/api/user/bookings/create",
+    UPDATE: "/api/admin/bookings/update",
+  },
+
   NOTIFICATION: {
     PAGINATION: "/api/admin/notify/pagination",
     COUNT_UNREAD: "/api/admin/notify/find-count-notify-not-seen",

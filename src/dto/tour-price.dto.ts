@@ -12,6 +12,7 @@ export interface TourPriceDto extends BaseDto {
   priceType: string;
   currency: string;
   tourDetailId: string;
+  status: string;
 }
 
 export interface CreateTourPriceDto {

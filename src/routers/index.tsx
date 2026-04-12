@@ -47,6 +47,7 @@ import NotificationListPage from "@/pages/other/NotificationList";
 import { Route, Routes } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 import BookingManager from "@/pages/main/booking-manager/booking-list";
+import DetailBookingPage from "@/pages/main/booking-manager/booking-list/detail";
 
 export default function AppRoutes() {
   return (
@@ -220,17 +221,15 @@ export default function AppRoutes() {
                 <EditBookingPage />
               </AuthGuard>
             }
-          />
+          /> */}
           <Route
-            path={
-              ROUTES.MAIN.BOOKING_MANAGER.children.DETAIL_BOOKING.path
-            }
+            path={ROUTES.MAIN.BOOKING_MANAGER.children.DETAIL_BOOKING.path}
             element={
               <AuthGuard>
                 <DetailBookingPage />
               </AuthGuard>
             }
-          /> */}
+          />
 
           {/* Quản lý tin tức*/}
           <Route

@@ -21,7 +21,7 @@ function EditTourPricePage() {
         <AddTourPricePage
           isEdit={true}
           isLoadingUpdate={isLoadingUpdate}
-          title="Chỉnh sửa tour"
+          title="Chỉnh sửa giá tour"
           initData={data}
           handleUpdate={handleUpdate}
         />
