@@ -10,7 +10,7 @@ function AddNewPage({
   initData,
   isEdit = false,
   handleUpdate,
-  title = "Tạo mới new",
+  title = "Tạo mới news",
   isLoadingUpdate = false,
   onCancel,
 }: {
