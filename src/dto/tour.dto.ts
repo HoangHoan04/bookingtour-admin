@@ -23,8 +23,7 @@ export interface TourDto extends BaseDto {
   tourDestinations?: any[];
   __tourDetails__?: TourDetailDto[];
   reviews?: any[];
-  image: FileDto[];
-  type?: string;
+  image: FileDto;
 }
 
 export interface CreateTourDto {
