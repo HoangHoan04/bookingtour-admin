@@ -14,7 +14,7 @@ function AddTourDetailDialog({
   onCancel,
   isOpenDialogAdd,
 }: {
-  initData?: TourDetailDto;
+  initData?: Partial<TourDetailDto>;
   isEdit?: boolean;
   handleUpdate?: (data: TourDetailDto) => void;
   title?: string;
@@ -85,7 +85,7 @@ function AddTourDetailDialog({
         required: true,
         placeholder: "Chọn mã tour",
         col: 12,
-        options: tourOptions?.map((tour) => ({
+        options: Object.values(tourOptions || {}).map((tour) => ({
           id: tour.id,
           name: tour.title,
           value: tour.id,
@@ -112,6 +112,7 @@ function AddTourDetailDialog({
       onHide={onCancel ?? (() => {})}
     >
       <FormCustom
+        key={`${isOpenDialogAdd}-${initData?.tourId ?? ""}`}
         title={title}
         showDivider={true}
         fields={formFields}

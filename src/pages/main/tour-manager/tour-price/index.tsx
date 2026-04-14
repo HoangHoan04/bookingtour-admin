@@ -105,8 +105,8 @@ export default function TourPriceManager() {
     {
       key: "tourDetailId",
       label: "Chi tiết tour được liên kết",
-      type: "select",
-      placeholder: "Chọn chi tiết tour",
+      type: "input",
+      placeholder: "Nhập chi tiết tour",
       col: 6,
     },
   ];

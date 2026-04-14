@@ -264,36 +264,34 @@ export default function DetailTourPage() {
         {/* Header Card */}
         <Card title="Thông tin tour" className="shadow-sm">
           <div className="space-y-2">
+            <div className="flex">
+              <InfoRow label="Thumbnail" value=" " />
+
+              <div
+                className="w-1/2 relative group overflow-hidden border rounded-md border-gray-300"
+                style={{ minHeight: "300px", maxHeight: "450px" }}
+              >
+                {tour.image?.fileUrl ? (
+                  <img
+                    src={tour.image.fileUrl}
+                    alt={tour.title}
+                    className="w-full h-full object-cover mx-auto"
+                  />
+                ) : (
+                  <div className="flex flex-col items-center justify-center h-full text-slate-500">
+                    <i className="pi pi-image text-6xl mb-2"></i>
+                    <span>Không có hình ảnh</span>
+                  </div>
+                )}
+              </div>
+            </div>
             <InfoRow label="Mã tour" value={tour.code} />
             <InfoRow label="Tiêu đề" value={tour.title} />
             <InfoRow label="Slug" value={tour.slug} />
             <InfoRow label="Địa điểm" value={tour.location} />
             <InfoRow label="Thời gian" value={tour.durations} />
             <InfoRow label="Danh mục" value={tour.category} />
-            {/* <div
-              className="w-full relative group overflow-hidden"
-              style={{ minHeight: "300px", maxHeight: "450px" }}
-            >
-              {tour.image?.fileUrl ? (
-                <img
-                  src={tour.image.fileUrl}
-                  alt={tour.title}
-                  className="w-full h-full object-contain mx-auto"
-                />
-              ) : (
-                <div className="flex flex-col items-center justify-center h-full text-slate-500">
-                  <i className="pi pi-image text-6xl mb-2"></i>
-                  <span>Không có hình ảnh</span>
-                </div>
-              )}
-              <div className="absolute top-4 left-4">
-                <Tag
-                  value={tour.type}
-                  severity="warning"
-                  className="shadow-lg"
-                />
-              </div>
-            </div> */}
+
             <InfoRow
               label="Tags"
               value={formatText(tour.tags ? tour.tags : "") || "Không có tags"}
@@ -438,6 +436,10 @@ export default function DetailTourPage() {
                     )}
                   </div>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+                    <div className="col-span-2 md:col-span-4">
+                      <span className="font-semibold">ID: </span>
+                      {detail.id}
+                    </div>
                     <div>
                       <span className="font-semibold">Mã: </span>
                       {detail.code}
@@ -605,6 +607,7 @@ export default function DetailTourPage() {
 
         <AddTourDetailDialog
           isOpenDialogAdd={isOpenDialogAdd}
+          initData={{ tourId: tour.id }}
           onCancel={cancelAddTourDetailDialog}
         />
 
@@ -620,9 +623,7 @@ export default function DetailTourPage() {
             label="Chỉnh sửa"
             icon="pi pi-pencil"
             severity="success"
-            onClick={() =>
-              router.push(`/main/tour-manager/tour-list/edit/${tour.id}`)
-            }
+            onClick={() => router.push(`/tour/edit/${tour.id}`)}
           />
         </div>
       </div>
